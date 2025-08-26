@@ -5,7 +5,7 @@
 package DAO;
 
 import ConnectDB.ConnectDB;
-import Entity.HoaDon;
+import Entity.PhieuNhap;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -13,16 +13,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class HoaDonDAO {
+public class PhieuNhapDAO {
     private final Connection conn;
 
-    public HoaDonDAO() {
+    public PhieuNhapDAO() {
         this.conn = ConnectDB.getConnection();
     }
 
-    public List<HoaDon> findAll() {
-        String sql = "SELECT maHD, maNV, maKH, thoiGian FROM HoaDon ORDER BY maHD";
-        List<HoaDon> list = new ArrayList<>();
+    public List<PhieuNhap> findAll() {
+        String sql = "SELECT maPN, maNV, maNCC, thoiGian FROM PhieuNhap ORDER BY maPN";
+        List<PhieuNhap> list = new ArrayList<>();
         try (PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) list.add(mapRow(rs));
@@ -30,11 +30,11 @@ public class HoaDonDAO {
         return list;
     }
 
-    public Optional<HoaDon> findById(String maHD) {
-        if (isBlank(maHD)) return Optional.empty();
-        String sql = "SELECT maHD, maNV, maKH, thoiGian FROM HoaDon WHERE maHD=?";
+    public Optional<PhieuNhap> findById(String maPN) {
+        if (isBlank(maPN)) return Optional.empty();
+        String sql = "SELECT maPN, maNV, maNCC, thoiGian FROM PhieuNhap WHERE maPN=?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, maHD);
+            ps.setString(1, maPN);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return Optional.of(mapRow(rs));
             }
@@ -42,47 +42,47 @@ public class HoaDonDAO {
         return Optional.empty();
     }
 
-    public boolean insert(HoaDon hd) {
-        if (hd == null || isBlank(hd.getMaHD())) return false;
-        String sql = "INSERT INTO HoaDon(maHD, maNV, maKH, thoiGian) VALUES(?,?,?,?)";
+    public boolean insert(PhieuNhap pn) {
+        if (pn == null || isBlank(pn.getMaPN())) return false;
+        String sql = "INSERT INTO PhieuNhap(maPN, maNV, maNCC, thoiGian) VALUES(?,?,?,?)";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, hd.getMaHD());
-            ps.setString(2, hd.getMaNV());
-            ps.setString(3, hd.getMaKH());
-            setDateTimeOrNull(ps, 4, hd.getThoiGian());
+            ps.setString(1, pn.getMaPN());
+            ps.setString(2, pn.getMaNV());
+            ps.setString(3, pn.getMaNCC());
+            setDateTimeOrNull(ps, 4, pn.getThoiGian());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
-    public boolean update(HoaDon hd) {
-        if (hd == null || isBlank(hd.getMaHD())) return false;
-        String sql = "UPDATE HoaDon SET maNV=?, maKH=?, thoiGian=? WHERE maHD=?";
+    public boolean update(PhieuNhap pn) {
+        if (pn == null || isBlank(pn.getMaPN())) return false;
+        String sql = "UPDATE PhieuNhap SET maNV=?, maNCC=?, thoiGian=? WHERE maPN=?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, hd.getMaNV());
-            ps.setString(2, hd.getMaKH());
-            setDateTimeOrNull(ps, 3, hd.getThoiGian());
-            ps.setString(4, hd.getMaHD());
+            ps.setString(1, pn.getMaNV());
+            ps.setString(2, pn.getMaNCC());
+            setDateTimeOrNull(ps, 3, pn.getThoiGian());
+            ps.setString(4, pn.getMaPN());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
-    public boolean delete(String maHD) {
-        if (isBlank(maHD)) return false;
-        String sql = "DELETE FROM HoaDon WHERE maHD=?";
+    public boolean delete(String maPN) {
+        if (isBlank(maPN)) return false;
+        String sql = "DELETE FROM PhieuNhap WHERE maPN=?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, maHD);
+            ps.setString(1, maPN);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
-    private static HoaDon mapRow(ResultSet rs) throws SQLException {
-        HoaDon hd = new HoaDon();
-        hd.setMaHD(rs.getString("maHD"));
-        hd.setMaNV(rs.getString("maNV"));
-        hd.setMaKH(rs.getString("maKH"));
+    private static PhieuNhap mapRow(ResultSet rs) throws SQLException {
+        PhieuNhap pn = new PhieuNhap();
+        pn.setMaPN(rs.getString("maPN"));
+        pn.setMaNV(rs.getString("maNV"));
+        pn.setMaNCC(rs.getString("maNCC"));
         Timestamp ts = rs.getTimestamp("thoiGian");
-        if (ts != null) hd.setThoiGian(ts.toLocalDateTime());
-        return hd;
+        if (ts != null) pn.setThoiGian(ts.toLocalDateTime());
+        return pn;
     }
 
     private static void setDateTimeOrNull(PreparedStatement ps, int idx, LocalDateTime dt) throws SQLException {
