@@ -65,6 +65,7 @@ public class frmSearchHoaDon extends javax.swing.JPanel {
 
         setMinimumSize(new java.awt.Dimension(1200, 600));
         setPreferredSize(new java.awt.Dimension(1200, 600));
+        setLayout(new java.awt.BorderLayout());
 
         Panel.setName(""); // NOI18N
         Panel.setLayout(new java.awt.BorderLayout());
@@ -222,7 +223,7 @@ public class frmSearchHoaDon extends javax.swing.JPanel {
         jTimKiem_Row5_Col2.setPreferredSize(new java.awt.Dimension(669, 38));
         jTimKiem_Row5_Col2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 7));
 
-        btnThem1.setBackground(new java.awt.Color(0, 120, 92));
+        btnThem1.setBackground(new java.awt.Color(15, 204, 102));
         btnThem1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnThem1.setForeground(new java.awt.Color(255, 255, 255));
         btnThem1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -292,7 +293,7 @@ public class frmSearchHoaDon extends javax.swing.JPanel {
         pSouth.setMinimumSize(new java.awt.Dimension(1200, 50));
         pSouth.setPreferredSize(new java.awt.Dimension(1200, 50));
 
-        btnChiTiet.setBackground(new java.awt.Color(0, 120, 92));
+        btnChiTiet.setBackground(new java.awt.Color(15, 204, 102));
         btnChiTiet.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnChiTiet.setForeground(new java.awt.Color(255, 255, 255));
         btnChiTiet.setText("Chi tiết");
@@ -309,26 +310,7 @@ public class frmSearchHoaDon extends javax.swing.JPanel {
 
         Panel.add(pSouth, java.awt.BorderLayout.PAGE_END);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1200, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
+        add(Panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnChiTietActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChiTietActionPerformed

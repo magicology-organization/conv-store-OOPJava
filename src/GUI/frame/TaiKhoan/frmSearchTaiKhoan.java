@@ -2,18 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package GUI.frame.PhieuNhap;
+package GUI.frame.TaiKhoan;
 
 /**
  *
  * @author ADMIN
  */
-public class frmSearchPhieuNhap extends javax.swing.JPanel {
+public class frmSearchTaiKhoan extends javax.swing.JPanel {
 
     /**
-     * Creates new form frmSeachPhieuNhap
+     * Creates new form frmSearchTaiKhoan
      */
-    public frmSearchPhieuNhap() {
+    public frmSearchTaiKhoan() {
         initComponents();
     }
 
@@ -83,7 +83,7 @@ public class frmSearchPhieuNhap extends javax.swing.JPanel {
         titleName.setBackground(new java.awt.Color(0, 0, 0));
         titleName.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         titleName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titleName.setText("Tìm kiếm phiếu nhập");
+        titleName.setText("Tìm kiếm tài khoản");
         titleName.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         titleName.setMinimumSize(new java.awt.Dimension(1200, 32));
         titleName.setPreferredSize(new java.awt.Dimension(1200, 32));
@@ -274,7 +274,7 @@ public class frmSearchPhieuNhap extends javax.swing.JPanel {
         titleName1.setBackground(new java.awt.Color(0, 0, 0));
         titleName1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         titleName1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titleName1.setText("Thông tin phiếu nhập");
+        titleName1.setText("Thông tin tài khoản");
         titleName1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         titleName1.setMinimumSize(new java.awt.Dimension(1200, 32));
         titleName1.setPreferredSize(new java.awt.Dimension(1200, 32));

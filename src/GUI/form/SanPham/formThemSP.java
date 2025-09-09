@@ -27,21 +27,380 @@ public class formThemSP extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        roundPanel = new Swing.RoundPanel();
+        pNorth = new javax.swing.JPanel();
+        tilte = new javax.swing.JLabel();
+        pCenter = new javax.swing.JPanel();
+        pThongTin = new javax.swing.JPanel();
+        lblSP = new javax.swing.JLabel();
+        txtMaSP = new javax.swing.JTextField();
+        lblTen = new javax.swing.JLabel();
+        txtTenSP = new javax.swing.JTextField();
+        lblGiaNhap = new javax.swing.JLabel();
+        txtGiaNhap = new javax.swing.JTextField();
+        lblGiaBan = new javax.swing.JLabel();
+        txtGiaBan = new javax.swing.JTextField();
+        lblHSD = new javax.swing.JLabel();
+        DateHSD = new com.toedter.calendar.JDateChooser();
+        lblDanhMuc = new javax.swing.JLabel();
+        comboDanhMuc = new javax.swing.JComboBox<>();
+        lblDonViTinh = new javax.swing.JLabel();
+        comboDVT = new javax.swing.JComboBox<>();
+        lblXuatXu = new javax.swing.JLabel();
+        comboXuatXu = new javax.swing.JComboBox<>();
+        lblSoLuong = new javax.swing.JLabel();
+        txtSoLuong = new javax.swing.JTextField();
+        pSouth = new javax.swing.JPanel();
+        btnHuy = new javax.swing.JButton();
+        btnThem = new javax.swing.JButton();
+        pWest = new javax.swing.JPanel();
+        anh = new javax.swing.JPanel();
+        lblAnh = new javax.swing.JLabel();
+        btnAnh = new javax.swing.JPanel();
+        btnThemAnh = new javax.swing.JButton();
+        pEast = new javax.swing.JPanel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(700, 450));
+
+        roundPanel.setBackground(new java.awt.Color(255, 255, 255));
+        roundPanel.setMaximumSize(new java.awt.Dimension(700, 450));
+        roundPanel.setMinimumSize(new java.awt.Dimension(700, 450));
+        roundPanel.setName(""); // NOI18N
+        roundPanel.setPreferredSize(new java.awt.Dimension(700, 450));
+        roundPanel.setLayout(new java.awt.BorderLayout());
+
+        pNorth.setBackground(new java.awt.Color(204, 255, 204));
+        pNorth.setMaximumSize(new java.awt.Dimension(700, 50));
+        pNorth.setName(""); // NOI18N
+        pNorth.setLayout(new java.awt.GridLayout(1, 0));
+
+        tilte.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        tilte.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        tilte.setText("Thêm sản phẩm");
+        tilte.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        tilte.setMaximumSize(new java.awt.Dimension(700, 50));
+        tilte.setMinimumSize(new java.awt.Dimension(700, 50));
+        tilte.setPreferredSize(new java.awt.Dimension(700, 50));
+        pNorth.add(tilte);
+
+        roundPanel.add(pNorth, java.awt.BorderLayout.NORTH);
+
+        pCenter.setMaximumSize(new java.awt.Dimension(440, 350));
+        pCenter.setLayout(new java.awt.BorderLayout());
+
+        pThongTin.setBackground(new java.awt.Color(255, 255, 255));
+        pThongTin.setMaximumSize(new java.awt.Dimension(440, 350));
+        pThongTin.setMinimumSize(new java.awt.Dimension(440, 350));
+        pThongTin.setName(""); // NOI18N
+        pThongTin.setPreferredSize(new java.awt.Dimension(440, 350));
+        pThongTin.setLayout(new java.awt.GridLayout(9, 1, 5, 0));
+
+        lblSP.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblSP.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblSP.setText("Mã sản phẩm:");
+        lblSP.setAlignmentX(20.0F);
+        lblSP.setAlignmentY(20.0F);
+        lblSP.setMaximumSize(new java.awt.Dimension(300, 20));
+        lblSP.setMinimumSize(new java.awt.Dimension(300, 20));
+        lblSP.setPreferredSize(new java.awt.Dimension(300, 20));
+        pThongTin.add(lblSP);
+
+        txtMaSP.setMaximumSize(new java.awt.Dimension(300, 20));
+        txtMaSP.setMinimumSize(new java.awt.Dimension(300, 20));
+        txtMaSP.setPreferredSize(new java.awt.Dimension(300, 20));
+        pThongTin.add(txtMaSP);
+
+        lblTen.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblTen.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblTen.setText("Tên sản phẩm:");
+        lblTen.setAlignmentX(20.0F);
+        lblTen.setAlignmentY(20.0F);
+        pThongTin.add(lblTen);
+
+        txtTenSP.setPreferredSize(new java.awt.Dimension(350, 22));
+        pThongTin.add(txtTenSP);
+
+        lblGiaNhap.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblGiaNhap.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblGiaNhap.setText("Giá nhập:");
+        lblGiaNhap.setToolTipText("");
+        lblGiaNhap.setMaximumSize(new java.awt.Dimension(170, 38));
+        lblGiaNhap.setMinimumSize(new java.awt.Dimension(170, 38));
+        lblGiaNhap.setPreferredSize(new java.awt.Dimension(170, 38));
+        pThongTin.add(lblGiaNhap);
+
+        txtGiaNhap.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        txtGiaNhap.setPreferredSize(new java.awt.Dimension(250, 30));
+        txtGiaNhap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtGiaNhapActionPerformed(evt);
+            }
+        });
+        pThongTin.add(txtGiaNhap);
+
+        lblGiaBan.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblGiaBan.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblGiaBan.setText("Giá bán:");
+        lblGiaBan.setToolTipText("");
+        lblGiaBan.setMaximumSize(new java.awt.Dimension(170, 38));
+        lblGiaBan.setMinimumSize(new java.awt.Dimension(170, 38));
+        lblGiaBan.setPreferredSize(new java.awt.Dimension(170, 38));
+        pThongTin.add(lblGiaBan);
+
+        txtGiaBan.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        txtGiaBan.setPreferredSize(new java.awt.Dimension(250, 30));
+        pThongTin.add(txtGiaBan);
+
+        lblHSD.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblHSD.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblHSD.setText("HSD:");
+        lblHSD.setMaximumSize(new java.awt.Dimension(170, 38));
+        lblHSD.setMinimumSize(new java.awt.Dimension(170, 38));
+        lblHSD.setPreferredSize(new java.awt.Dimension(170, 38));
+        pThongTin.add(lblHSD);
+
+        DateHSD.setBackground(new java.awt.Color(255, 255, 255));
+        DateHSD.setDateFormatString("d, MMM,y\n");
+        DateHSD.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        DateHSD.setMinimumSize(new java.awt.Dimension(140, 30));
+        DateHSD.setPreferredSize(new java.awt.Dimension(140, 30));
+        pThongTin.add(DateHSD);
+
+        lblDanhMuc.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblDanhMuc.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblDanhMuc.setText("Danh mục:");
+        lblDanhMuc.setMaximumSize(new java.awt.Dimension(170, 38));
+        lblDanhMuc.setMinimumSize(new java.awt.Dimension(170, 38));
+        lblDanhMuc.setPreferredSize(new java.awt.Dimension(170, 38));
+        pThongTin.add(lblDanhMuc);
+
+        comboDanhMuc.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        comboDanhMuc.setPreferredSize(new java.awt.Dimension(250, 22));
+        comboDanhMuc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboDanhMucActionPerformed(evt);
+            }
+        });
+        pThongTin.add(comboDanhMuc);
+
+        lblDonViTinh.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblDonViTinh.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblDonViTinh.setText("Đơn vị tính:");
+        lblDonViTinh.setMaximumSize(new java.awt.Dimension(170, 38));
+        lblDonViTinh.setMinimumSize(new java.awt.Dimension(170, 38));
+        lblDonViTinh.setPreferredSize(new java.awt.Dimension(170, 38));
+        pThongTin.add(lblDonViTinh);
+
+        comboDVT.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        comboDVT.setPreferredSize(new java.awt.Dimension(250, 22));
+        comboDVT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboDVTActionPerformed(evt);
+            }
+        });
+        pThongTin.add(comboDVT);
+
+        lblXuatXu.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblXuatXu.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblXuatXu.setText("Xuất xứ:");
+        lblXuatXu.setMaximumSize(new java.awt.Dimension(170, 38));
+        lblXuatXu.setMinimumSize(new java.awt.Dimension(170, 38));
+        lblXuatXu.setPreferredSize(new java.awt.Dimension(170, 38));
+        pThongTin.add(lblXuatXu);
+
+        comboXuatXu.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        comboXuatXu.setPreferredSize(new java.awt.Dimension(250, 22));
+        comboXuatXu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboXuatXuActionPerformed(evt);
+            }
+        });
+        pThongTin.add(comboXuatXu);
+
+        lblSoLuong.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblSoLuong.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblSoLuong.setText("Số lượng:");
+        lblSoLuong.setMaximumSize(new java.awt.Dimension(170, 38));
+        lblSoLuong.setMinimumSize(new java.awt.Dimension(170, 38));
+        lblSoLuong.setPreferredSize(new java.awt.Dimension(180, 38));
+        pThongTin.add(lblSoLuong);
+
+        txtSoLuong.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        txtSoLuong.setMinimumSize(new java.awt.Dimension(350, 22));
+        txtSoLuong.setPreferredSize(new java.awt.Dimension(250, 30));
+        pThongTin.add(txtSoLuong);
+
+        pCenter.add(pThongTin, java.awt.BorderLayout.CENTER);
+
+        roundPanel.add(pCenter, java.awt.BorderLayout.CENTER);
+
+        pSouth.setBackground(new java.awt.Color(255, 255, 255));
+        pSouth.setMaximumSize(new java.awt.Dimension(700, 50));
+        pSouth.setMinimumSize(new java.awt.Dimension(700, 50));
+        pSouth.setPreferredSize(new java.awt.Dimension(700, 50));
+
+        btnHuy.setBackground(new java.awt.Color(255, 103, 102));
+        btnHuy.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnHuy.setForeground(new java.awt.Color(255, 255, 255));
+        btnHuy.setText("Huỷ");
+        btnHuy.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
+        btnHuy.setPreferredSize(new java.awt.Dimension(90, 35));
+        btnHuy.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        btnHuy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHuyActionPerformed(evt);
+            }
+        });
+        pSouth.add(btnHuy);
+
+        btnThem.setBackground(new java.awt.Color(15, 204, 102));
+        btnThem.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnThem.setForeground(new java.awt.Color(255, 255, 255));
+        btnThem.setText("Thêm");
+        btnThem.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
+        btnThem.setPreferredSize(new java.awt.Dimension(90, 35));
+        btnThem.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        btnThem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemActionPerformed(evt);
+            }
+        });
+        pSouth.add(btnThem);
+
+        roundPanel.add(pSouth, java.awt.BorderLayout.SOUTH);
+
+        pWest.setBackground(new java.awt.Color(255, 255, 255));
+        pWest.setMaximumSize(new java.awt.Dimension(250, 350));
+        pWest.setMinimumSize(new java.awt.Dimension(250, 350));
+        pWest.setLayout(new java.awt.BorderLayout());
+
+        anh.setBackground(new java.awt.Color(255, 255, 255));
+        anh.setMinimumSize(new java.awt.Dimension(100, 211));
+
+        lblAnh.setBackground(new java.awt.Color(255, 255, 255));
+        lblAnh.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblAnh.setToolTipText("");
+        lblAnh.setAutoscrolls(true);
+
+        javax.swing.GroupLayout anhLayout = new javax.swing.GroupLayout(anh);
+        anh.setLayout(anhLayout);
+        anhLayout.setHorizontalGroup(
+            anhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(anhLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblAnh, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        anhLayout.setVerticalGroup(
+            anhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblAnh, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
+        );
+
+        pWest.add(anh, java.awt.BorderLayout.PAGE_START);
+
+        btnAnh.setBackground(new java.awt.Color(255, 255, 255));
+
+        btnThemAnh.setBackground(new java.awt.Color(204, 204, 204));
+        btnThemAnh.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnThemAnh.setText("Thêm ảnh");
+        btnThemAnh.setPreferredSize(new java.awt.Dimension(13, 13));
+        btnThemAnh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemAnhActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout btnAnhLayout = new javax.swing.GroupLayout(btnAnh);
+        btnAnh.setLayout(btnAnhLayout);
+        btnAnhLayout.setHorizontalGroup(
+            btnAnhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnAnhLayout.createSequentialGroup()
+                .addGap(83, 83, 83)
+                .addComponent(btnThemAnh, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(80, Short.MAX_VALUE))
+        );
+        btnAnhLayout.setVerticalGroup(
+            btnAnhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnAnhLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(btnThemAnh, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        pWest.add(btnAnh, java.awt.BorderLayout.CENTER);
+
+        roundPanel.add(pWest, java.awt.BorderLayout.WEST);
+
+        pEast.setBackground(new java.awt.Color(255, 255, 255));
+        pEast.setMaximumSize(new java.awt.Dimension(20, 350));
+        pEast.setMinimumSize(new java.awt.Dimension(20, 350));
+
+        javax.swing.GroupLayout pEastLayout = new javax.swing.GroupLayout(pEast);
+        pEast.setLayout(pEastLayout);
+        pEastLayout.setHorizontalGroup(
+            pEastLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 20, Short.MAX_VALUE)
+        );
+        pEastLayout.setVerticalGroup(
+            pEastLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 350, Short.MAX_VALUE)
+        );
+
+        roundPanel.add(pEast, java.awt.BorderLayout.EAST);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 700, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(roundPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 450, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(roundPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtGiaNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGiaNhapActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtGiaNhapActionPerformed
+
+    private void comboDanhMucActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboDanhMucActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboDanhMucActionPerformed
+
+    private void comboDVTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboDVTActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboDVTActionPerformed
+
+    private void comboXuatXuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboXuatXuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboXuatXuActionPerformed
+
+    private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyActionPerformed
+        // TODO add your handling code here:
+        dispose();
+    }//GEN-LAST:event_btnHuyActionPerformed
+
+    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnThemActionPerformed
+
+    private void btnThemAnhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemAnhActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnThemAnhActionPerformed
 
     /**
      * @param args the command line arguments
@@ -87,5 +446,37 @@ public class formThemSP extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.toedter.calendar.JDateChooser DateHSD;
+    private javax.swing.JPanel anh;
+    private javax.swing.JPanel btnAnh;
+    private javax.swing.JButton btnHuy;
+    private javax.swing.JButton btnThem;
+    private javax.swing.JButton btnThemAnh;
+    private javax.swing.JComboBox<String> comboDVT;
+    private javax.swing.JComboBox<String> comboDanhMuc;
+    private javax.swing.JComboBox<String> comboXuatXu;
+    private javax.swing.JLabel lblAnh;
+    private javax.swing.JLabel lblDanhMuc;
+    private javax.swing.JLabel lblDonViTinh;
+    private javax.swing.JLabel lblGiaBan;
+    private javax.swing.JLabel lblGiaNhap;
+    private javax.swing.JLabel lblHSD;
+    private javax.swing.JLabel lblSP;
+    private javax.swing.JLabel lblSoLuong;
+    private javax.swing.JLabel lblTen;
+    private javax.swing.JLabel lblXuatXu;
+    private javax.swing.JPanel pCenter;
+    private javax.swing.JPanel pEast;
+    private javax.swing.JPanel pNorth;
+    private javax.swing.JPanel pSouth;
+    private javax.swing.JPanel pThongTin;
+    private javax.swing.JPanel pWest;
+    private Swing.RoundPanel roundPanel;
+    private javax.swing.JLabel tilte;
+    private javax.swing.JTextField txtGiaBan;
+    private javax.swing.JTextField txtGiaNhap;
+    private javax.swing.JTextField txtMaSP;
+    private javax.swing.JTextField txtSoLuong;
+    private javax.swing.JTextField txtTenSP;
     // End of variables declaration//GEN-END:variables
 }

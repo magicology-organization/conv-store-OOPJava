@@ -30,9 +30,9 @@ public class formThongTinHD extends javax.swing.JDialog {
     private void initComponents() {
 
         pNorth = new javax.swing.JPanel();
+        pTilte = new javax.swing.JPanel();
         titleNorth = new javax.swing.JLabel();
-        pCenter = new javax.swing.JPanel();
-        thongtinHD = new javax.swing.JPanel();
+        pThongTinHD = new javax.swing.JPanel();
         pMaHD = new javax.swing.JPanel();
         jMaHD = new javax.swing.JLabel();
         txtMaHD = new javax.swing.JTextField();
@@ -42,41 +42,66 @@ public class formThongTinHD extends javax.swing.JDialog {
         pTenNV = new javax.swing.JPanel();
         lblTenNV = new javax.swing.JLabel();
         txtTenNV = new javax.swing.JTextField();
-        jAnh = new javax.swing.JPanel();
+        pCenter = new javax.swing.JPanel();
+        pAnh = new javax.swing.JPanel();
         anhSP = new javax.swing.JPanel();
         lblAnhSP = new javax.swing.JLabel();
         tableSP = new javax.swing.JPanel();
         spTableSP = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
-        jTongHD = new javax.swing.JPanel();
-        jTongHoaDon = new javax.swing.JPanel();
+        pTongHD = new javax.swing.JPanel();
+        pTongHoaDon = new javax.swing.JPanel();
         lblTongHD = new javax.swing.JLabel();
         txtTong = new javax.swing.JTextField();
-        titleCenter = new javax.swing.JPanel();
+        pTitleCenter = new javax.swing.JPanel();
         lblThuoc = new javax.swing.JLabel();
         pSouth = new javax.swing.JPanel();
         btnHuy = new javax.swing.JButton();
         btnPrint = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(1200, 600));
 
         pNorth.setBackground(new java.awt.Color(204, 255, 204));
-        pNorth.setMinimumSize(new java.awt.Dimension(100, 60));
-        pNorth.setPreferredSize(new java.awt.Dimension(500, 50));
+        pNorth.setMinimumSize(new java.awt.Dimension(1200, 120));
+        pNorth.setPreferredSize(new java.awt.Dimension(1200, 120));
         pNorth.setLayout(new java.awt.BorderLayout());
+
+        pTilte.setMinimumSize(new java.awt.Dimension(1200, 50));
+        pTilte.setPreferredSize(new java.awt.Dimension(1200, 50));
 
         titleNorth.setFont(new java.awt.Font("Roboto Medium", 0, 18)); // NOI18N
         titleNorth.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         titleNorth.setText("CHI TIẾT HÓA ĐƠN");
         titleNorth.setPreferredSize(new java.awt.Dimension(149, 40));
-        pNorth.add(titleNorth, java.awt.BorderLayout.CENTER);
 
-        pCenter.setBackground(new java.awt.Color(255, 255, 255));
-        pCenter.setLayout(new java.awt.BorderLayout());
+        javax.swing.GroupLayout pTilteLayout = new javax.swing.GroupLayout(pTilte);
+        pTilte.setLayout(pTilteLayout);
+        pTilteLayout.setHorizontalGroup(
+            pTilteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(pTilteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pTilteLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(titleNorth, javax.swing.GroupLayout.PREFERRED_SIZE, 1200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+        pTilteLayout.setVerticalGroup(
+            pTilteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 50, Short.MAX_VALUE)
+            .addGroup(pTilteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pTilteLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(titleNorth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
 
-        thongtinHD.setBackground(new java.awt.Color(255, 255, 255));
-        thongtinHD.setPreferredSize(new java.awt.Dimension(1400, 80));
-        thongtinHD.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 16));
+        pNorth.add(pTilte, java.awt.BorderLayout.PAGE_START);
+
+        pThongTinHD.setBackground(new java.awt.Color(255, 255, 255));
+        pThongTinHD.setMinimumSize(new java.awt.Dimension(1200, 70));
+        pThongTinHD.setPreferredSize(new java.awt.Dimension(1200, 70));
+        pThongTinHD.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 16));
 
         pMaHD.setBackground(new java.awt.Color(255, 255, 255));
         pMaHD.setPreferredSize(new java.awt.Dimension(340, 40));
@@ -94,7 +119,7 @@ public class formThongTinHD extends javax.swing.JDialog {
         txtMaHD.setPreferredSize(new java.awt.Dimension(200, 40));
         pMaHD.add(txtMaHD);
 
-        thongtinHD.add(pMaHD);
+        pThongTinHD.add(pMaHD);
 
         pTenKH.setBackground(new java.awt.Color(255, 255, 255));
         pTenKH.setPreferredSize(new java.awt.Dimension(440, 40));
@@ -112,7 +137,7 @@ public class formThongTinHD extends javax.swing.JDialog {
         txtTenKH.setPreferredSize(new java.awt.Dimension(300, 40));
         pTenKH.add(txtTenKH);
 
-        thongtinHD.add(pTenKH);
+        pThongTinHD.add(pTenKH);
 
         pTenNV.setBackground(new java.awt.Color(255, 255, 255));
         pTenNV.setPreferredSize(new java.awt.Dimension(340, 40));
@@ -130,12 +155,18 @@ public class formThongTinHD extends javax.swing.JDialog {
         txtTenNV.setPreferredSize(new java.awt.Dimension(200, 40));
         pTenNV.add(txtTenNV);
 
-        thongtinHD.add(pTenNV);
+        pThongTinHD.add(pTenNV);
 
-        pCenter.add(thongtinHD, java.awt.BorderLayout.PAGE_START);
+        pNorth.add(pThongTinHD, java.awt.BorderLayout.PAGE_END);
 
-        jAnh.setBackground(new java.awt.Color(255, 255, 255));
-        jAnh.setPreferredSize(new java.awt.Dimension(400, 100));
+        getContentPane().add(pNorth, java.awt.BorderLayout.NORTH);
+
+        pCenter.setBackground(new java.awt.Color(255, 255, 255));
+        pCenter.setPreferredSize(new java.awt.Dimension(1200, 500));
+        pCenter.setLayout(new java.awt.BorderLayout());
+
+        pAnh.setBackground(new java.awt.Color(255, 255, 255));
+        pAnh.setPreferredSize(new java.awt.Dimension(400, 100));
 
         anhSP.setBackground(new java.awt.Color(255, 255, 255));
         anhSP.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(237, 237, 237), 2, true));
@@ -149,24 +180,24 @@ public class formThongTinHD extends javax.swing.JDialog {
         lblAnhSP.setPreferredSize(new java.awt.Dimension(200, 100));
         anhSP.add(lblAnhSP, java.awt.BorderLayout.CENTER);
 
-        javax.swing.GroupLayout jAnhLayout = new javax.swing.GroupLayout(jAnh);
-        jAnh.setLayout(jAnhLayout);
-        jAnhLayout.setHorizontalGroup(
-            jAnhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jAnhLayout.createSequentialGroup()
-                .addContainerGap(26, Short.MAX_VALUE)
+        javax.swing.GroupLayout pAnhLayout = new javax.swing.GroupLayout(pAnh);
+        pAnh.setLayout(pAnhLayout);
+        pAnhLayout.setHorizontalGroup(
+            pAnhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pAnhLayout.createSequentialGroup()
+                .addContainerGap(32, Short.MAX_VALUE)
                 .addComponent(anhSP, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24))
+                .addGap(18, 18, 18))
         );
-        jAnhLayout.setVerticalGroup(
-            jAnhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jAnhLayout.createSequentialGroup()
+        pAnhLayout.setVerticalGroup(
+            pAnhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pAnhLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(anhSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(136, 136, 136))
         );
 
-        pCenter.add(jAnh, java.awt.BorderLayout.WEST);
+        pCenter.add(pAnh, java.awt.BorderLayout.WEST);
 
         tableSP.setLayout(new java.awt.BorderLayout());
 
@@ -208,18 +239,18 @@ public class formThongTinHD extends javax.swing.JDialog {
 
         tableSP.add(spTableSP, java.awt.BorderLayout.CENTER);
 
-        jTongHD.setBackground(new java.awt.Color(255, 255, 255));
-        jTongHD.setPreferredSize(new java.awt.Dimension(800, 60));
-        jTongHD.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+        pTongHD.setBackground(new java.awt.Color(255, 255, 255));
+        pTongHD.setPreferredSize(new java.awt.Dimension(800, 60));
+        pTongHD.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
-        jTongHoaDon.setBackground(new java.awt.Color(255, 255, 255));
-        jTongHoaDon.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 0));
+        pTongHoaDon.setBackground(new java.awt.Color(255, 255, 255));
+        pTongHoaDon.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 0));
 
         lblTongHD.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         lblTongHD.setForeground(new java.awt.Color(255, 51, 0));
         lblTongHD.setText("Tổng hóa đơn:");
         lblTongHD.setPreferredSize(new java.awt.Dimension(120, 40));
-        jTongHoaDon.add(lblTongHD);
+        pTongHoaDon.add(lblTongHD);
 
         txtTong.setEditable(false);
         txtTong.setFont(new java.awt.Font("Roboto Mono Medium", 0, 14)); // NOI18N
@@ -227,27 +258,30 @@ public class formThongTinHD extends javax.swing.JDialog {
         txtTong.setText("1000000");
         txtTong.setFocusable(false);
         txtTong.setPreferredSize(new java.awt.Dimension(200, 40));
-        jTongHoaDon.add(txtTong);
+        pTongHoaDon.add(txtTong);
 
-        jTongHD.add(jTongHoaDon);
+        pTongHD.add(pTongHoaDon);
 
-        tableSP.add(jTongHD, java.awt.BorderLayout.PAGE_END);
+        tableSP.add(pTongHD, java.awt.BorderLayout.PAGE_END);
 
-        titleCenter.setBackground(new java.awt.Color(204, 255, 204));
-        titleCenter.setMinimumSize(new java.awt.Dimension(100, 60));
-        titleCenter.setPreferredSize(new java.awt.Dimension(500, 30));
-        titleCenter.setLayout(new java.awt.BorderLayout());
+        pTitleCenter.setBackground(new java.awt.Color(204, 255, 204));
+        pTitleCenter.setMinimumSize(new java.awt.Dimension(100, 60));
+        pTitleCenter.setPreferredSize(new java.awt.Dimension(500, 30));
+        pTitleCenter.setLayout(new java.awt.BorderLayout());
 
         lblThuoc.setFont(new java.awt.Font("Roboto Medium", 0, 14)); // NOI18N
         lblThuoc.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblThuoc.setText("Thông tin sản phẩm");
-        titleCenter.add(lblThuoc, java.awt.BorderLayout.CENTER);
+        pTitleCenter.add(lblThuoc, java.awt.BorderLayout.CENTER);
 
-        tableSP.add(titleCenter, java.awt.BorderLayout.NORTH);
+        tableSP.add(pTitleCenter, java.awt.BorderLayout.NORTH);
 
         pCenter.add(tableSP, java.awt.BorderLayout.CENTER);
 
+        getContentPane().add(pCenter, java.awt.BorderLayout.CENTER);
+
         pSouth.setBackground(new java.awt.Color(255, 255, 255));
+        pSouth.setPreferredSize(new java.awt.Dimension(1200, 50));
         pSouth.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 8, 5));
 
         btnHuy.setBackground(new java.awt.Color(255, 102, 102));
@@ -266,7 +300,7 @@ public class formThongTinHD extends javax.swing.JDialog {
         });
         pSouth.add(btnHuy);
 
-        btnPrint.setBackground(new java.awt.Color(0, 120, 92));
+        btnPrint.setBackground(new java.awt.Color(15, 204, 102));
         btnPrint.setFont(new java.awt.Font("Roboto Mono Medium", 0, 16)); // NOI18N
         btnPrint.setForeground(new java.awt.Color(255, 255, 255));
         btnPrint.setText("In hóa đơn");
@@ -282,33 +316,7 @@ public class formThongTinHD extends javax.swing.JDialog {
         });
         pSouth.add(btnPrint);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1257, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(pNorth, javax.swing.GroupLayout.PREFERRED_SIZE, 1257, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(pCenter, javax.swing.GroupLayout.PREFERRED_SIZE, 1257, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(pSouth, javax.swing.GroupLayout.PREFERRED_SIZE, 1257, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 597, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(pNorth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, 0)
-                    .addComponent(pCenter, javax.swing.GroupLayout.PREFERRED_SIZE, 497, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, 0)
-                    .addComponent(pSouth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
+        getContentPane().add(pSouth, java.awt.BorderLayout.SOUTH);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -371,26 +379,27 @@ public class formThongTinHD extends javax.swing.JDialog {
     private javax.swing.JPanel anhSP;
     private javax.swing.JButton btnHuy;
     private javax.swing.JButton btnPrint;
-    private javax.swing.JPanel jAnh;
     private javax.swing.JLabel jMaHD;
     private javax.swing.JLabel jTenKH;
-    private javax.swing.JPanel jTongHD;
-    private javax.swing.JPanel jTongHoaDon;
     private javax.swing.JLabel lblAnhSP;
     private javax.swing.JLabel lblTenNV;
     private javax.swing.JLabel lblThuoc;
     private javax.swing.JLabel lblTongHD;
+    private javax.swing.JPanel pAnh;
     private javax.swing.JPanel pCenter;
     private javax.swing.JPanel pMaHD;
     private javax.swing.JPanel pNorth;
     private javax.swing.JPanel pSouth;
     private javax.swing.JPanel pTenKH;
     private javax.swing.JPanel pTenNV;
+    private javax.swing.JPanel pThongTinHD;
+    private javax.swing.JPanel pTilte;
+    private javax.swing.JPanel pTitleCenter;
+    private javax.swing.JPanel pTongHD;
+    private javax.swing.JPanel pTongHoaDon;
     private javax.swing.JScrollPane spTableSP;
     private javax.swing.JTable table;
     private javax.swing.JPanel tableSP;
-    private javax.swing.JPanel thongtinHD;
-    private javax.swing.JPanel titleCenter;
     private javax.swing.JLabel titleNorth;
     private javax.swing.JTextField txtMaHD;
     private javax.swing.JTextField txtTenKH;

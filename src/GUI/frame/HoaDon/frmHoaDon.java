@@ -4,17 +4,56 @@
  */
 package GUI.frame.HoaDon;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import javax.swing.JLabel;
+import javax.swing.JScrollBar;
+import javax.swing.table.DefaultTableCellRenderer;
+
 /**
  *
  * @author ADMIN
  */
 public class frmHoaDon extends javax.swing.JPanel {
-
+    private int startIndex = 0;
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    private final DecimalFormat currencyFormat = new DecimalFormat("#,### VND");
     /**
      * Creates new form frmHoaDon
      */
     public frmHoaDon() {
         initComponents();
+        configureTable();
+        // Thêm sự kiện cuộn bảng
+        scrollTableCenter.getVerticalScrollBar().addAdjustmentListener(e -> {
+            JScrollBar vertical = scrollTableCenter.getVerticalScrollBar();
+            int max = vertical.getMaximum();
+            int current = vertical.getValue();
+            int visible = vertical.getVisibleAmount();
+
+            // Kiểm tra nếu người dùng đã cuộn đến cuối bảng
+            if (current + visible >= max) {
+                startIndex += 10; // Tăng chỉ mục bắt đầu để tải dữ liệu tiếp theo
+//                loadDataToTable(); // Tải thêm dữ liệu
+            }
+        });
+    }
+    private void configureTable() {
+        // Ngăn không cho phép người dùng chỉnh sửa bảng
+        table.setDefaultEditor(Object.class, null); // Điều này vô hiệu hóa khả năng chỉnh sửa của bất kỳ ô nào trong
+                                                      // bảng.
+
+        // Căn giữa cho tất cả các cell trong bảng
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        // Căn giữa cho từng cột
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+
+        // Ngăn không cho phép chọn nhiều dòng
+        table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
     }
 
     /**
@@ -37,6 +76,7 @@ public class frmHoaDon extends javax.swing.JPanel {
 
         setMinimumSize(new java.awt.Dimension(1200, 600));
         setPreferredSize(new java.awt.Dimension(1200, 600));
+        setLayout(new java.awt.BorderLayout());
 
         Panel.setMinimumSize(new java.awt.Dimension(1200, 600));
         Panel.setName(""); // NOI18N
@@ -52,7 +92,7 @@ public class frmHoaDon extends javax.swing.JPanel {
         titleName.setBackground(new java.awt.Color(0, 0, 0));
         titleName.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         titleName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titleName.setText("Thông tin hóa đơn");
+        titleName.setText("Danh sách hóa đơn");
         titleName.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         titleName.setMinimumSize(new java.awt.Dimension(1200, 32));
         titleName.setPreferredSize(new java.awt.Dimension(1200, 32));
@@ -60,6 +100,7 @@ public class frmHoaDon extends javax.swing.JPanel {
 
         Panel.add(pNorth, java.awt.BorderLayout.PAGE_START);
 
+        pCenter.setMinimumSize(new java.awt.Dimension(0, 0));
         pCenter.setLayout(new java.awt.BorderLayout());
 
         scrollTableCenter.setMinimumSize(new java.awt.Dimension(1200, 500));
@@ -73,8 +114,6 @@ public class frmHoaDon extends javax.swing.JPanel {
                 "Mã hóa đơn", "Tên khách hàng", "SĐT khách", "Tên nhân viên", "Ngày mua", "Tổng hóa đơn"
             }
         ));
-        table.setMinimumSize(new java.awt.Dimension(1200, 500));
-        table.setPreferredSize(new java.awt.Dimension(1200, 500));
         table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         table.setShowHorizontalLines(true);
         scrollTableCenter.setViewportView(table);
@@ -87,7 +126,7 @@ public class frmHoaDon extends javax.swing.JPanel {
         pSouth.setMinimumSize(new java.awt.Dimension(1200, 50));
         pSouth.setPreferredSize(new java.awt.Dimension(1200, 50));
 
-        btnThem.setBackground(new java.awt.Color(0, 120, 92));
+        btnThem.setBackground(new java.awt.Color(15, 204, 102));
         btnThem.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnThem.setForeground(new java.awt.Color(255, 255, 255));
         btnThem.setText("Thêm");
@@ -104,26 +143,7 @@ public class frmHoaDon extends javax.swing.JPanel {
 
         Panel.add(pSouth, java.awt.BorderLayout.PAGE_END);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1200, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
+        add(Panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed

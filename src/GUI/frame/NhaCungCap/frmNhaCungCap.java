@@ -1,6 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package GUI.frame.NhaCungCap;
 
@@ -8,7 +8,7 @@ package GUI.frame.NhaCungCap;
  *
  * @author ADMIN
  */
-public class frmNhaCungCap extends javax.swing.JFrame {
+public class frmNhaCungCap extends javax.swing.JPanel {
 
     /**
      * Creates new form frmNhaCungCap
@@ -26,57 +26,139 @@ public class frmNhaCungCap extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        Panel = new javax.swing.JPanel();
+        pNorth = new javax.swing.JPanel();
+        titleName = new javax.swing.JLabel();
+        pCenter = new javax.swing.JPanel();
+        scrollTableCenter = new javax.swing.JScrollPane();
+        table = new javax.swing.JTable();
+        pSouth = new javax.swing.JPanel();
+        btnThem = new javax.swing.JButton();
+        btnXoa = new javax.swing.JButton();
+        btnSua = new javax.swing.JButton();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        setLayout(new java.awt.BorderLayout());
 
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
+        Panel.setMinimumSize(new java.awt.Dimension(1200, 600));
+        Panel.setName(""); // NOI18N
+        Panel.setLayout(new java.awt.BorderLayout());
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+        pNorth.setBackground(new java.awt.Color(204, 255, 204));
+        pNorth.setMinimumSize(new java.awt.Dimension(1200, 50));
+        pNorth.setName(""); // NOI18N
+        pNorth.setPreferredSize(new java.awt.Dimension(1200, 50));
+        pNorth.setLayout(new java.awt.BorderLayout());
+
+        titleName.setBackground(new java.awt.Color(0, 0, 0));
+        titleName.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        titleName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        titleName.setText("Danh sách nhà cung cấp");
+        titleName.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        titleName.setMinimumSize(new java.awt.Dimension(1200, 32));
+        titleName.setPreferredSize(new java.awt.Dimension(1200, 32));
+        pNorth.add(titleName, java.awt.BorderLayout.CENTER);
+
+        Panel.add(pNorth, java.awt.BorderLayout.PAGE_START);
+
+        pCenter.setMinimumSize(new java.awt.Dimension(0, 0));
+        pCenter.setLayout(new java.awt.BorderLayout());
+
+        scrollTableCenter.setMinimumSize(new java.awt.Dimension(1200, 500));
+        scrollTableCenter.setPreferredSize(new java.awt.Dimension(1200, 500));
+
+        table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Mã hóa đơn", "Tên khách hàng", "SĐT khách", "Tên nhân viên", "Ngày mua", "Tổng hóa đơn"
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(frmNhaCungCap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(frmNhaCungCap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(frmNhaCungCap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(frmNhaCungCap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+        ));
+        table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        table.setShowHorizontalLines(true);
+        scrollTableCenter.setViewportView(table);
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new frmNhaCungCap().setVisible(true);
+        pCenter.add(scrollTableCenter, java.awt.BorderLayout.CENTER);
+
+        Panel.add(pCenter, java.awt.BorderLayout.CENTER);
+
+        pSouth.setBackground(new java.awt.Color(222, 222, 222));
+        pSouth.setMinimumSize(new java.awt.Dimension(1200, 50));
+        pSouth.setPreferredSize(new java.awt.Dimension(1200, 50));
+
+        btnThem.setBackground(new java.awt.Color(15, 204, 102));
+        btnThem.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnThem.setForeground(new java.awt.Color(255, 255, 255));
+        btnThem.setText("Thêm");
+        btnThem.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnThem.setMaximumSize(new java.awt.Dimension(85, 35));
+        btnThem.setMinimumSize(new java.awt.Dimension(85, 35));
+        btnThem.setPreferredSize(new java.awt.Dimension(105, 35));
+        btnThem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemActionPerformed(evt);
             }
         });
-    }
+        pSouth.add(btnThem);
+
+        btnXoa.setBackground(new java.awt.Color(255, 102, 102));
+        btnXoa.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnXoa.setForeground(new java.awt.Color(255, 255, 255));
+        btnXoa.setText("Xóa");
+        btnXoa.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnXoa.setMaximumSize(new java.awt.Dimension(85, 35));
+        btnXoa.setMinimumSize(new java.awt.Dimension(85, 35));
+        btnXoa.setPreferredSize(new java.awt.Dimension(105, 35));
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
+        pSouth.add(btnXoa);
+
+        btnSua.setBackground(new java.awt.Color(153, 153, 153));
+        btnSua.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnSua.setForeground(new java.awt.Color(255, 255, 255));
+        btnSua.setText("Sửa");
+        btnSua.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnSua.setMaximumSize(new java.awt.Dimension(85, 35));
+        btnSua.setMinimumSize(new java.awt.Dimension(85, 35));
+        btnSua.setPreferredSize(new java.awt.Dimension(105, 35));
+        btnSua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSuaActionPerformed(evt);
+            }
+        });
+        pSouth.add(btnSua);
+
+        Panel.add(pSouth, java.awt.BorderLayout.PAGE_END);
+
+        add(Panel, java.awt.BorderLayout.CENTER);
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnThemActionPerformed
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnXoaActionPerformed
+
+    private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSuaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel Panel;
+    private javax.swing.JButton btnSua;
+    private javax.swing.JButton btnThem;
+    private javax.swing.JButton btnXoa;
+    private javax.swing.JPanel pCenter;
+    private javax.swing.JPanel pNorth;
+    private javax.swing.JPanel pSouth;
+    private javax.swing.JScrollPane scrollTableCenter;
+    private javax.swing.JTable table;
+    private javax.swing.JLabel titleName;
     // End of variables declaration//GEN-END:variables
 }

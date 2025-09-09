@@ -4,16 +4,52 @@
  */
 package GUI;
 
+import GUI.frame.HoaDon.frmHoaDon;
+import GUI.frame.HoaDon.frmSearchHoaDon;
+import GUI.frame.KhachHang.frmKhachHang;
+import GUI.frame.KhachHang.frmSearchKhachHang;
+import GUI.frame.NhaCungCap.frmNhaCungCap;
+import GUI.frame.NhaCungCap.frmSearchNhaCungCap;
+import GUI.frame.NhanVien.frmNhanVien;
+import GUI.frame.NhanVien.frmSearchNhanVien;
+import GUI.frame.PhieuNhap.frmPhieuNhap;
+import GUI.frame.PhieuNhap.frmSearchPhieuNhap;
+import GUI.frame.PhieuTra.frmPhieuTra;
+import GUI.frame.PhieuTra.frmSearchPhieuTra;
+import GUI.frame.SanPham.frmSanPham;
+import GUI.frame.SanPham.frmSearchSanPham;
+import GUI.frame.TaiKhoan.frmSearchTaiKhoan;
+import GUI.frame.TaiKhoan.frmTaiKhoan;
+import Swing.RoundedMenuItem;
+import Swing.RoundedPopupMenu;
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.FlatLightLaf;
+import javax.swing.UIManager;
 import Utils.SmoothImageLabel;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.util.Arrays;
+import java.util.List;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JSeparator;
 
 /**
  *
  * @author ADMIN
  */
 public class Main extends javax.swing.JFrame {
-
+    private RoundedPopupMenu popupMenuSP;
+    private RoundedPopupMenu popupMenuNCC;
+    private RoundedPopupMenu popupMenuKH;
+    private RoundedPopupMenu popupMenuNV;
+    private RoundedPopupMenu popupMenuTK;
+    private RoundedPopupMenu popupMenuHD;
+    private RoundedPopupMenu popupMenuPT;
+    private RoundedPopupMenu popupMenuPN;
     /**
      * Creates new form Main
      */
@@ -21,7 +57,356 @@ public Main() {
     initComponents();
     setTitle("Phần mềm quản lý cửa hàng tiện lợi");
     setExtendedState(JFrame.MAXIMIZED_BOTH);
+    addActionListeners(Arrays.asList(btnThongKe, btnHoaDon, btnKhachHang, btnNhaCungCap, btnNhanVien, btnPhieuNhap,
+                btnTaiKhoan, btnSanPham, btnDangXuat, btnPhieuTra));
+    //---------------MENU---------------------//
+        // Menu Phiếu Nhập
+        popupMenuPN = new RoundedPopupMenu();
+        RoundedMenuItem itemPN1 = new RoundedMenuItem("Cập nhật");
+        popupMenuPN.add(itemPN1);
+        popupMenuPN.add(new JSeparator());
+
+        RoundedMenuItem itemPN2 = new RoundedMenuItem("Tìm kiếm");
+        popupMenuPN.add(itemPN2);
+        popupMenuPN.add(new JSeparator());
+
+        btnPhieuNhap.addActionListener(e -> popupMenuPN.show(btnPhieuNhap, btnPhieuNhap.getWidth(), 2));
+        setFontForMenuItems(new RoundedMenuItem[]{itemPN1, itemPN2});
+        
+        // Menu Nhà Cung Cấp
+        popupMenuNCC = new RoundedPopupMenu();
+        RoundedMenuItem itemNCC1 = new RoundedMenuItem("Cập nhật");
+        popupMenuNCC.add(itemNCC1);
+        popupMenuNCC.add(new JSeparator());
+
+        RoundedMenuItem itemNCC2 = new RoundedMenuItem("Tìm kiếm");
+        popupMenuNCC.add(itemNCC2);
+        popupMenuNCC.add(new JSeparator());
+
+        btnNhaCungCap.addActionListener(e -> popupMenuNCC.show(btnNhaCungCap, btnNhaCungCap.getWidth(), 2));
+        setFontForMenuItems(new RoundedMenuItem[]{itemNCC1, itemNCC2});
+
+        // Menu Hóa đơn
+        popupMenuHD = new RoundedPopupMenu();
+        RoundedMenuItem itemHD1 = new RoundedMenuItem("Cập nhật");
+        popupMenuHD.add(itemHD1);
+        popupMenuHD.add(new JSeparator());
+
+        RoundedMenuItem itemHD2 = new RoundedMenuItem("Tìm kiếm");
+        popupMenuHD.add(itemHD2);
+        popupMenuHD.add(new JSeparator());
+
+        btnHoaDon.addActionListener(e -> popupMenuHD.show(btnHoaDon, btnHoaDon.getWidth(), 2));
+        setFontForMenuItems(new RoundedMenuItem[]{itemHD1, itemHD2});
+        
+        // Menu Phiếu trả
+        popupMenuPT = new RoundedPopupMenu();
+        RoundedMenuItem itemPT1 = new RoundedMenuItem("Cập nhật");
+        popupMenuPT.add(itemPT1);
+        popupMenuPT.add(new JSeparator());
+
+        RoundedMenuItem itemPT2 = new RoundedMenuItem("Tìm kiếm");
+        popupMenuPT.add(itemPT2);
+        popupMenuPT.add(new JSeparator());
+
+        btnPhieuTra.addActionListener(e -> popupMenuPT.show(btnPhieuTra, btnPhieuTra.getWidth(), 2));
+        setFontForMenuItems(new RoundedMenuItem[]{itemPT1, itemPT2});        
+
+        // Menu nhân viên
+        popupMenuNV = new RoundedPopupMenu();
+        RoundedMenuItem itemNV1 = new RoundedMenuItem("Cập nhật");
+        popupMenuNV.add(itemNV1);
+        popupMenuNV.add(new JSeparator());
+
+        RoundedMenuItem itemNV2 = new RoundedMenuItem("Tìm kiếm");
+        popupMenuNV.add(itemNV2);
+        popupMenuNV.add(new JSeparator());
+
+        btnNhanVien.addActionListener(e -> popupMenuNV.show(btnNhanVien, btnNhanVien.getWidth(), 2));
+        setFontForMenuItems(new RoundedMenuItem[]{itemNV1, itemNV2});     
+
+        // Menu khách hàng
+        popupMenuKH = new RoundedPopupMenu();
+        RoundedMenuItem itemKH1 = new RoundedMenuItem("Cập nhật");
+        popupMenuKH.add(itemKH1);
+        popupMenuKH.add(new JSeparator());
+
+        RoundedMenuItem itemKH2 = new RoundedMenuItem("Tìm kiếm");
+        popupMenuKH.add(itemKH2);
+        popupMenuKH.add(new JSeparator());
+
+        btnKhachHang.addActionListener(e -> popupMenuKH.show(btnKhachHang, btnKhachHang.getWidth(), 2));
+        setFontForMenuItems(new RoundedMenuItem[]{itemKH1, itemKH2});    
+        
+        // Menu tài khoản
+        popupMenuTK = new RoundedPopupMenu();
+        RoundedMenuItem itemTK1 = new RoundedMenuItem("Cập nhật");
+        popupMenuTK.add(itemTK1);
+        popupMenuTK.add(new JSeparator());
+
+        RoundedMenuItem itemTK2 = new RoundedMenuItem("Tìm kiếm");
+        popupMenuTK.add(itemTK2);
+        popupMenuTK.add(new JSeparator());
+
+        btnTaiKhoan.addActionListener(e -> popupMenuTK.show(btnTaiKhoan, btnTaiKhoan.getWidth(), 2));
+        setFontForMenuItems(new RoundedMenuItem[]{itemTK1, itemTK2});    
+
+        // Menu SẢN PHẨM
+        popupMenuSP = new RoundedPopupMenu();
+        RoundedMenuItem itemSP1 = new RoundedMenuItem("Cập nhật");
+        popupMenuSP.add(itemSP1);
+        popupMenuSP.add(new JSeparator());
+
+        RoundedMenuItem itemSP2 = new RoundedMenuItem("Tìm kiếm");
+        popupMenuSP.add(itemSP2);
+        popupMenuSP.add(new JSeparator());
+
+        btnSanPham.addActionListener(e -> popupMenuSP.show(btnSanPham, btnSanPham.getWidth(), 2));
+        setFontForMenuItems(new RoundedMenuItem[]{itemSP1, itemSP2});            
+        
+      //-------------SỰ KIỆN------------//
+        // Sự kiện nhà cung cấp
+        itemNCC1.addActionListener(e -> {
+            frmNhaCungCap ncc1 = new frmNhaCungCap();
+            // Xóa tất cả các phần cũ
+            pCenter.removeAll();
+            // Đặt layout cho pCenter
+            pCenter.setLayout(new java.awt.BorderLayout());
+
+            // Thêm layout cho pCenter
+            pCenter.add(ncc1, java.awt.BorderLayout.CENTER);
+
+            // Cập nhật lại giao diện
+            pCenter.revalidate();
+            pCenter.repaint();
+        });
+        itemNCC2.addActionListener(e -> {
+            frmSearchNhaCungCap ncc2 = new frmSearchNhaCungCap();
+            // Xóa tất cả các phần cũ
+            pCenter.removeAll();
+            // Đặt layout cho pCenter
+            pCenter.setLayout(new java.awt.BorderLayout());
+
+            // Thêm layout cho pCenter
+            pCenter.add(ncc2, java.awt.BorderLayout.CENTER);
+
+            // Cập nhật lại giao diện
+            pCenter.revalidate();
+            pCenter.repaint();
+        });
+        
+        // Sự kiện Hóa đơn
+        itemHD1.addActionListener(e -> {
+            frmHoaDon hd1 = new frmHoaDon();
+            // Xóa tất cả các phần cũ
+            pCenter.removeAll();
+            // Đặt layout cho pCenter
+            pCenter.setLayout(new java.awt.BorderLayout());
+
+            // Thêm layout cho pCenter
+            pCenter.add(hd1, java.awt.BorderLayout.CENTER);
+
+            // Cập nhật lại giao diện
+            pCenter.revalidate();
+            pCenter.repaint();
+        });
+        itemHD2.addActionListener(e -> {
+            frmSearchHoaDon hd2 = new frmSearchHoaDon();
+            // Xóa tất cả các phần cũ
+            pCenter.removeAll();
+            // Đặt layout cho pCenter
+            pCenter.setLayout(new java.awt.BorderLayout());
+
+            // Thêm layout cho pCenter
+            pCenter.add(hd2, java.awt.BorderLayout.CENTER);
+
+            // Cập nhật lại giao diện
+            pCenter.revalidate();
+            pCenter.repaint();
+        });
+        
+        // Sự kiện phiếu nhập
+        itemPN1.addActionListener(e -> {
+            frmPhieuNhap pn1 = new frmPhieuNhap();
+            // Xóa tất cả các phần cũ
+            pCenter.removeAll();
+            // Đặt layout cho pCenter
+            pCenter.setLayout(new java.awt.BorderLayout());
+
+            // Thêm layout cho pCenter
+            pCenter.add(pn1, java.awt.BorderLayout.CENTER);
+
+            // Cập nhật lại giao diện
+            pCenter.revalidate();
+            pCenter.repaint();
+        });
+        itemPN2.addActionListener(e -> {
+            frmSearchPhieuNhap pn2 = new frmSearchPhieuNhap();
+            // Xóa tất cả các phần cũ
+            pCenter.removeAll();
+            // Đặt layout cho pCenter
+            pCenter.setLayout(new java.awt.BorderLayout());
+
+            // Thêm layout cho pCenter
+            pCenter.add(pn2, java.awt.BorderLayout.CENTER);
+
+            // Cập nhật lại giao diện
+            pCenter.revalidate();
+            pCenter.repaint();
+        });
+        
+        // Sự kiện phiếu TRẢ
+        itemPT1.addActionListener(e -> {
+            frmPhieuTra pt1 = new frmPhieuTra();
+            // Xóa tất cả các phần cũ
+            pCenter.removeAll();
+            // Đặt layout cho pCenter
+            pCenter.setLayout(new java.awt.BorderLayout());
+
+            // Thêm layout cho pCenter
+            pCenter.add(pt1, java.awt.BorderLayout.CENTER);
+
+            // Cập nhật lại giao diện
+            pCenter.revalidate();
+            pCenter.repaint();
+        });
+        itemPT2.addActionListener(e -> {
+            frmSearchPhieuTra pt2 = new frmSearchPhieuTra();
+            // Xóa tất cả các phần cũ
+            pCenter.removeAll();
+            // Đặt layout cho pCenter
+            pCenter.setLayout(new java.awt.BorderLayout());
+
+            // Thêm layout cho pCenter
+            pCenter.add(pt2, java.awt.BorderLayout.CENTER);
+
+            // Cập nhật lại giao diện
+            pCenter.revalidate();
+            pCenter.repaint();
+        });
+
+        // Sự kiện Khách hàng
+        itemKH1.addActionListener(e -> {
+            frmKhachHang kh1 = new frmKhachHang();
+            // Xóa tất cả các phần cũ
+            pCenter.removeAll();
+            // Đặt layout cho pCenter
+            pCenter.setLayout(new java.awt.BorderLayout());
+
+            // Thêm layout cho pCenter
+            pCenter.add(kh1, java.awt.BorderLayout.CENTER);
+
+            // Cập nhật lại giao diện
+            pCenter.revalidate();
+            pCenter.repaint();
+        });
+        itemKH2.addActionListener(e -> {
+            frmSearchKhachHang kh2 = new frmSearchKhachHang();
+            // Xóa tất cả các phần cũ
+            pCenter.removeAll();
+            // Đặt layout cho pCenter
+            pCenter.setLayout(new java.awt.BorderLayout());
+
+            // Thêm layout cho pCenter
+            pCenter.add(kh2, java.awt.BorderLayout.CENTER);
+
+            // Cập nhật lại giao diện
+            pCenter.revalidate();
+            pCenter.repaint();
+        });    
+
+        // Sự kiện Nhân viên
+        itemNV1.addActionListener(e -> {
+            frmNhanVien nv1 = new frmNhanVien();
+            // Xóa tất cả các phần cũ
+            pCenter.removeAll();
+            // Đặt layout cho pCenter
+            pCenter.setLayout(new java.awt.BorderLayout());
+
+            // Thêm layout cho pCenter
+            pCenter.add(nv1, java.awt.BorderLayout.CENTER);
+
+            // Cập nhật lại giao diện
+            pCenter.revalidate();
+            pCenter.repaint();
+        });
+        itemNV2.addActionListener(e -> {
+            frmSearchNhanVien nv2 = new frmSearchNhanVien();
+            // Xóa tất cả các phần cũ
+            pCenter.removeAll();
+            // Đặt layout cho pCenter
+            pCenter.setLayout(new java.awt.BorderLayout());
+
+            // Thêm layout cho pCenter
+            pCenter.add(nv2, java.awt.BorderLayout.CENTER);
+
+            // Cập nhật lại giao diện
+            pCenter.revalidate();
+            pCenter.repaint();
+        });   
+
+        // Sự kiện Tài khoản
+        itemTK1.addActionListener(e -> {
+            frmTaiKhoan tk1 = new frmTaiKhoan();
+            // Xóa tất cả các phần cũ
+            pCenter.removeAll();
+            // Đặt layout cho pCenter
+            pCenter.setLayout(new java.awt.BorderLayout());
+
+            // Thêm layout cho pCenter
+            pCenter.add(tk1, java.awt.BorderLayout.CENTER);
+
+            // Cập nhật lại giao diện
+            pCenter.revalidate();
+            pCenter.repaint();
+        });
+        itemTK2.addActionListener(e -> {
+            frmSearchTaiKhoan tk2 = new frmSearchTaiKhoan();
+            // Xóa tất cả các phần cũ
+            pCenter.removeAll();
+            // Đặt layout cho pCenter
+            pCenter.setLayout(new java.awt.BorderLayout());
+
+            // Thêm layout cho pCenter
+            pCenter.add(tk2, java.awt.BorderLayout.CENTER);
+
+            // Cập nhật lại giao diện
+            pCenter.revalidate();
+            pCenter.repaint();
+        }); 
+        
+        // Sự kiện Sản phẩm
+        itemSP1.addActionListener(e -> {
+            frmSanPham sp1 = new frmSanPham();
+            // Xóa tất cả các phần cũ
+            pCenter.removeAll();
+            // Đặt layout cho pCenter
+            pCenter.setLayout(new java.awt.BorderLayout());
+
+            // Thêm layout cho pCenter
+            pCenter.add(sp1, java.awt.BorderLayout.CENTER);
+
+            // Cập nhật lại giao diện
+            pCenter.revalidate();
+            pCenter.repaint();
+        });
+        itemSP2.addActionListener(e -> {
+            frmSearchSanPham sp2 = new frmSearchSanPham();
+            // Xóa tất cả các phần cũ
+            pCenter.removeAll();
+            // Đặt layout cho pCenter
+            pCenter.setLayout(new java.awt.BorderLayout());
+
+            // Thêm layout cho pCenter
+            pCenter.add(sp2, java.awt.BorderLayout.CENTER);
+
+            // Cập nhật lại giao diện
+            pCenter.revalidate();
+            pCenter.repaint();
+        }); 
 }
+
+
 
     
 
@@ -60,10 +445,9 @@ public Main() {
         nganCach4 = new javax.swing.JSeparator();
         btnDangXuat = new javax.swing.JButton();
         pCenter = new javax.swing.JPanel();
-        anhCenter = new SmoothImageLabel("/Icon/resize_output.png") ;
+        anhCenter = new SmoothImageLabel("/Icon/mainBackGround.png") ;
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(null);
 
         Panel.setBackground(new java.awt.Color(51, 51, 51));
         Panel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -114,19 +498,22 @@ public Main() {
         thongtinNV.setLayout(thongtinNVLayout);
         thongtinNVLayout.setHorizontalGroup(
             thongtinNVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblRole, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(thongtinNVLayout.createSequentialGroup()
                 .addComponent(lblName, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 40, Short.MAX_VALUE))
+            .addGroup(thongtinNVLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblRole, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         thongtinNVLayout.setVerticalGroup(
             thongtinNVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(thongtinNVLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(lblName)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblRole, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(29, 29, 29))
+                .addGap(23, 23, 23))
         );
 
         thongTin.add(thongtinNV, java.awt.BorderLayout.CENTER);
@@ -293,7 +680,7 @@ public Main() {
             .addGroup(rpWestLayout.createSequentialGroup()
                 .addComponent(thongTin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jspMenu, javax.swing.GroupLayout.DEFAULT_SIZE, 1088, Short.MAX_VALUE)
+                .addComponent(jspMenu, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -302,9 +689,10 @@ public Main() {
         Panel.add(pWest, java.awt.BorderLayout.LINE_START);
 
         pCenter.setBackground(new java.awt.Color(0, 51, 51));
+        pCenter.setMinimumSize(new java.awt.Dimension(0, 0));
         pCenter.setLayout(new java.awt.BorderLayout());
 
-        anhCenter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/src/Icon/resize_output.png"))); // NOI18N
+        anhCenter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/src/Icon/mainBackground.png"))); // NOI18N
         anhCenter.setMaximumSize(new java.awt.Dimension(1400, 1400));
         anhCenter.setMinimumSize(new java.awt.Dimension(1400, 1400));
         anhCenter.setPreferredSize(new java.awt.Dimension(1400, 1400));
@@ -312,18 +700,7 @@ public Main() {
 
         Panel.add(pCenter, java.awt.BorderLayout.CENTER);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Panel, javax.swing.GroupLayout.DEFAULT_SIZE, 1170, Short.MAX_VALUE)
-        );
+        getContentPane().add(Panel, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -349,40 +726,60 @@ public Main() {
     private void btnNhaCungCapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNhaCungCapActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnNhaCungCapActionPerformed
+    private void addActionListeners(List<JButton> buttons) {
+        for (JButton button : buttons) {
+            button.addActionListener(this::changeButtonColor);
+        }
+    }
+        private void changeButtonColor(ActionEvent e) {
 
+        JButton sourceButton = (JButton) e.getSource();
+        Component[] components = sourceButton.getParent().getComponents();
+
+        // Đặt tất cả nút về màu mặc định
+        for (Component component : components) {
+            if (component instanceof JButton) {
+                component.setBackground(Color.WHITE);
+            }
+        }
+
+        // Đổi màu nút được chọn
+        sourceButton.setBackground(new Color(0, 155, 118));
+    }
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+            // Trỏ tới folder chứa file myTheme.properties trên classpath
+            // Ví dụ bạn để file tại: src/resources/theme/myTheme.properties
+            FlatLaf.registerCustomDefaultsSource("theme");
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Main().setVisible(true);
-            }
+            // Đảm bảo file myTheme.properties được nạp cùng FlatLaf
+            UIManager.put("FlatLaf.additionalDefaults", "myTheme.properties");
+
+            // Chọn nền FlatLightLaf (áp dụng toàn bộ)
+            UIManager.setLookAndFeel(new FlatLightLaf());
+
+            // (Tuỳ chọn) Nếu muốn ép accent qua code:
+            // UIManager.put("@accentColor", "#FFFFFF");
+
+            // Cập nhật UI nếu có component tạo trước LAF
+            FlatLaf.updateUI();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        // Tạo UI như bình thường
+        java.awt.EventQueue.invokeLater(() -> {
+            new Main().setVisible(true);
         });
+    }
+        private void setFontForMenuItems(RoundedMenuItem[] items) {
+        Font font = new Font("Segoe UI", Font.BOLD, 12); // Thiết lập font ở đây
+        for (RoundedMenuItem item : items) {
+            item.setFont(font);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -445,4 +842,5 @@ class BackgroundPanel extends javax.swing.JPanel {
         g2.dispose();
     }
 }
+
 
