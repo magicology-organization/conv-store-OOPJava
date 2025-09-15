@@ -4,8 +4,8 @@
  */
 package GUI;
 
-import DAO.TaiKhoanDAO;
-import Entity.TaiKhoan;
+import DAO.TaiKhoan.TaiKhoanDAO;
+import Entity.TaiKhoan.TaiKhoan;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLaf;

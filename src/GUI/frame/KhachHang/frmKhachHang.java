@@ -71,9 +71,17 @@ public class frmKhachHang extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Mã hóa đơn", "Tên khách hàng", "SĐT khách", "Tên nhân viên", "Ngày mua", "Tổng hóa đơn"
+                "STT", "Tên khách hàng", "Giới tính", "SĐT"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         table.setShowHorizontalLines(true);
         scrollTableCenter.setViewportView(table);

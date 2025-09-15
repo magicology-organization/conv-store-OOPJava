@@ -4,10 +4,14 @@
  */
 package GUI.frame.HoaDon;
 
+import GUI.Main;
+import GUI.form.HoaDon.formThemHD;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollBar;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
@@ -111,9 +115,17 @@ public class frmHoaDon extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Mã hóa đơn", "Tên khách hàng", "SĐT khách", "Tên nhân viên", "Ngày mua", "Tổng hóa đơn"
+                "STT", "Mã hóa đơn", "Tên khách hàng", "SĐT", "Tên nhân viên", "Ngày mua", "Tổng hóa đơn", "Kiểu thanh toán"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         table.setShowHorizontalLines(true);
         scrollTableCenter.setViewportView(table);
@@ -148,6 +160,21 @@ public class frmHoaDon extends javax.swing.JPanel {
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
+        try {
+        // Tạo đối tượng frmHoaDonThem
+        formThemHD formThem = new formThemHD();
+        // Lấy đối tượng Main (parent frame)
+        Main parentFrame = (Main) SwingUtilities.getWindowAncestor(this);
+        
+        // Gọi phương thức replaceMainPanel để thay thế nội dung trong mainPanel
+        parentFrame.replaceMainPanel(formThem);
+        
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(this,
+                "Không thể mở form thêm hóa đơn: " + ex.getMessage(),
+                "Lỗi", 
+                JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_btnThemActionPerformed
 
 

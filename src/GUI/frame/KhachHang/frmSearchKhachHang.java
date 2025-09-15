@@ -28,37 +28,37 @@ public class frmSearchKhachHang extends javax.swing.JPanel {
 
         Panel = new javax.swing.JPanel();
         pNorth = new javax.swing.JPanel();
-        northTilte = new javax.swing.JPanel();
+        pNorthTilte = new javax.swing.JPanel();
         titleName = new javax.swing.JLabel();
         pTimKiem = new javax.swing.JPanel();
-        jTimKiem_Row1 = new javax.swing.JPanel();
-        jTimKiem_Row1_Col1 = new javax.swing.JPanel();
-        jMaHD = new javax.swing.JLabel();
-        jTimKiem_Row1_Col2 = new javax.swing.JPanel();
-        txtMaHD = new java.awt.TextField();
-        jTimKiem_Row2 = new javax.swing.JPanel();
-        jTimKiem_Row2_Col1 = new javax.swing.JPanel();
-        jTenKH = new javax.swing.JLabel();
-        jTimKiem_Row2_Col2 = new javax.swing.JPanel();
+        pTimKiem_Row1 = new javax.swing.JPanel();
+        pTimKiem_Row1_Col1 = new javax.swing.JPanel();
+        lblMaKH = new javax.swing.JLabel();
+        pTimKiem_Row1_Col2 = new javax.swing.JPanel();
+        txtMaKH = new java.awt.TextField();
+        pTimKiem_Row2 = new javax.swing.JPanel();
+        pTimKiem_Row2_Col1 = new javax.swing.JPanel();
+        lblTenKH = new javax.swing.JLabel();
+        pTimKiem_Row2_Col2 = new javax.swing.JPanel();
         txtTenKH = new java.awt.TextField();
-        jTimKiem_Row3 = new javax.swing.JPanel();
-        jPanel32 = new javax.swing.JPanel();
-        jSDT = new javax.swing.JLabel();
-        jPanel35 = new javax.swing.JPanel();
-        txtSdtKH = new java.awt.TextField();
-        jTimKiem_Row4 = new javax.swing.JPanel();
-        jTimKiem_Row4_Col1 = new javax.swing.JPanel();
-        jNgayMua = new javax.swing.JLabel();
-        jTimKiem_Row4_Col2 = new javax.swing.JPanel();
-        dateNgayMua = new com.toedter.calendar.JDateChooser();
-        jTimKiem_Row5 = new javax.swing.JPanel();
-        jTimKiem_Row5_Col1 = new javax.swing.JPanel();
-        jTimKiem_Row5_Col2 = new javax.swing.JPanel();
-        btnThem1 = new javax.swing.JButton();
+        pTimKiem_Row3 = new javax.swing.JPanel();
+        pTimKiem_Row3_Col1 = new javax.swing.JPanel();
+        lblSDT = new javax.swing.JLabel();
+        pTimKiem_Row3_Col2 = new javax.swing.JPanel();
+        txtSDT = new java.awt.TextField();
+        pTimKiem_Row4 = new javax.swing.JPanel();
+        pTimKiem_Row4_Col1 = new javax.swing.JPanel();
+        lblGioiTinh = new javax.swing.JLabel();
+        pTimKiem_Row4_Col2 = new javax.swing.JPanel();
+        cboGioiTinh = new javax.swing.JComboBox<>();
+        pTimKiem_Row5 = new javax.swing.JPanel();
+        pTimKiem_Row5_Col1 = new javax.swing.JPanel();
+        pTimKiem_Row5_Col2 = new javax.swing.JPanel();
+        btnTim = new javax.swing.JButton();
         pCenter = new javax.swing.JPanel();
         scrollTableCenter = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
-        centerTilte = new javax.swing.JPanel();
+        pCenterTilte = new javax.swing.JPanel();
         titleName1 = new javax.swing.JLabel();
         pSouth = new javax.swing.JPanel();
         btnChiTiet = new javax.swing.JButton();
@@ -74,11 +74,11 @@ public class frmSearchKhachHang extends javax.swing.JPanel {
         pNorth.setPreferredSize(new java.awt.Dimension(1200, 250));
         pNorth.setLayout(new java.awt.BorderLayout());
 
-        northTilte.setBackground(new java.awt.Color(204, 255, 204));
-        northTilte.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        northTilte.setMinimumSize(new java.awt.Dimension(1200, 50));
-        northTilte.setPreferredSize(new java.awt.Dimension(1200, 50));
-        northTilte.setLayout(new java.awt.BorderLayout());
+        pNorthTilte.setBackground(new java.awt.Color(204, 255, 204));
+        pNorthTilte.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        pNorthTilte.setMinimumSize(new java.awt.Dimension(1200, 50));
+        pNorthTilte.setPreferredSize(new java.awt.Dimension(1200, 50));
+        pNorthTilte.setLayout(new java.awt.BorderLayout());
 
         titleName.setBackground(new java.awt.Color(0, 0, 0));
         titleName.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
@@ -87,158 +87,158 @@ public class frmSearchKhachHang extends javax.swing.JPanel {
         titleName.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         titleName.setMinimumSize(new java.awt.Dimension(1200, 32));
         titleName.setPreferredSize(new java.awt.Dimension(1200, 32));
-        northTilte.add(titleName, java.awt.BorderLayout.CENTER);
+        pNorthTilte.add(titleName, java.awt.BorderLayout.CENTER);
 
-        pNorth.add(northTilte, java.awt.BorderLayout.PAGE_START);
+        pNorth.add(pNorthTilte, java.awt.BorderLayout.PAGE_START);
 
         pTimKiem.setMinimumSize(new java.awt.Dimension(829, 300));
         pTimKiem.setLayout(new javax.swing.BoxLayout(pTimKiem, javax.swing.BoxLayout.Y_AXIS));
 
-        jTimKiem_Row1.setMinimumSize(new java.awt.Dimension(829, 38));
-        jTimKiem_Row1.setLayout(new java.awt.BorderLayout());
+        pTimKiem_Row1.setMinimumSize(new java.awt.Dimension(829, 38));
+        pTimKiem_Row1.setLayout(new java.awt.BorderLayout());
 
-        jTimKiem_Row1_Col1.setMinimumSize(new java.awt.Dimension(300, 38));
-        jTimKiem_Row1_Col1.setPreferredSize(new java.awt.Dimension(500, 38));
-        jTimKiem_Row1_Col1.setLayout(new java.awt.BorderLayout());
+        pTimKiem_Row1_Col1.setMinimumSize(new java.awt.Dimension(300, 38));
+        pTimKiem_Row1_Col1.setPreferredSize(new java.awt.Dimension(500, 38));
+        pTimKiem_Row1_Col1.setLayout(new java.awt.BorderLayout());
 
-        jMaHD.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jMaHD.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jMaHD.setText("Mã hóa đơn:");
-        jMaHD.setAlignmentX(20.0F);
-        jMaHD.setAlignmentY(20.0F);
-        jTimKiem_Row1_Col1.add(jMaHD, java.awt.BorderLayout.CENTER);
+        lblMaKH.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblMaKH.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblMaKH.setText("Mã khách hàng:");
+        lblMaKH.setAlignmentX(20.0F);
+        lblMaKH.setAlignmentY(20.0F);
+        pTimKiem_Row1_Col1.add(lblMaKH, java.awt.BorderLayout.CENTER);
 
-        jTimKiem_Row1.add(jTimKiem_Row1_Col1, java.awt.BorderLayout.LINE_START);
+        pTimKiem_Row1.add(pTimKiem_Row1_Col1, java.awt.BorderLayout.LINE_START);
 
-        jTimKiem_Row1_Col2.setMinimumSize(new java.awt.Dimension(669, 38));
-        jTimKiem_Row1_Col2.setPreferredSize(new java.awt.Dimension(669, 38));
-        jTimKiem_Row1_Col2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 7));
+        pTimKiem_Row1_Col2.setMinimumSize(new java.awt.Dimension(669, 38));
+        pTimKiem_Row1_Col2.setPreferredSize(new java.awt.Dimension(669, 38));
+        pTimKiem_Row1_Col2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 7));
 
-        txtMaHD.setMaximumSize(new java.awt.Dimension(350, 32));
-        txtMaHD.setMinimumSize(new java.awt.Dimension(350, 32));
-        txtMaHD.setPreferredSize(new java.awt.Dimension(350, 30));
-        jTimKiem_Row1_Col2.add(txtMaHD);
+        txtMaKH.setMaximumSize(new java.awt.Dimension(350, 32));
+        txtMaKH.setMinimumSize(new java.awt.Dimension(350, 32));
+        txtMaKH.setPreferredSize(new java.awt.Dimension(350, 30));
+        pTimKiem_Row1_Col2.add(txtMaKH);
 
-        jTimKiem_Row1.add(jTimKiem_Row1_Col2, java.awt.BorderLayout.CENTER);
+        pTimKiem_Row1.add(pTimKiem_Row1_Col2, java.awt.BorderLayout.CENTER);
 
-        pTimKiem.add(jTimKiem_Row1);
+        pTimKiem.add(pTimKiem_Row1);
 
-        jTimKiem_Row2.setMinimumSize(new java.awt.Dimension(829, 38));
-        jTimKiem_Row2.setLayout(new java.awt.BorderLayout());
+        pTimKiem_Row2.setMinimumSize(new java.awt.Dimension(829, 38));
+        pTimKiem_Row2.setLayout(new java.awt.BorderLayout());
 
-        jTimKiem_Row2_Col1.setMinimumSize(new java.awt.Dimension(300, 38));
-        jTimKiem_Row2_Col1.setPreferredSize(new java.awt.Dimension(500, 38));
-        jTimKiem_Row2_Col1.setLayout(new java.awt.BorderLayout());
+        pTimKiem_Row2_Col1.setMinimumSize(new java.awt.Dimension(300, 38));
+        pTimKiem_Row2_Col1.setPreferredSize(new java.awt.Dimension(500, 38));
+        pTimKiem_Row2_Col1.setLayout(new java.awt.BorderLayout());
 
-        jTenKH.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jTenKH.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jTenKH.setText("Tên khách hàng:");
-        jTenKH.setAlignmentX(20.0F);
-        jTenKH.setAlignmentY(20.0F);
-        jTimKiem_Row2_Col1.add(jTenKH, java.awt.BorderLayout.CENTER);
+        lblTenKH.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblTenKH.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblTenKH.setText("Tên khách hàng:");
+        lblTenKH.setAlignmentX(20.0F);
+        lblTenKH.setAlignmentY(20.0F);
+        pTimKiem_Row2_Col1.add(lblTenKH, java.awt.BorderLayout.CENTER);
 
-        jTimKiem_Row2.add(jTimKiem_Row2_Col1, java.awt.BorderLayout.LINE_START);
+        pTimKiem_Row2.add(pTimKiem_Row2_Col1, java.awt.BorderLayout.LINE_START);
 
-        jTimKiem_Row2_Col2.setMinimumSize(new java.awt.Dimension(669, 38));
-        jTimKiem_Row2_Col2.setPreferredSize(new java.awt.Dimension(669, 38));
-        jTimKiem_Row2_Col2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 7));
+        pTimKiem_Row2_Col2.setMinimumSize(new java.awt.Dimension(669, 38));
+        pTimKiem_Row2_Col2.setPreferredSize(new java.awt.Dimension(669, 38));
+        pTimKiem_Row2_Col2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 7));
 
         txtTenKH.setMaximumSize(new java.awt.Dimension(350, 32));
         txtTenKH.setMinimumSize(new java.awt.Dimension(350, 32));
         txtTenKH.setPreferredSize(new java.awt.Dimension(350, 30));
-        jTimKiem_Row2_Col2.add(txtTenKH);
+        pTimKiem_Row2_Col2.add(txtTenKH);
 
-        jTimKiem_Row2.add(jTimKiem_Row2_Col2, java.awt.BorderLayout.CENTER);
+        pTimKiem_Row2.add(pTimKiem_Row2_Col2, java.awt.BorderLayout.CENTER);
 
-        pTimKiem.add(jTimKiem_Row2);
+        pTimKiem.add(pTimKiem_Row2);
 
-        jTimKiem_Row3.setMinimumSize(new java.awt.Dimension(829, 38));
-        jTimKiem_Row3.setLayout(new java.awt.BorderLayout());
+        pTimKiem_Row3.setMinimumSize(new java.awt.Dimension(829, 38));
+        pTimKiem_Row3.setLayout(new java.awt.BorderLayout());
 
-        jPanel32.setMinimumSize(new java.awt.Dimension(300, 38));
-        jPanel32.setPreferredSize(new java.awt.Dimension(500, 38));
-        jPanel32.setLayout(new java.awt.BorderLayout());
+        pTimKiem_Row3_Col1.setMinimumSize(new java.awt.Dimension(300, 38));
+        pTimKiem_Row3_Col1.setPreferredSize(new java.awt.Dimension(500, 38));
+        pTimKiem_Row3_Col1.setLayout(new java.awt.BorderLayout());
 
-        jSDT.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jSDT.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jSDT.setText("Số điện thoại:");
-        jSDT.setAlignmentX(20.0F);
-        jSDT.setAlignmentY(20.0F);
-        jPanel32.add(jSDT, java.awt.BorderLayout.CENTER);
+        lblSDT.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblSDT.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblSDT.setText("Số điện thoại:");
+        lblSDT.setAlignmentX(20.0F);
+        lblSDT.setAlignmentY(20.0F);
+        pTimKiem_Row3_Col1.add(lblSDT, java.awt.BorderLayout.CENTER);
 
-        jTimKiem_Row3.add(jPanel32, java.awt.BorderLayout.LINE_START);
+        pTimKiem_Row3.add(pTimKiem_Row3_Col1, java.awt.BorderLayout.LINE_START);
 
-        jPanel35.setMinimumSize(new java.awt.Dimension(669, 38));
-        jPanel35.setPreferredSize(new java.awt.Dimension(669, 38));
-        jPanel35.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 7));
+        pTimKiem_Row3_Col2.setMinimumSize(new java.awt.Dimension(669, 38));
+        pTimKiem_Row3_Col2.setPreferredSize(new java.awt.Dimension(669, 38));
+        pTimKiem_Row3_Col2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 7));
 
-        txtSdtKH.setMaximumSize(new java.awt.Dimension(350, 32));
-        txtSdtKH.setMinimumSize(new java.awt.Dimension(350, 32));
-        txtSdtKH.setPreferredSize(new java.awt.Dimension(350, 30));
-        jPanel35.add(txtSdtKH);
+        txtSDT.setMaximumSize(new java.awt.Dimension(350, 32));
+        txtSDT.setMinimumSize(new java.awt.Dimension(350, 32));
+        txtSDT.setPreferredSize(new java.awt.Dimension(350, 30));
+        pTimKiem_Row3_Col2.add(txtSDT);
 
-        jTimKiem_Row3.add(jPanel35, java.awt.BorderLayout.CENTER);
+        pTimKiem_Row3.add(pTimKiem_Row3_Col2, java.awt.BorderLayout.CENTER);
 
-        pTimKiem.add(jTimKiem_Row3);
+        pTimKiem.add(pTimKiem_Row3);
 
-        jTimKiem_Row4.setMinimumSize(new java.awt.Dimension(829, 38));
-        jTimKiem_Row4.setLayout(new java.awt.BorderLayout());
+        pTimKiem_Row4.setMinimumSize(new java.awt.Dimension(829, 38));
+        pTimKiem_Row4.setLayout(new java.awt.BorderLayout());
 
-        jTimKiem_Row4_Col1.setMinimumSize(new java.awt.Dimension(300, 38));
-        jTimKiem_Row4_Col1.setPreferredSize(new java.awt.Dimension(500, 38));
-        jTimKiem_Row4_Col1.setLayout(new java.awt.BorderLayout());
+        pTimKiem_Row4_Col1.setMinimumSize(new java.awt.Dimension(300, 38));
+        pTimKiem_Row4_Col1.setPreferredSize(new java.awt.Dimension(500, 38));
+        pTimKiem_Row4_Col1.setLayout(new java.awt.BorderLayout());
 
-        jNgayMua.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jNgayMua.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jNgayMua.setText("Ngày mua:");
-        jNgayMua.setAlignmentX(20.0F);
-        jNgayMua.setAlignmentY(20.0F);
-        jTimKiem_Row4_Col1.add(jNgayMua, java.awt.BorderLayout.CENTER);
+        lblGioiTinh.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblGioiTinh.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblGioiTinh.setText("Giới tính:");
+        lblGioiTinh.setAlignmentX(20.0F);
+        lblGioiTinh.setAlignmentY(20.0F);
+        pTimKiem_Row4_Col1.add(lblGioiTinh, java.awt.BorderLayout.CENTER);
 
-        jTimKiem_Row4.add(jTimKiem_Row4_Col1, java.awt.BorderLayout.LINE_START);
+        pTimKiem_Row4.add(pTimKiem_Row4_Col1, java.awt.BorderLayout.LINE_START);
 
-        jTimKiem_Row4_Col2.setMinimumSize(new java.awt.Dimension(669, 38));
-        jTimKiem_Row4_Col2.setPreferredSize(new java.awt.Dimension(669, 38));
-        jTimKiem_Row4_Col2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 7));
+        pTimKiem_Row4_Col2.setMinimumSize(new java.awt.Dimension(669, 38));
+        pTimKiem_Row4_Col2.setPreferredSize(new java.awt.Dimension(669, 38));
+        pTimKiem_Row4_Col2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 7));
 
-        dateNgayMua.setMinimumSize(new java.awt.Dimension(182, 22));
-        dateNgayMua.setPreferredSize(new java.awt.Dimension(150, 30));
-        jTimKiem_Row4_Col2.add(dateNgayMua);
+        cboGioiTinh.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboGioiTinh.setPreferredSize(new java.awt.Dimension(100, 30));
+        pTimKiem_Row4_Col2.add(cboGioiTinh);
 
-        jTimKiem_Row4.add(jTimKiem_Row4_Col2, java.awt.BorderLayout.CENTER);
+        pTimKiem_Row4.add(pTimKiem_Row4_Col2, java.awt.BorderLayout.CENTER);
 
-        pTimKiem.add(jTimKiem_Row4);
+        pTimKiem.add(pTimKiem_Row4);
 
-        jTimKiem_Row5.setMinimumSize(new java.awt.Dimension(829, 38));
-        jTimKiem_Row5.setLayout(new java.awt.BorderLayout());
+        pTimKiem_Row5.setMinimumSize(new java.awt.Dimension(829, 38));
+        pTimKiem_Row5.setLayout(new java.awt.BorderLayout());
 
-        jTimKiem_Row5_Col1.setMinimumSize(new java.awt.Dimension(300, 38));
-        jTimKiem_Row5_Col1.setPreferredSize(new java.awt.Dimension(500, 38));
-        jTimKiem_Row5_Col1.setLayout(new java.awt.BorderLayout());
-        jTimKiem_Row5.add(jTimKiem_Row5_Col1, java.awt.BorderLayout.LINE_START);
+        pTimKiem_Row5_Col1.setMinimumSize(new java.awt.Dimension(300, 38));
+        pTimKiem_Row5_Col1.setPreferredSize(new java.awt.Dimension(500, 38));
+        pTimKiem_Row5_Col1.setLayout(new java.awt.BorderLayout());
+        pTimKiem_Row5.add(pTimKiem_Row5_Col1, java.awt.BorderLayout.LINE_START);
 
-        jTimKiem_Row5_Col2.setMinimumSize(new java.awt.Dimension(669, 38));
-        jTimKiem_Row5_Col2.setPreferredSize(new java.awt.Dimension(669, 38));
-        jTimKiem_Row5_Col2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 7));
+        pTimKiem_Row5_Col2.setMinimumSize(new java.awt.Dimension(669, 38));
+        pTimKiem_Row5_Col2.setPreferredSize(new java.awt.Dimension(669, 38));
+        pTimKiem_Row5_Col2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 7));
 
-        btnThem1.setBackground(new java.awt.Color(15, 204, 102));
-        btnThem1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnThem1.setForeground(new java.awt.Color(255, 255, 255));
-        btnThem1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnThem1.setLabel("Tìm kiếm");
-        btnThem1.setMaximumSize(new java.awt.Dimension(105, 30));
-        btnThem1.setMinimumSize(new java.awt.Dimension(105, 30));
-        btnThem1.setPreferredSize(new java.awt.Dimension(105, 30));
-        btnThem1.addActionListener(new java.awt.event.ActionListener() {
+        btnTim.setBackground(new java.awt.Color(15, 204, 102));
+        btnTim.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnTim.setForeground(new java.awt.Color(255, 255, 255));
+        btnTim.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnTim.setLabel("Tìm kiếm");
+        btnTim.setMaximumSize(new java.awt.Dimension(105, 30));
+        btnTim.setMinimumSize(new java.awt.Dimension(105, 30));
+        btnTim.setPreferredSize(new java.awt.Dimension(105, 30));
+        btnTim.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnThem1ActionPerformed(evt);
+                btnTimActionPerformed(evt);
             }
         });
-        jTimKiem_Row5_Col2.add(btnThem1);
+        pTimKiem_Row5_Col2.add(btnTim);
 
-        jTimKiem_Row5.add(jTimKiem_Row5_Col2, java.awt.BorderLayout.CENTER);
+        pTimKiem_Row5.add(pTimKiem_Row5_Col2, java.awt.BorderLayout.CENTER);
 
-        pTimKiem.add(jTimKiem_Row5);
+        pTimKiem.add(pTimKiem_Row5);
 
         pNorth.add(pTimKiem, java.awt.BorderLayout.CENTER);
 
@@ -265,11 +265,11 @@ public class frmSearchKhachHang extends javax.swing.JPanel {
 
         pCenter.add(scrollTableCenter, java.awt.BorderLayout.CENTER);
 
-        centerTilte.setBackground(new java.awt.Color(204, 255, 204));
-        centerTilte.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        centerTilte.setMinimumSize(new java.awt.Dimension(1200, 50));
-        centerTilte.setPreferredSize(new java.awt.Dimension(1200, 50));
-        centerTilte.setLayout(new java.awt.BorderLayout());
+        pCenterTilte.setBackground(new java.awt.Color(204, 255, 204));
+        pCenterTilte.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        pCenterTilte.setMinimumSize(new java.awt.Dimension(1200, 50));
+        pCenterTilte.setPreferredSize(new java.awt.Dimension(1200, 50));
+        pCenterTilte.setLayout(new java.awt.BorderLayout());
 
         titleName1.setBackground(new java.awt.Color(0, 0, 0));
         titleName1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
@@ -278,9 +278,9 @@ public class frmSearchKhachHang extends javax.swing.JPanel {
         titleName1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         titleName1.setMinimumSize(new java.awt.Dimension(1200, 32));
         titleName1.setPreferredSize(new java.awt.Dimension(1200, 32));
-        centerTilte.add(titleName1, java.awt.BorderLayout.CENTER);
+        pCenterTilte.add(titleName1, java.awt.BorderLayout.CENTER);
 
-        pCenter.add(centerTilte, java.awt.BorderLayout.PAGE_START);
+        pCenter.add(pCenterTilte, java.awt.BorderLayout.PAGE_START);
 
         Panel.add(pCenter, java.awt.BorderLayout.CENTER);
 
@@ -308,9 +308,9 @@ public class frmSearchKhachHang extends javax.swing.JPanel {
         add(Panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnThem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThem1ActionPerformed
+    private void btnTimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnThem1ActionPerformed
+    }//GEN-LAST:event_btnTimActionPerformed
 
     private void btnChiTietActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChiTietActionPerformed
         // TODO add your handling code here:
@@ -320,39 +320,39 @@ public class frmSearchKhachHang extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Panel;
     private javax.swing.JButton btnChiTiet;
-    private javax.swing.JButton btnThem1;
-    private javax.swing.JPanel centerTilte;
-    private com.toedter.calendar.JDateChooser dateNgayMua;
-    private javax.swing.JLabel jMaHD;
-    private javax.swing.JLabel jNgayMua;
-    private javax.swing.JPanel jPanel32;
-    private javax.swing.JPanel jPanel35;
-    private javax.swing.JLabel jSDT;
-    private javax.swing.JLabel jTenKH;
-    private javax.swing.JPanel jTimKiem_Row1;
-    private javax.swing.JPanel jTimKiem_Row1_Col1;
-    private javax.swing.JPanel jTimKiem_Row1_Col2;
-    private javax.swing.JPanel jTimKiem_Row2;
-    private javax.swing.JPanel jTimKiem_Row2_Col1;
-    private javax.swing.JPanel jTimKiem_Row2_Col2;
-    private javax.swing.JPanel jTimKiem_Row3;
-    private javax.swing.JPanel jTimKiem_Row4;
-    private javax.swing.JPanel jTimKiem_Row4_Col1;
-    private javax.swing.JPanel jTimKiem_Row4_Col2;
-    private javax.swing.JPanel jTimKiem_Row5;
-    private javax.swing.JPanel jTimKiem_Row5_Col1;
-    private javax.swing.JPanel jTimKiem_Row5_Col2;
-    private javax.swing.JPanel northTilte;
+    private javax.swing.JButton btnTim;
+    private javax.swing.JComboBox<String> cboGioiTinh;
+    private javax.swing.JLabel lblGioiTinh;
+    private javax.swing.JLabel lblMaKH;
+    private javax.swing.JLabel lblSDT;
+    private javax.swing.JLabel lblTenKH;
     private javax.swing.JPanel pCenter;
+    private javax.swing.JPanel pCenterTilte;
     private javax.swing.JPanel pNorth;
+    private javax.swing.JPanel pNorthTilte;
     private javax.swing.JPanel pSouth;
     private javax.swing.JPanel pTimKiem;
+    private javax.swing.JPanel pTimKiem_Row1;
+    private javax.swing.JPanel pTimKiem_Row1_Col1;
+    private javax.swing.JPanel pTimKiem_Row1_Col2;
+    private javax.swing.JPanel pTimKiem_Row2;
+    private javax.swing.JPanel pTimKiem_Row2_Col1;
+    private javax.swing.JPanel pTimKiem_Row2_Col2;
+    private javax.swing.JPanel pTimKiem_Row3;
+    private javax.swing.JPanel pTimKiem_Row3_Col1;
+    private javax.swing.JPanel pTimKiem_Row3_Col2;
+    private javax.swing.JPanel pTimKiem_Row4;
+    private javax.swing.JPanel pTimKiem_Row4_Col1;
+    private javax.swing.JPanel pTimKiem_Row4_Col2;
+    private javax.swing.JPanel pTimKiem_Row5;
+    private javax.swing.JPanel pTimKiem_Row5_Col1;
+    private javax.swing.JPanel pTimKiem_Row5_Col2;
     private javax.swing.JScrollPane scrollTableCenter;
     private javax.swing.JTable table;
     private javax.swing.JLabel titleName;
     private javax.swing.JLabel titleName1;
-    private java.awt.TextField txtMaHD;
-    private java.awt.TextField txtSdtKH;
+    private java.awt.TextField txtMaKH;
+    private java.awt.TextField txtSDT;
     private java.awt.TextField txtTenKH;
     // End of variables declaration//GEN-END:variables
 }

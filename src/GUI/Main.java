@@ -16,6 +16,8 @@ import GUI.frame.PhieuNhap.frmPhieuNhap;
 import GUI.frame.PhieuNhap.frmSearchPhieuNhap;
 import GUI.frame.PhieuTra.frmPhieuTra;
 import GUI.frame.PhieuTra.frmSearchPhieuTra;
+import GUI.frame.PhieuXuat.frmPhieuXuat;
+import GUI.frame.PhieuXuat.frmSearchPhieuXuat;
 import GUI.frame.SanPham.frmSanPham;
 import GUI.frame.SanPham.frmSearchSanPham;
 import GUI.frame.TaiKhoan.frmSearchTaiKhoan;
@@ -35,6 +37,7 @@ import java.util.Arrays;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JSeparator;
 
 /**
@@ -50,6 +53,7 @@ public class Main extends javax.swing.JFrame {
     private RoundedPopupMenu popupMenuHD;
     private RoundedPopupMenu popupMenuPT;
     private RoundedPopupMenu popupMenuPN;
+    private RoundedPopupMenu popupMenuPX;
     /**
      * Creates new form Main
      */
@@ -58,7 +62,7 @@ public Main() {
     setTitle("Phần mềm quản lý cửa hàng tiện lợi");
     setExtendedState(JFrame.MAXIMIZED_BOTH);
     addActionListeners(Arrays.asList(btnThongKe, btnHoaDon, btnKhachHang, btnNhaCungCap, btnNhanVien, btnPhieuNhap,
-                btnTaiKhoan, btnSanPham, btnDangXuat, btnPhieuTra));
+                btnTaiKhoan, btnSanPham, btnDangXuat, btnPhieuTra, btnPhieuXuat));
     //---------------MENU---------------------//
         // Menu Phiếu Nhập
         popupMenuPN = new RoundedPopupMenu();
@@ -71,6 +75,19 @@ public Main() {
         popupMenuPN.add(new JSeparator());
 
         btnPhieuNhap.addActionListener(e -> popupMenuPN.show(btnPhieuNhap, btnPhieuNhap.getWidth(), 2));
+        setFontForMenuItems(new RoundedMenuItem[]{itemPN1, itemPN2});
+
+        // Menu Phiếu Xuất
+        popupMenuPX = new RoundedPopupMenu();
+        RoundedMenuItem itemPX1 = new RoundedMenuItem("Cập nhật");
+        popupMenuPX.add(itemPX1);
+        popupMenuPX.add(new JSeparator());
+
+        RoundedMenuItem itemPX2 = new RoundedMenuItem("Tìm kiếm");
+        popupMenuPX.add(itemPX2);
+        popupMenuPX.add(new JSeparator());
+
+        btnPhieuXuat.addActionListener(e -> popupMenuPX.show(btnPhieuXuat, btnPhieuXuat.getWidth(), 2));
         setFontForMenuItems(new RoundedMenuItem[]{itemPN1, itemPN2});
         
         // Menu Nhà Cung Cấp
@@ -254,6 +271,36 @@ public Main() {
             pCenter.revalidate();
             pCenter.repaint();
         });
+
+        // Sự kiện phiếu xuất
+        itemPX1.addActionListener(e -> {
+            frmPhieuXuat px1 = new frmPhieuXuat();
+            // Xóa tất cả các phần cũ
+            pCenter.removeAll();
+            // Đặt layout cho pCenter
+            pCenter.setLayout(new java.awt.BorderLayout());
+
+            // Thêm layout cho pCenter
+            pCenter.add(px1, java.awt.BorderLayout.CENTER);
+
+            // Cập nhật lại giao diện
+            pCenter.revalidate();
+            pCenter.repaint();
+        });
+        itemPX2.addActionListener(e -> {
+            frmSearchPhieuXuat px2 = new frmSearchPhieuXuat();
+            // Xóa tất cả các phần cũ
+            pCenter.removeAll();
+            // Đặt layout cho pCenter
+            pCenter.setLayout(new java.awt.BorderLayout());
+
+            // Thêm layout cho pCenter
+            pCenter.add(px2, java.awt.BorderLayout.CENTER);
+
+            // Cập nhật lại giao diện
+            pCenter.revalidate();
+            pCenter.repaint();
+        });
         
         // Sự kiện phiếu TRẢ
         itemPT1.addActionListener(e -> {
@@ -406,8 +453,6 @@ public Main() {
         }); 
 }
 
-
-
     
 
     /**
@@ -422,32 +467,33 @@ public Main() {
         Panel = new javax.swing.JPanel();
         pWest = new javax.swing.JPanel();
         rpWest = new Swing.RoundPanel();
-        thongTin = new Swing.RoundPanel();
+        pThongTin = new Swing.RoundPanel();
         anhNV = new Swing.RoundPanel();
         lblAvatar = new javax.swing.JLabel();
         thongtinNV = new Swing.RoundPanel();
         lblName = new javax.swing.JLabel();
         lblRole = new javax.swing.JLabel();
-        jspMenu = new javax.swing.JScrollPane();
-        menu = new Swing.RoundPanel();
+        pMenu = new Swing.RoundPanel();
         btnThongKe = new javax.swing.JButton();
         btnPhieuNhap = new javax.swing.JButton();
+        btnPhieuXuat = new javax.swing.JButton();
         btnNhaCungCap = new javax.swing.JButton();
         btnSanPham = new javax.swing.JButton();
-        jSeparator1 = new javax.swing.JSeparator();
+        btnMaGiamGia = new javax.swing.JButton();
+        jSeparator2 = new javax.swing.JSeparator();
         btnHoaDon = new javax.swing.JButton();
         btnPhieuTra = new javax.swing.JButton();
-        jSeparator2 = new javax.swing.JSeparator();
         btnKhachHang = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
         btnNhanVien = new javax.swing.JButton();
         btnTaiKhoan = new javax.swing.JButton();
-        nganCach4 = new javax.swing.JSeparator();
+        pDangXuat = new Swing.RoundPanel();
         btnDangXuat = new javax.swing.JButton();
         pCenter = new javax.swing.JPanel();
         anhCenter = new SmoothImageLabel("/Icon/mainBackGround.png") ;
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1200, 600));
 
         Panel.setBackground(new java.awt.Color(51, 51, 51));
         Panel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -464,12 +510,14 @@ public Main() {
         rpWest.setBackground(new java.awt.Color(204, 204, 204));
         rpWest.setAlignmentX(0.0F);
         rpWest.setAlignmentY(0.0F);
-        rpWest.setMinimumSize(new java.awt.Dimension(230, 550));
+        rpWest.setMinimumSize(new java.awt.Dimension(230, 600));
+        rpWest.setPreferredSize(new java.awt.Dimension(230, 600));
+        rpWest.setLayout(new java.awt.BorderLayout());
 
-        thongTin.setBackground(new java.awt.Color(255, 255, 255));
-        thongTin.setMinimumSize(new java.awt.Dimension(230, 70));
-        thongTin.setPreferredSize(new java.awt.Dimension(230, 70));
-        thongTin.setLayout(new java.awt.BorderLayout());
+        pThongTin.setBackground(new java.awt.Color(255, 255, 255));
+        pThongTin.setMinimumSize(new java.awt.Dimension(230, 70));
+        pThongTin.setPreferredSize(new java.awt.Dimension(230, 70));
+        pThongTin.setLayout(new java.awt.BorderLayout());
 
         anhNV.setBackground(new java.awt.Color(255, 255, 255));
         anhNV.setPreferredSize(new java.awt.Dimension(60, 100));
@@ -479,7 +527,7 @@ public Main() {
         lblAvatar.setName(""); // NOI18N
         anhNV.add(lblAvatar, new java.awt.GridBagConstraints());
 
-        thongTin.add(anhNV, java.awt.BorderLayout.LINE_START);
+        pThongTin.add(anhNV, java.awt.BorderLayout.LINE_START);
 
         thongtinNV.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -500,7 +548,7 @@ public Main() {
             thongtinNVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(thongtinNVLayout.createSequentialGroup()
                 .addComponent(lblName, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 40, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(thongtinNVLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblRole, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -516,42 +564,50 @@ public Main() {
                 .addGap(23, 23, 23))
         );
 
-        thongTin.add(thongtinNV, java.awt.BorderLayout.CENTER);
+        pThongTin.add(thongtinNV, java.awt.BorderLayout.CENTER);
 
-        jspMenu.setBorder(null);
-        jspMenu.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        jspMenu.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-        jspMenu.setViewportBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jspMenu.setMinimumSize(new java.awt.Dimension(230, 500));
-        jspMenu.setPreferredSize(new java.awt.Dimension(230, 500));
+        rpWest.add(pThongTin, java.awt.BorderLayout.NORTH);
 
-        menu.setBackground(new java.awt.Color(204, 204, 204));
-        menu.setAlignmentY(0.0F);
-        menu.setMinimumSize(new java.awt.Dimension(230, 500));
-        menu.setPreferredSize(new java.awt.Dimension(230, 500));
-        menu.setLayout(new javax.swing.BoxLayout(menu, javax.swing.BoxLayout.Y_AXIS));
+        pMenu.setBackground(new java.awt.Color(204, 204, 204));
+        pMenu.setAlignmentY(0.0F);
+        pMenu.setMaximumSize(new java.awt.Dimension(230, 480));
+        pMenu.setMinimumSize(new java.awt.Dimension(230, 480));
+        pMenu.setPreferredSize(new java.awt.Dimension(230, 480));
 
         btnThongKe.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnThongKe.setText("Thống Kê");
+        btnThongKe.setAlignmentX(0.5F);
         btnThongKe.setAlignmentY(0.0F);
         btnThongKe.setBorderPainted(false);
         btnThongKe.setHideActionText(true);
         btnThongKe.setMaximumSize(new java.awt.Dimension(208, 40));
         btnThongKe.setMinimumSize(new java.awt.Dimension(208, 40));
         btnThongKe.setPreferredSize(new java.awt.Dimension(208, 40));
-        menu.add(btnThongKe);
+        pMenu.add(btnThongKe);
 
         btnPhieuNhap.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnPhieuNhap.setText("Phiếu Nhập");
+        btnPhieuNhap.setAlignmentX(0.5F);
         btnPhieuNhap.setAlignmentY(0.0F);
         btnPhieuNhap.setBorderPainted(false);
         btnPhieuNhap.setMaximumSize(new java.awt.Dimension(208, 40));
         btnPhieuNhap.setMinimumSize(new java.awt.Dimension(208, 40));
         btnPhieuNhap.setPreferredSize(new java.awt.Dimension(208, 40));
-        menu.add(btnPhieuNhap);
+        pMenu.add(btnPhieuNhap);
+
+        btnPhieuXuat.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnPhieuXuat.setText("Phiếu Xuất");
+        btnPhieuXuat.setAlignmentX(0.5F);
+        btnPhieuXuat.setAlignmentY(0.0F);
+        btnPhieuXuat.setBorderPainted(false);
+        btnPhieuXuat.setMaximumSize(new java.awt.Dimension(208, 40));
+        btnPhieuXuat.setMinimumSize(new java.awt.Dimension(208, 40));
+        btnPhieuXuat.setPreferredSize(new java.awt.Dimension(208, 40));
+        pMenu.add(btnPhieuXuat);
 
         btnNhaCungCap.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnNhaCungCap.setText("Nhà Cung Cấp");
+        btnNhaCungCap.setAlignmentX(0.5F);
         btnNhaCungCap.setAlignmentY(0.0F);
         btnNhaCungCap.setBorderPainted(false);
         btnNhaCungCap.setMaximumSize(new java.awt.Dimension(208, 40));
@@ -562,11 +618,12 @@ public Main() {
                 btnNhaCungCapActionPerformed(evt);
             }
         });
-        menu.add(btnNhaCungCap);
+        pMenu.add(btnNhaCungCap);
 
         btnSanPham.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnSanPham.setText("Sản Phẩm");
         btnSanPham.setToolTipText("");
+        btnSanPham.setAlignmentX(0.5F);
         btnSanPham.setAlignmentY(0.0F);
         btnSanPham.setBorderPainted(false);
         btnSanPham.setMaximumSize(new java.awt.Dimension(208, 40));
@@ -577,15 +634,30 @@ public Main() {
                 btnSanPhamActionPerformed(evt);
             }
         });
-        menu.add(btnSanPham);
+        pMenu.add(btnSanPham);
 
-        jSeparator1.setMaximumSize(new java.awt.Dimension(0, 15));
-        jSeparator1.setMinimumSize(new java.awt.Dimension(0, 15));
-        jSeparator1.setPreferredSize(new java.awt.Dimension(0, 15));
-        menu.add(jSeparator1);
+        btnMaGiamGia.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnMaGiamGia.setText("Mã giảm giá");
+        btnMaGiamGia.setToolTipText("");
+        btnMaGiamGia.setAlignmentX(0.5F);
+        btnMaGiamGia.setAlignmentY(0.0F);
+        btnMaGiamGia.setBorderPainted(false);
+        btnMaGiamGia.setMaximumSize(new java.awt.Dimension(208, 40));
+        btnMaGiamGia.setMinimumSize(new java.awt.Dimension(208, 40));
+        btnMaGiamGia.setPreferredSize(new java.awt.Dimension(208, 40));
+        btnMaGiamGia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMaGiamGiaActionPerformed(evt);
+            }
+        });
+        pMenu.add(btnMaGiamGia);
+
+        jSeparator2.setPreferredSize(new java.awt.Dimension(100, 10));
+        pMenu.add(jSeparator2);
 
         btnHoaDon.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnHoaDon.setText("Hoá Đơn");
+        btnHoaDon.setAlignmentX(0.5F);
         btnHoaDon.setAlignmentY(0.0F);
         btnHoaDon.setBorderPainted(false);
         btnHoaDon.setMaximumSize(new java.awt.Dimension(208, 40));
@@ -596,10 +668,11 @@ public Main() {
                 btnHoaDonActionPerformed(evt);
             }
         });
-        menu.add(btnHoaDon);
+        pMenu.add(btnHoaDon);
 
         btnPhieuTra.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnPhieuTra.setText("Phiếu Trả");
+        btnPhieuTra.setAlignmentX(0.5F);
         btnPhieuTra.setAlignmentY(0.0F);
         btnPhieuTra.setBorderPainted(false);
         btnPhieuTra.setMaximumSize(new java.awt.Dimension(208, 40));
@@ -610,42 +683,49 @@ public Main() {
                 btnPhieuTraActionPerformed(evt);
             }
         });
-        menu.add(btnPhieuTra);
+        pMenu.add(btnPhieuTra);
         btnPhieuTra.getAccessibleContext().setAccessibleDescription("");
-
-        jSeparator2.setMaximumSize(new java.awt.Dimension(0, 15));
-        jSeparator2.setMinimumSize(new java.awt.Dimension(0, 15));
-        jSeparator2.setPreferredSize(new java.awt.Dimension(0, 15));
-        menu.add(jSeparator2);
 
         btnKhachHang.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnKhachHang.setText("Khách Hàng");
+        btnKhachHang.setAlignmentX(0.5F);
         btnKhachHang.setAlignmentY(0.0F);
         btnKhachHang.setBorderPainted(false);
         btnKhachHang.setMaximumSize(new java.awt.Dimension(208, 40));
         btnKhachHang.setMinimumSize(new java.awt.Dimension(208, 40));
         btnKhachHang.setPreferredSize(new java.awt.Dimension(208, 40));
-        menu.add(btnKhachHang);
-        menu.add(jLabel2);
+        pMenu.add(btnKhachHang);
+
+        jSeparator1.setPreferredSize(new java.awt.Dimension(100, 10));
+        pMenu.add(jSeparator1);
 
         btnNhanVien.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnNhanVien.setText("Nhân Viên");
+        btnNhanVien.setAlignmentX(0.5F);
         btnNhanVien.setBorderPainted(false);
         btnNhanVien.setMaximumSize(new java.awt.Dimension(208, 40));
         btnNhanVien.setMinimumSize(new java.awt.Dimension(208, 40));
         btnNhanVien.setPreferredSize(new java.awt.Dimension(208, 40));
-        menu.add(btnNhanVien);
+        pMenu.add(btnNhanVien);
 
         btnTaiKhoan.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnTaiKhoan.setText("Tài Khoản");
+        btnTaiKhoan.setAlignmentX(0.5F);
         btnTaiKhoan.setAlignmentY(0.0F);
         btnTaiKhoan.setBorderPainted(false);
         btnTaiKhoan.setMaximumSize(new java.awt.Dimension(208, 40));
         btnTaiKhoan.setMinimumSize(new java.awt.Dimension(208, 40));
         btnTaiKhoan.setPreferredSize(new java.awt.Dimension(208, 40));
-        menu.add(btnTaiKhoan);
-        menu.add(nganCach4);
+        pMenu.add(btnTaiKhoan);
 
+        rpWest.add(pMenu, java.awt.BorderLayout.LINE_END);
+        pMenu.getAccessibleContext().setAccessibleName("");
+
+        pDangXuat.setBackground(new java.awt.Color(255, 255, 255));
+        pDangXuat.setMinimumSize(new java.awt.Dimension(230, 50));
+        pDangXuat.setPreferredSize(new java.awt.Dimension(230, 50));
+
+        btnDangXuat.setBackground(new java.awt.Color(204, 204, 204));
         btnDangXuat.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnDangXuat.setIcon(new FlatSVGIcon("./icon/logout.svg"));
         btnDangXuat.setText("ĐĂNG XUẤT");
@@ -658,33 +738,11 @@ public Main() {
                 btnDangXuatActionPerformed(evt);
             }
         });
-        menu.add(btnDangXuat);
+        pDangXuat.add(btnDangXuat);
 
-        jspMenu.setViewportView(menu);
-        menu.getAccessibleContext().setAccessibleName("");
+        rpWest.add(pDangXuat, java.awt.BorderLayout.SOUTH);
 
-        javax.swing.GroupLayout rpWestLayout = new javax.swing.GroupLayout(rpWest);
-        rpWest.setLayout(rpWestLayout);
-        rpWestLayout.setHorizontalGroup(
-            rpWestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(rpWestLayout.createSequentialGroup()
-                .addGroup(rpWestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(thongTin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(rpWestLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jspMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        rpWestLayout.setVerticalGroup(
-            rpWestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(rpWestLayout.createSequentialGroup()
-                .addComponent(thongTin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jspMenu, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        pWest.add(rpWest, java.awt.BorderLayout.WEST);
+        pWest.add(rpWest, java.awt.BorderLayout.CENTER);
 
         Panel.add(pWest, java.awt.BorderLayout.LINE_START);
 
@@ -702,7 +760,7 @@ public Main() {
 
         getContentPane().add(Panel, java.awt.BorderLayout.CENTER);
 
-        pack();
+        setBounds(0, 0, 1214, 608);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDangXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangXuatActionPerformed
@@ -711,21 +769,25 @@ public Main() {
         login.setVisible(true);
     }//GEN-LAST:event_btnDangXuatActionPerformed
 
-    private void btnSanPhamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSanPhamActionPerformed
+    private void btnPhieuTraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPhieuTraActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnSanPhamActionPerformed
+    }//GEN-LAST:event_btnPhieuTraActionPerformed
 
     private void btnHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHoaDonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnHoaDonActionPerformed
 
-    private void btnPhieuTraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPhieuTraActionPerformed
+    private void btnSanPhamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSanPhamActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnPhieuTraActionPerformed
+    }//GEN-LAST:event_btnSanPhamActionPerformed
 
     private void btnNhaCungCapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNhaCungCapActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnNhaCungCapActionPerformed
+
+    private void btnMaGiamGiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMaGiamGiaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnMaGiamGiaActionPerformed
     private void addActionListeners(List<JButton> buttons) {
         for (JButton button : buttons) {
             button.addActionListener(this::changeButtonColor);
@@ -781,6 +843,20 @@ public Main() {
             item.setFont(font);
         }
     }
+    public void replaceMainPanel(JPanel newPanel) {
+        // Xóa tất cả các phần cũ trong mainPanel
+        pCenter.removeAll();
+
+        // Đặt layout cho mainPanel
+        pCenter.setLayout(new java.awt.BorderLayout());
+
+        // Thêm panel mới vào mainPanel
+        pCenter.add(newPanel, java.awt.BorderLayout.CENTER);
+
+        // Cập nhật lại giao diện
+        pCenter.revalidate();
+        pCenter.repaint();
+    }    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Panel;
@@ -789,26 +865,26 @@ public Main() {
     private javax.swing.JButton btnDangXuat;
     private javax.swing.JButton btnHoaDon;
     private javax.swing.JButton btnKhachHang;
+    private javax.swing.JButton btnMaGiamGia;
     private javax.swing.JButton btnNhaCungCap;
     private javax.swing.JButton btnNhanVien;
     private javax.swing.JButton btnPhieuNhap;
     private javax.swing.JButton btnPhieuTra;
+    private javax.swing.JButton btnPhieuXuat;
     private javax.swing.JButton btnSanPham;
     private javax.swing.JButton btnTaiKhoan;
     private javax.swing.JButton btnThongKe;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JScrollPane jspMenu;
     private javax.swing.JLabel lblAvatar;
     private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblRole;
-    private Swing.RoundPanel menu;
-    private javax.swing.JSeparator nganCach4;
     private javax.swing.JPanel pCenter;
+    private Swing.RoundPanel pDangXuat;
+    private Swing.RoundPanel pMenu;
+    private Swing.RoundPanel pThongTin;
     private javax.swing.JPanel pWest;
     private Swing.RoundPanel rpWest;
-    private Swing.RoundPanel thongTin;
     private Swing.RoundPanel thongtinNV;
     // End of variables declaration//GEN-END:variables
 }

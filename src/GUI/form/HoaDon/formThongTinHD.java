@@ -67,6 +67,7 @@ public class formThongTinHD extends javax.swing.JDialog {
         pNorth.setPreferredSize(new java.awt.Dimension(1200, 120));
         pNorth.setLayout(new java.awt.BorderLayout());
 
+        pTilte.setBackground(new java.awt.Color(204, 255, 204));
         pTilte.setMinimumSize(new java.awt.Dimension(1200, 50));
         pTilte.setPreferredSize(new java.awt.Dimension(1200, 50));
 
