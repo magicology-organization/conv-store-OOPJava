@@ -6,6 +6,7 @@ package DAO.PhieuTra;
 
 import ConnectDB.ConnectDB;
 import Entity.Phieu.PhieuTra;
+import java.math.BigDecimal;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -28,6 +29,49 @@ public class PhieuTraDAO {
             while (rs.next()) list.add(mapRow(rs));
         } catch (SQLException e) { e.printStackTrace(); }
         return list;
+    }
+    public List<Object[]> findAllWithDetails() {
+        String sql = """
+            SELECT pt.maPT,
+                   pt.maHD,
+                   kh.tenKH,
+                   kh.SDT             AS soDienThoai,
+                   nv.tenNV,
+                   pt.thoiGian,
+                   pt.lyDo,
+                   ISNULL(SUM(ct.soLuong * ct.donGia), 0) AS tongTienTra
+            FROM PhieuTra pt
+            JOIN HoaDon    hd  ON hd.maHD = pt.maHD
+            JOIN KhachHang kh  ON kh.maKH = hd.maKH
+            JOIN NhanVien  nv  ON nv.maNV = pt.maNV
+            LEFT JOIN CTPhieuTra ct ON ct.maPT = pt.maPT
+            GROUP BY pt.maPT, pt.maHD, kh.tenKH, kh.SDT, nv.tenNV, pt.thoiGian, pt.lyDo
+            ORDER BY pt.maPT ASC
+        """;
+
+        List<Object[]> out = new ArrayList<>();
+        try (Connection conn = ConnectDB.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                LocalDateTime tg = rs.getTimestamp("thoiGian").toLocalDateTime();
+                BigDecimal tong = rs.getBigDecimal("tongTienTra");
+                out.add(new Object[]{
+                    rs.getString("maPT"),      // 0 Mã phiếu trả
+                    rs.getString("maHD"),      // 1 Mã hóa đơn
+                    rs.getString("tenKH"),     // 2 Tên KH
+                    rs.getString("soDienThoai"),//3 SĐT KH
+                    rs.getString("tenNV"),     // 4 Tên NV
+                    tg,                        // 5 Ngày trả (LocalDateTime)
+                    tong,                      // 6 Tổng tiền trả
+                    rs.getString("lyDo")       // 7 Lý do
+                });
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return out;
     }
 
     public Optional<PhieuTra> findById(String maPT) {

@@ -6,6 +6,7 @@ package DAO.PhieuNhap;
 
 import ConnectDB.ConnectDB;
 import Entity.Phieu.PhieuNhap;
+import java.math.BigDecimal;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -29,7 +30,44 @@ public class PhieuNhapDAO {
         } catch (SQLException e) { e.printStackTrace(); }
         return list;
     }
+        public List<Object[]> findAllWithDetails() {
+        String sql = """
+            SELECT pn.maPN,
+                   ncc.tenNCC,
+                   ncc.SDT       AS soDienThoai,
+                   nv.tenNV,
+                   pn.thoiGian,
+                   ISNULL(SUM(ct.soLuong * ct.donGia), 0) AS tongHoaDon
+            FROM PhieuNhap pn
+            JOIN NhaCungCap ncc ON ncc.maNCC = pn.maNCC
+            JOIN NhanVien   nv  ON nv.maNV   = pn.maNV
+            LEFT JOIN CTPhieuNhap ct ON ct.maPN = pn.maPN
+            GROUP BY pn.maPN, ncc.tenNCC, ncc.SDT, nv.tenNV, pn.thoiGian
+            ORDER BY pn.maPN ASC
+        """;
 
+        List<Object[]> out = new ArrayList<>();
+        try (Connection conn = ConnectDB.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                LocalDateTime tg = rs.getTimestamp("thoiGian").toLocalDateTime();
+                BigDecimal tong = rs.getBigDecimal("tongHoaDon");
+                out.add(new Object[]{
+                        rs.getString("maPN"),        // 0
+                        rs.getString("tenNCC"),      // 1
+                        rs.getString("soDienThoai"), // 2
+                        rs.getString("tenNV"),       // 3
+                        tg,                          // 4 (LocalDateTime)
+                        tong                         // 5 (BigDecimal)
+                });
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return out;
+    }
     public Optional<PhieuNhap> findById(String maPN) {
         if (isBlank(maPN)) return Optional.empty();
         String sql = "SELECT maPN, maNV, maNCC, thoiGian FROM PhieuNhap WHERE maPN=?";

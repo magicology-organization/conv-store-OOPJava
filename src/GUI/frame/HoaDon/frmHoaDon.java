@@ -4,15 +4,19 @@
  */
 package GUI.frame.HoaDon;
 
+import DAO.HoaDon.HoaDonDAO;
 import GUI.Main;
 import GUI.form.HoaDon.formThemHD;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollBar;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -38,7 +42,7 @@ public class frmHoaDon extends javax.swing.JPanel {
             // Kiểm tra nếu người dùng đã cuộn đến cuối bảng
             if (current + visible >= max) {
                 startIndex += 10; // Tăng chỉ mục bắt đầu để tải dữ liệu tiếp theo
-//                loadDataToTable(); // Tải thêm dữ liệu
+                loadDataTable(); // Tải thêm dữ liệu
             }
         });
     }
@@ -59,6 +63,40 @@ public class frmHoaDon extends javax.swing.JPanel {
         // Ngăn không cho phép chọn nhiều dòng
         table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
     }
+
+    private void loadDataTable() {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+
+        HoaDonDAO dao = new HoaDonDAO();
+        List<Object[]> list = dao.findAllWithDetails();
+
+        int stt = 1;
+        for (Object[] row : list) {
+            // row[3] là LocalDateTime (có thể null nếu DB trống)
+            String ngayMua = "";
+            if (row[3] != null) {
+                LocalDateTime ldt = (LocalDateTime) row[3];
+                ngayMua = dateFormat.format(java.sql.Timestamp.valueOf(ldt));
+            }
+
+            // Tiền tệ: tổng hóa đơn (vì không còn giảm giá)
+            String tongTienStr = currencyFormat.format(row[6]); // tổng tiền = row[6]
+
+            model.addRow(new Object[] {
+                    stt++, // 0: STT
+                    row[0], // 1: Mã HD
+                    row[1], // 2: Tên KH
+                    row[2], // 3: SĐT
+                    row[4], // 4: Tên NV
+                    ngayMua, // 5: Ngày mua
+                    row[7], // 6: Kiểu thanh toán
+                    tongTienStr // 7: Tổng tiền (hiển thị sau kiểu thanh toán)
+            });
+        }
+    }
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -126,6 +164,8 @@ public class frmHoaDon extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        table.setMinimumSize(null);
+        table.setPreferredSize(null);
         table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         table.setShowHorizontalLines(true);
         scrollTableCenter.setViewportView(table);
@@ -157,7 +197,7 @@ public class frmHoaDon extends javax.swing.JPanel {
 
         add(Panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
         try {

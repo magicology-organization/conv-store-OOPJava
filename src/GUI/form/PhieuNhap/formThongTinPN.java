@@ -61,7 +61,6 @@ public class formThongTinPN extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1200, 600));
-        setPreferredSize(new java.awt.Dimension(1200, 600));
 
         pNorth.setBackground(new java.awt.Color(204, 255, 204));
         pNorth.setLayout(new java.awt.BorderLayout());
@@ -69,9 +68,9 @@ public class formThongTinPN extends javax.swing.JDialog {
         pTilte.setBackground(new java.awt.Color(204, 255, 204));
         pTilte.setMinimumSize(new java.awt.Dimension(1200, 50));
 
-        titleNorth.setFont(new java.awt.Font("Roboto Medium", 0, 18)); // NOI18N
+        titleNorth.setFont(new java.awt.Font("Roboto Medium", 1, 18)); // NOI18N
         titleNorth.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titleNorth.setText("CHI TIẾT HÓA ĐƠN");
+        titleNorth.setText("CHI TIẾT PHIẾU NHẬP");
         titleNorth.setPreferredSize(new java.awt.Dimension(149, 40));
 
         javax.swing.GroupLayout pTilteLayout = new javax.swing.GroupLayout(pTilte);

@@ -31,6 +31,48 @@ public class NhanVienDAO {
         }
         return list;
     }
+    public List<Object[]> findAllWithDetails() {
+        String sql = """
+            SELECT maNV, tenNV, chucVu, SDT, gioiTinh, trangThai
+            FROM NhanVien
+            ORDER BY maNV ASC
+        """;
+        List<Object[]> out = new ArrayList<>();
+        try (PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                // --- Chuẩn hóa giới tính về "Nam"/"Nữ"
+                Object rawGT = rs.getObject("gioiTinh");
+                String gt;
+                if      (rawGT instanceof Boolean) gt = ((Boolean) rawGT) ? "Nam" : "Nữ";
+                else if (rawGT instanceof Number)  gt = (((Number) rawGT).intValue() == 1) ? "Nam" : "Nữ";
+                else                                gt = String.valueOf(rawGT); // đã là "Nam"/"Nữ"
+
+                // --- Chuẩn hóa trạng thái về "Đang làm"/"Nghỉ việc"
+                Object rawTT = rs.getObject("trangThai");
+                String tt;
+                if      (rawTT instanceof Boolean) tt = ((Boolean) rawTT) ? "Đang làm" : "Nghỉ việc";
+                else if (rawTT instanceof Number)  tt = (((Number) rawTT).intValue() == 1) ? "Đang làm" : "Nghỉ việc";
+                else {
+                    String s = String.valueOf(rawTT).trim();
+                    tt = (s.equalsIgnoreCase("1") || s.equalsIgnoreCase("true") || s.equalsIgnoreCase("Đang làm"))
+                            ? "Đang làm" : "Nghỉ việc";
+                }
+
+                out.add(new Object[]{
+                    rs.getString("maNV"),   // 0
+                    rs.getString("tenNV"),  // 1
+                    rs.getString("chucVu"), // 2
+                    rs.getString("SDT"),    // 3
+                    gt,                     // 4  -> String "Nam"/"Nữ"
+                    tt                      // 5  -> String "Đang làm"/"Nghỉ việc"
+                });
+            }
+        } catch (SQLException e) { throw new RuntimeException(e); }
+        return out;
+    }
+
+
 
     public Optional<NhanVien> findById(String maNV) {
         if (isBlank(maNV)) return Optional.empty();

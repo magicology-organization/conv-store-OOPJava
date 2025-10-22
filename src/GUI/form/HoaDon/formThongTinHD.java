@@ -71,7 +71,7 @@ public class formThongTinHD extends javax.swing.JDialog {
         pTilte.setMinimumSize(new java.awt.Dimension(1200, 50));
         pTilte.setPreferredSize(new java.awt.Dimension(1200, 50));
 
-        titleNorth.setFont(new java.awt.Font("Roboto Medium", 0, 18)); // NOI18N
+        titleNorth.setFont(new java.awt.Font("Roboto Medium", 1, 18)); // NOI18N
         titleNorth.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         titleNorth.setText("CHI TIẾT HÓA ĐƠN");
         titleNorth.setPreferredSize(new java.awt.Dimension(149, 40));

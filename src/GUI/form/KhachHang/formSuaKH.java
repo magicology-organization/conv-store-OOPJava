@@ -4,18 +4,56 @@
  */
 package GUI.form.KhachHang;
 
+import DAO.KhachHang.KhachHangDAO;
+import Entity.KhachHang.KhachHang;
+import javax.swing.ButtonGroup;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author ADMIN
  */
 public class formSuaKH extends javax.swing.JDialog {
-
+    private String maKH;                         // mã khách hàng được truyền vào
+    private final KhachHangDAO khDAO = new KhachHangDAO();
+    private ButtonGroup grpGioiTinh;  
     /**
      * Creates new form formSuaKH
      */
-    public formSuaKH(java.awt.Frame parent, boolean modal) {
+    public formSuaKH(java.awt.Frame parent, boolean modal, String maKH) {
         super(parent, modal);
         initComponents();
+        this.maKH = maKH;
+        groupGenderButtons();
+        txtMaKH.setEditable(false);
+        loadData();
+}
+    private void groupGenderButtons() {
+        grpGioiTinh = new ButtonGroup();
+        grpGioiTinh.add(rbtnNam);
+        grpGioiTinh.add(rbtnNu);
+}
+
+
+    private void loadData() {
+        if (maKH == null || maKH.isEmpty()) return;
+
+        KhachHang kh = khDAO.findById(maKH);
+        if (kh == null) {
+            JOptionPane.showMessageDialog(this, "Không tìm thấy khách hàng có mã: " + maKH);
+            dispose();
+            return;
+        }
+
+        txtMaKH.setText(kh.getMaKH());
+        txtHoTen.setText(kh.getTenKH());
+        txtSDT.setText(kh.getSdt());
+
+        if ("Nam".equalsIgnoreCase(kh.getGioiTinh())) {
+            rbtnNam.setSelected(true);
+        } else {
+            rbtnNu.setSelected(true);
+        }
     }
 
     /**
@@ -32,6 +70,8 @@ public class formSuaKH extends javax.swing.JDialog {
         title = new javax.swing.JLabel();
         pCenter = new javax.swing.JPanel();
         pThongTin = new javax.swing.JPanel();
+        lblMaKH = new javax.swing.JLabel();
+        txtMaKH = new javax.swing.JTextField();
         lblTen = new javax.swing.JLabel();
         txtHoTen = new javax.swing.JTextField();
         lblGioiTinh = new javax.swing.JLabel();
@@ -40,14 +80,11 @@ public class formSuaKH extends javax.swing.JDialog {
         rbtnNu = new javax.swing.JRadioButton();
         lblSDT = new javax.swing.JLabel();
         txtSDT = new javax.swing.JTextField();
-        lblTuoi = new javax.swing.JLabel();
-        txtTuoi = new javax.swing.JTextField();
         pSouth = new javax.swing.JPanel();
         btnHuy = new javax.swing.JButton();
         btnSua = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(600, 400));
 
         roundPanel.setBackground(new java.awt.Color(255, 255, 255));
         roundPanel.setMaximumSize(new java.awt.Dimension(600, 400));
@@ -81,6 +118,21 @@ public class formSuaKH extends javax.swing.JDialog {
         pThongTin.setMinimumSize(new java.awt.Dimension(550, 300));
         pThongTin.setPreferredSize(new java.awt.Dimension(550, 300));
         pThongTin.setLayout(new java.awt.GridLayout(6, 2, 5, 0));
+
+        lblMaKH.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblMaKH.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblMaKH.setText("Mã khách hàng:");
+        lblMaKH.setAlignmentX(20.0F);
+        lblMaKH.setAlignmentY(20.0F);
+        pThongTin.add(lblMaKH);
+
+        txtMaKH.setPreferredSize(new java.awt.Dimension(350, 22));
+        txtMaKH.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMaKHActionPerformed(evt);
+            }
+        });
+        pThongTin.add(txtMaKH);
 
         lblTen.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblTen.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -125,14 +177,6 @@ public class formSuaKH extends javax.swing.JDialog {
 
         txtSDT.setPreferredSize(new java.awt.Dimension(350, 22));
         pThongTin.add(txtSDT);
-
-        lblTuoi.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblTuoi.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblTuoi.setText("Tuổi:");
-        pThongTin.add(lblTuoi);
-
-        txtTuoi.setPreferredSize(new java.awt.Dimension(350, 22));
-        pThongTin.add(txtTuoi);
 
         pCenter.add(pThongTin);
 
@@ -189,7 +233,42 @@ public class formSuaKH extends javax.swing.JDialog {
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
+        if (maKH == null || maKH.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Không có mã khách hàng để sửa!");
+            return;
+        }
+
+        String ten = txtHoTen.getText().trim();
+        String sdt = txtSDT.getText().trim();
+        String gioiTinh = rbtnNam.isSelected() ? "Nam" : "Nữ";
+
+        if (ten.isEmpty() || sdt.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ họ tên và SĐT!");
+            return;
+        }
+        if (!sdt.matches("\\d{9,11}")) {
+            JOptionPane.showMessageDialog(this, "SĐT phải có 9–11 chữ số.");
+            return;
+        }
+
+        KhachHang kh = new KhachHang();
+        kh.setMaKH(maKH);
+        kh.setTenKH(ten);
+        kh.setSdt(sdt);
+        kh.setGioiTinh(gioiTinh);
+
+        boolean ok = khDAO.update(kh);
+        if (ok) {
+            JOptionPane.showMessageDialog(this, "Cập nhật khách hàng thành công!");
+            dispose(); // đóng form
+        } else {
+            JOptionPane.showMessageDialog(this, "Cập nhật thất bại! Vui lòng thử lại.");
+        }
     }//GEN-LAST:event_btnSuaActionPerformed
+
+    private void txtMaKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaKHActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMaKHActionPerformed
 
     /**
      * @param args the command line arguments
@@ -221,13 +300,15 @@ public class formSuaKH extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                formSuaKH dialog = new formSuaKH(new javax.swing.JFrame(), true);
+                // 👇 truyền mã KH mẫu để form tự load dữ liệu
+                formSuaKH dialog = new formSuaKH(new javax.swing.JFrame(), true, "KH001");
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
                         System.exit(0);
                     }
                 });
+                dialog.setLocationRelativeTo(null);
                 dialog.setVisible(true);
             }
         });
@@ -238,9 +319,9 @@ public class formSuaKH extends javax.swing.JDialog {
     private javax.swing.JButton btnSua;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblGioiTinh;
+    private javax.swing.JLabel lblMaKH;
     private javax.swing.JLabel lblSDT;
     private javax.swing.JLabel lblTen;
-    private javax.swing.JLabel lblTuoi;
     private javax.swing.JPanel pCenter;
     private javax.swing.JPanel pNorth;
     private javax.swing.JPanel pSouth;
@@ -250,7 +331,7 @@ public class formSuaKH extends javax.swing.JDialog {
     private Swing.RoundPanel roundPanel;
     private javax.swing.JLabel title;
     private javax.swing.JTextField txtHoTen;
+    private javax.swing.JTextField txtMaKH;
     private javax.swing.JTextField txtSDT;
-    private javax.swing.JTextField txtTuoi;
     // End of variables declaration//GEN-END:variables
 }

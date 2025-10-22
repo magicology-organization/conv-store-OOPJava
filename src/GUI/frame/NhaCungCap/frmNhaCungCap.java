@@ -4,17 +4,78 @@
  */
 package GUI.frame.NhaCungCap;
 
+import DAO.PhieuNhap.NhaCungCapDAO;
+import Entity.Phieu.NhaCungCap;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import javax.swing.JLabel;
+import javax.swing.JScrollBar;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author ADMIN
  */
 public class frmNhaCungCap extends javax.swing.JPanel {
-
+    private int startIndex = 0;
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    private final DecimalFormat currencyFormat = new DecimalFormat("#,### VND");
     /**
      * Creates new form frmNhaCungCap
      */
     public frmNhaCungCap() {
         initComponents();
+        configureTable();
+        // Thêm sự kiện cuộn bảng
+        scrollTableCenter.getVerticalScrollBar().addAdjustmentListener(e -> {
+            JScrollBar vertical = scrollTableCenter.getVerticalScrollBar();
+            int max = vertical.getMaximum();
+            int current = vertical.getValue();
+            int visible = vertical.getVisibleAmount();
+
+            // Kiểm tra nếu người dùng đã cuộn đến cuối bảng
+            if (current + visible >= max) {
+                startIndex += 10; // Tăng chỉ mục bắt đầu để tải dữ liệu tiếp theo
+                loadDataTable(); // Tải thêm dữ liệu
+            }
+        });
+    }
+    private void configureTable() {
+        // Ngăn không cho phép người dùng chỉnh sửa bảng
+        table.setDefaultEditor(Object.class, null); // Điều này vô hiệu hóa khả năng chỉnh sửa của bất kỳ ô nào trong
+                                                      // bảng.
+
+        // Căn giữa cho tất cả các cell trong bảng
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        // Căn giữa cho từng cột
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+
+        // Ngăn không cho phép chọn nhiều dòng
+        table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+    }
+    private void loadDataTable() {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+
+        NhaCungCapDAO dao = new NhaCungCapDAO();
+        List<NhaCungCap> list = dao.findAll();
+
+        int stt = 1;
+        for (NhaCungCap ncc : list) {
+            model.addRow(new Object[]{
+                stt++,
+                ncc.getMaNCC(),
+                ncc.getTenNCC(),
+                ncc.getSdt(),
+                ncc.getDiaChiNCC()
+            });
+        }
     }
 
     /**
@@ -63,8 +124,8 @@ public class frmNhaCungCap extends javax.swing.JPanel {
         pCenter.setMinimumSize(new java.awt.Dimension(0, 0));
         pCenter.setLayout(new java.awt.BorderLayout());
 
-        scrollTableCenter.setMinimumSize(new java.awt.Dimension(1200, 500));
-        scrollTableCenter.setPreferredSize(new java.awt.Dimension(1200, 500));
+        scrollTableCenter.setMinimumSize(null);
+        scrollTableCenter.setPreferredSize(null);
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

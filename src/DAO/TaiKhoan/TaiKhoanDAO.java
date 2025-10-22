@@ -30,6 +30,28 @@ public class TaiKhoanDAO {
         }
         return list;
     }
+    public List<Object[]> findAllWithDetails() {
+        String sql = """
+            SELECT tk.maTK, nv.tenNV, tk.tenTK, nv.chucVu
+            FROM TaiKhoan tk
+            JOIN NhanVien nv ON nv.maNV = tk.maNV
+            ORDER BY tk.maTK ASC
+        """;
+        List<Object[]> out = new ArrayList<>();
+        try (PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                out.add(new Object[] {
+                    rs.getString("maTK"),      // 0 Mã tài khoản
+                    rs.getString("tenNV"),     // 1 Tên nhân viên
+                    rs.getString("tenTK"),  // 2 Tài khoản (username)
+                    rs.getString("chucVu")     // 3 Chức vụ
+                });
+            }
+        } catch (SQLException e) { throw new RuntimeException(e); }
+        return out;
+    }
+
 
     public Optional<TaiKhoan> findById(String maTK) {
         if (isBlank(maTK)) return Optional.empty();

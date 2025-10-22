@@ -4,18 +4,90 @@
  */
 package GUI.frame.PhieuNhap;
 
+import DAO.PhieuNhap.PhieuNhapDAO;
+import GUI.Main;
+import GUI.form.PhieuNhap.formThemPN;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollBar;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableCellRenderer;
+
 /**
  *
  * @author ADMIN
  */
 public class frmPhieuNhap extends javax.swing.JPanel {
-
+    private int startIndex = 0;
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    private final DecimalFormat currencyFormat = new DecimalFormat("#,### VND");
     /**
      * Creates new form frmPhieuNhap
      */
     public frmPhieuNhap() {
         initComponents();
+        configureTable();
+        // Thêm sự kiện cuộn bảng
+        scrollTableCenter.getVerticalScrollBar().addAdjustmentListener(e -> {
+            JScrollBar vertical = scrollTableCenter.getVerticalScrollBar();
+            int max = vertical.getMaximum();
+            int current = vertical.getValue();
+            int visible = vertical.getVisibleAmount();
+
+            // Kiểm tra nếu người dùng đã cuộn đến cuối bảng
+            if (current + visible >= max) {
+                startIndex += 10; // Tăng chỉ mục bắt đầu để tải dữ liệu tiếp theo
+                loadDataTable(); // Tải thêm dữ liệu
+            }
+        });
     }
+    private void configureTable() {
+        // Ngăn không cho phép người dùng chỉnh sửa bảng
+        table.setDefaultEditor(Object.class, null); // Điều này vô hiệu hóa khả năng chỉnh sửa của bất kỳ ô nào trong
+                                                      // bảng.
+
+        // Căn giữa cho tất cả các cell trong bảng
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        // Căn giữa cho từng cột
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+
+        // Ngăn không cho phép chọn nhiều dòng
+        table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+    }
+    private void loadDataTable() {
+        javax.swing.table.DefaultTableModel model =
+            (javax.swing.table.DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+
+        PhieuNhapDAO dao = new PhieuNhapDAO();
+        java.util.List<Object[]> list = dao.findAllWithDetails();
+
+        int stt = 1;
+        for (Object[] row : list) {
+            // row = { maPN, tenNCC, soDienThoai, tenNV, thoiGian(LocalDateTime), tong(BigDecimal) }
+            java.time.LocalDateTime ldt = (java.time.LocalDateTime) row[4];
+            String ngayNhap = dateFormat.format(java.sql.Timestamp.valueOf(ldt));
+
+            String tongTien = currencyFormat.format((java.math.BigDecimal) row[5]);
+
+            model.addRow(new Object[]{
+                stt++,
+                row[0],       // Mã phiếu nhập
+                row[1],       // Tên nhà cung cấp
+                row[2],       // SĐT NCC
+                row[3],       // Tên nhân viên
+                ngayNhap,     // Ngày nhập (format)
+                tongTien      // Tổng hóa đơn (format)
+            });
+        }
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -56,11 +128,12 @@ public class frmPhieuNhap extends javax.swing.JPanel {
         titleName.setPreferredSize(new java.awt.Dimension(1200, 32));
         pNorth.add(titleName, java.awt.BorderLayout.CENTER);
 
-        Panel.add(pNorth, java.awt.BorderLayout.PAGE_START);
+        Panel.add(pNorth, java.awt.BorderLayout.NORTH);
 
         pCenter.setMinimumSize(new java.awt.Dimension(0, 0));
         pCenter.setLayout(new java.awt.BorderLayout());
 
+        scrollTableCenter.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         scrollTableCenter.setMinimumSize(new java.awt.Dimension(1200, 500));
         scrollTableCenter.setPreferredSize(new java.awt.Dimension(1200, 500));
 
@@ -69,9 +142,20 @@ public class frmPhieuNhap extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Mã hóa đơn", "Tên khách hàng", "SĐT khách", "Tên nhân viên", "Ngày mua", "Tổng hóa đơn"
+                "STT", "Mã phiếu nhập", "Tên nhà cung cấp", "SĐT", "Tên nhân viên", "Ngày nhập", "Tổng hóa đơn"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        table.setMinimumSize(null);
+        table.setName(""); // NOI18N
+        table.setPreferredSize(null);
         table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         table.setShowHorizontalLines(true);
         scrollTableCenter.setViewportView(table);
@@ -99,13 +183,28 @@ public class frmPhieuNhap extends javax.swing.JPanel {
         });
         pSouth.add(btnThem);
 
-        Panel.add(pSouth, java.awt.BorderLayout.PAGE_END);
+        Panel.add(pSouth, java.awt.BorderLayout.SOUTH);
 
         add(Panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
+        try {
+        // Tạo đối tượng frmPhieuNhapThem
+        formThemPN formThem = new formThemPN();
+        // Lấy đối tượng Main (parent frame)
+        Main parentFrame = (Main) SwingUtilities.getWindowAncestor(this);
+        
+        // Gọi phương thức replaceMainPanel để thay thế nội dung trong mainPanel
+        parentFrame.replaceMainPanel(formThem);
+        
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(this,
+                "Không thể mở form thêm phiếu nhập: " + ex.getMessage(),
+                "Lỗi", 
+                JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_btnThemActionPerformed
 
 

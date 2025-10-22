@@ -4,18 +4,95 @@
  */
 package GUI.frame.KhachHang;
 
+import DAO.KhachHang.KhachHangDAO;
+import GUI.form.KhachHang.formSuaKH;
+import GUI.form.KhachHang.formThemKH;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollBar;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author ADMIN
  */
 public class frmKhachHang extends javax.swing.JPanel {
-
+    private int startIndex = 0;
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    private final DecimalFormat currencyFormat = new DecimalFormat("#,### VND");
     /**
      * Creates new form frmKhachHang
      */
     public frmKhachHang() {
         initComponents();
+        configureTable();
+        // Thêm sự kiện cuộn bảng
+        scrollTableCenter.getVerticalScrollBar().addAdjustmentListener(e -> {
+            JScrollBar vertical = scrollTableCenter.getVerticalScrollBar();
+            int max = vertical.getMaximum();
+            int current = vertical.getValue();
+            int visible = vertical.getVisibleAmount();
+
+            // Kiểm tra nếu người dùng đã cuộn đến cuối bảng
+            if (current + visible >= max) {
+                startIndex += 10; // Tăng chỉ mục bắt đầu để tải dữ liệu tiếp theo
+                loadDataTable(); // Tải thêm dữ liệu
+            }
+        });
     }
+    private void configureTable() {
+        // Ngăn không cho phép người dùng chỉnh sửa bảng
+        table.setDefaultEditor(Object.class, null); // Điều này vô hiệu hóa khả năng chỉnh sửa của bất kỳ ô nào trong
+                                                      // bảng.
+
+        // Căn giữa cho tất cả các cell trong bảng
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        // Căn giữa cho từng cột
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+
+        // Ngăn không cho phép chọn nhiều dòng
+        table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+    }
+    private void loadDataTable() {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+
+        KhachHangDAO dao = new KhachHangDAO();
+        List<Object[]> list = dao.findAllWithDetails(); // [0 maKH, 1 tenKH, 2 gioiTinh, 3 sdt]
+
+        int stt = 1;
+        for (Object[] row : list) {
+            // chuẩn hóa giới tính
+            String gt;
+            Object gioi = row[2];
+            if (gioi instanceof Boolean) {
+                gt = ((Boolean) gioi) ? "Nam" : "Nữ";
+            } else if (gioi instanceof Number) {
+                gt = (((Number) gioi).intValue() == 1) ? "Nam" : "Nữ";
+            } else {
+                gt = String.valueOf(gioi); // "Nam"/"Nữ"
+            }
+
+            model.addRow(new Object[]{
+                stt++,        // STT
+                row[0],       // Mã khách hàng  <-- thêm vào đây
+                row[1],       // Tên khách hàng
+                gt,           // Giới tính
+                row[3]        // SĐT
+            });
+        }
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -35,7 +112,7 @@ public class frmKhachHang extends javax.swing.JPanel {
         pSouth = new javax.swing.JPanel();
         btnThem = new javax.swing.JButton();
         btnXoa = new javax.swing.JButton();
-        btnThem2 = new javax.swing.JButton();
+        btnSua = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -63,6 +140,7 @@ public class frmKhachHang extends javax.swing.JPanel {
         pCenter.setMinimumSize(new java.awt.Dimension(0, 0));
         pCenter.setLayout(new java.awt.BorderLayout());
 
+        scrollTableCenter.setToolTipText("");
         scrollTableCenter.setMinimumSize(new java.awt.Dimension(1200, 500));
         scrollTableCenter.setPreferredSize(new java.awt.Dimension(1200, 500));
 
@@ -71,17 +149,20 @@ public class frmKhachHang extends javax.swing.JPanel {
 
             },
             new String [] {
-                "STT", "Tên khách hàng", "Giới tính", "SĐT"
+                "STT", "Mã khách hàng", "Tên khách hàng", "Giới tính", "SĐT"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, true, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        table.setMinimumSize(null);
+        table.setName(""); // NOI18N
+        table.setPreferredSize(null);
         table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         table.setShowHorizontalLines(true);
         scrollTableCenter.setViewportView(table);
@@ -124,20 +205,20 @@ public class frmKhachHang extends javax.swing.JPanel {
         });
         pSouth.add(btnXoa);
 
-        btnThem2.setBackground(new java.awt.Color(153, 153, 153));
-        btnThem2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnThem2.setForeground(new java.awt.Color(255, 255, 255));
-        btnThem2.setText("Sửa");
-        btnThem2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnThem2.setMaximumSize(new java.awt.Dimension(85, 35));
-        btnThem2.setMinimumSize(new java.awt.Dimension(85, 35));
-        btnThem2.setPreferredSize(new java.awt.Dimension(105, 35));
-        btnThem2.addActionListener(new java.awt.event.ActionListener() {
+        btnSua.setBackground(new java.awt.Color(153, 153, 153));
+        btnSua.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnSua.setForeground(new java.awt.Color(255, 255, 255));
+        btnSua.setText("Sửa");
+        btnSua.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnSua.setMaximumSize(new java.awt.Dimension(85, 35));
+        btnSua.setMinimumSize(new java.awt.Dimension(85, 35));
+        btnSua.setPreferredSize(new java.awt.Dimension(105, 35));
+        btnSua.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnThem2ActionPerformed(evt);
+                btnSuaActionPerformed(evt);
             }
         });
-        pSouth.add(btnThem2);
+        pSouth.add(btnSua);
 
         Panel.add(pSouth, java.awt.BorderLayout.PAGE_END);
 
@@ -146,21 +227,80 @@ public class frmKhachHang extends javax.swing.JPanel {
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
+        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        formThemKH dialog = new formThemKH(parentFrame, true);  // Mở formThemKH
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+
+        // Sau khi đóng formThemKH, gọi lại phương thức để làm mới bảng
+        loadDataTable();
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
         // TODO add your handling code here:
+        int selectedRow = table.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn khách hàng để xoá!");
+            return;
+        }
+
+        String maKH = table.getValueAt(selectedRow, 0).toString(); // cột 0 là Mã KH
+
+        int confirm = JOptionPane.showConfirmDialog(
+                this,
+                "Bạn có chắc muốn xoá khách hàng: " + maKH + " ?",
+                "Xác nhận xoá",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+        );
+
+        if (confirm != JOptionPane.YES_OPTION) return;
+
+        try {
+            KhachHangDAO khDAO = new KhachHangDAO();
+            boolean success = khDAO.deleteById(maKH); // phương thức trả về boolean
+
+            if (success) {
+                JOptionPane.showMessageDialog(this, "Đã xoá khách hàng thành công!");
+                loadDataTable(); // làm mới bảng sau khi xoá
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "Không thể xoá! Khách hàng không tồn tại hoặc đang được tham chiếu.");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Có lỗi khi xoá: " + ex.getMessage());
+        }
+
+
+
     }//GEN-LAST:event_btnXoaActionPerformed
 
-    private void btnThem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThem2ActionPerformed
+    private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnThem2ActionPerformed
+        int selectedRow = table.getSelectedRow();
+        if (selectedRow != -1) {
+            // Lấy mã khách hàng từ cột đầu tiên trong JTable
+            String maKH = table.getValueAt(selectedRow, 1).toString();
+
+            // Mở form sửa, truyền mã khách hàng vào
+            javax.swing.JFrame parentFrame = (javax.swing.JFrame) javax.swing.SwingUtilities.getWindowAncestor(this);
+            formSuaKH dialog = new formSuaKH(parentFrame, true, maKH);
+            dialog.setLocationRelativeTo(this);
+            dialog.setVisible(true);
+
+            // Sau khi form sửa đóng, refresh lại bảng
+            loadDataTable();
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Vui lòng chọn khách hàng để sửa!");
+        }
+    }//GEN-LAST:event_btnSuaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Panel;
+    private javax.swing.JButton btnSua;
     private javax.swing.JButton btnThem;
-    private javax.swing.JButton btnThem2;
     private javax.swing.JButton btnXoa;
     private javax.swing.JPanel pCenter;
     private javax.swing.JPanel pNorth;

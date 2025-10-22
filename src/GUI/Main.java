@@ -14,10 +14,6 @@ import GUI.frame.NhanVien.frmNhanVien;
 import GUI.frame.NhanVien.frmSearchNhanVien;
 import GUI.frame.PhieuNhap.frmPhieuNhap;
 import GUI.frame.PhieuNhap.frmSearchPhieuNhap;
-import GUI.frame.PhieuTra.frmPhieuTra;
-import GUI.frame.PhieuTra.frmSearchPhieuTra;
-import GUI.frame.PhieuXuat.frmPhieuXuat;
-import GUI.frame.PhieuXuat.frmSearchPhieuXuat;
 import GUI.frame.SanPham.frmSanPham;
 import GUI.frame.SanPham.frmSearchSanPham;
 import GUI.frame.TaiKhoan.frmSearchTaiKhoan;
@@ -46,6 +42,7 @@ import javax.swing.JSeparator;
  */
 public class Main extends javax.swing.JFrame {
     private RoundedPopupMenu popupMenuSP;
+    private RoundedPopupMenu popupMenuMGG;
     private RoundedPopupMenu popupMenuNCC;
     private RoundedPopupMenu popupMenuKH;
     private RoundedPopupMenu popupMenuNV;
@@ -62,7 +59,7 @@ public Main() {
     setTitle("Phần mềm quản lý cửa hàng tiện lợi");
     setExtendedState(JFrame.MAXIMIZED_BOTH);
     addActionListeners(Arrays.asList(btnThongKe, btnHoaDon, btnKhachHang, btnNhaCungCap, btnNhanVien, btnPhieuNhap,
-                btnTaiKhoan, btnSanPham, btnDangXuat, btnPhieuTra, btnPhieuXuat));
+                btnTaiKhoan, btnSanPham, btnDangXuat));
     //---------------MENU---------------------//
         // Menu Phiếu Nhập
         popupMenuPN = new RoundedPopupMenu();
@@ -76,20 +73,7 @@ public Main() {
 
         btnPhieuNhap.addActionListener(e -> popupMenuPN.show(btnPhieuNhap, btnPhieuNhap.getWidth(), 2));
         setFontForMenuItems(new RoundedMenuItem[]{itemPN1, itemPN2});
-
-        // Menu Phiếu Xuất
-        popupMenuPX = new RoundedPopupMenu();
-        RoundedMenuItem itemPX1 = new RoundedMenuItem("Cập nhật");
-        popupMenuPX.add(itemPX1);
-        popupMenuPX.add(new JSeparator());
-
-        RoundedMenuItem itemPX2 = new RoundedMenuItem("Tìm kiếm");
-        popupMenuPX.add(itemPX2);
-        popupMenuPX.add(new JSeparator());
-
-        btnPhieuXuat.addActionListener(e -> popupMenuPX.show(btnPhieuXuat, btnPhieuXuat.getWidth(), 2));
-        setFontForMenuItems(new RoundedMenuItem[]{itemPN1, itemPN2});
-        
+     
         // Menu Nhà Cung Cấp
         popupMenuNCC = new RoundedPopupMenu();
         RoundedMenuItem itemNCC1 = new RoundedMenuItem("Cập nhật");
@@ -115,20 +99,7 @@ public Main() {
 
         btnHoaDon.addActionListener(e -> popupMenuHD.show(btnHoaDon, btnHoaDon.getWidth(), 2));
         setFontForMenuItems(new RoundedMenuItem[]{itemHD1, itemHD2});
-        
-        // Menu Phiếu trả
-        popupMenuPT = new RoundedPopupMenu();
-        RoundedMenuItem itemPT1 = new RoundedMenuItem("Cập nhật");
-        popupMenuPT.add(itemPT1);
-        popupMenuPT.add(new JSeparator());
-
-        RoundedMenuItem itemPT2 = new RoundedMenuItem("Tìm kiếm");
-        popupMenuPT.add(itemPT2);
-        popupMenuPT.add(new JSeparator());
-
-        btnPhieuTra.addActionListener(e -> popupMenuPT.show(btnPhieuTra, btnPhieuTra.getWidth(), 2));
-        setFontForMenuItems(new RoundedMenuItem[]{itemPT1, itemPT2});        
-
+    
         // Menu nhân viên
         popupMenuNV = new RoundedPopupMenu();
         RoundedMenuItem itemNV1 = new RoundedMenuItem("Cập nhật");
@@ -179,7 +150,7 @@ public Main() {
         popupMenuSP.add(new JSeparator());
 
         btnSanPham.addActionListener(e -> popupMenuSP.show(btnSanPham, btnSanPham.getWidth(), 2));
-        setFontForMenuItems(new RoundedMenuItem[]{itemSP1, itemSP2});            
+        setFontForMenuItems(new RoundedMenuItem[]{itemSP1, itemSP2});       
         
       //-------------SỰ KIỆN------------//
         // Sự kiện nhà cung cấp
@@ -266,66 +237,6 @@ public Main() {
 
             // Thêm layout cho pCenter
             pCenter.add(pn2, java.awt.BorderLayout.CENTER);
-
-            // Cập nhật lại giao diện
-            pCenter.revalidate();
-            pCenter.repaint();
-        });
-
-        // Sự kiện phiếu xuất
-        itemPX1.addActionListener(e -> {
-            frmPhieuXuat px1 = new frmPhieuXuat();
-            // Xóa tất cả các phần cũ
-            pCenter.removeAll();
-            // Đặt layout cho pCenter
-            pCenter.setLayout(new java.awt.BorderLayout());
-
-            // Thêm layout cho pCenter
-            pCenter.add(px1, java.awt.BorderLayout.CENTER);
-
-            // Cập nhật lại giao diện
-            pCenter.revalidate();
-            pCenter.repaint();
-        });
-        itemPX2.addActionListener(e -> {
-            frmSearchPhieuXuat px2 = new frmSearchPhieuXuat();
-            // Xóa tất cả các phần cũ
-            pCenter.removeAll();
-            // Đặt layout cho pCenter
-            pCenter.setLayout(new java.awt.BorderLayout());
-
-            // Thêm layout cho pCenter
-            pCenter.add(px2, java.awt.BorderLayout.CENTER);
-
-            // Cập nhật lại giao diện
-            pCenter.revalidate();
-            pCenter.repaint();
-        });
-        
-        // Sự kiện phiếu TRẢ
-        itemPT1.addActionListener(e -> {
-            frmPhieuTra pt1 = new frmPhieuTra();
-            // Xóa tất cả các phần cũ
-            pCenter.removeAll();
-            // Đặt layout cho pCenter
-            pCenter.setLayout(new java.awt.BorderLayout());
-
-            // Thêm layout cho pCenter
-            pCenter.add(pt1, java.awt.BorderLayout.CENTER);
-
-            // Cập nhật lại giao diện
-            pCenter.revalidate();
-            pCenter.repaint();
-        });
-        itemPT2.addActionListener(e -> {
-            frmSearchPhieuTra pt2 = new frmSearchPhieuTra();
-            // Xóa tất cả các phần cũ
-            pCenter.removeAll();
-            // Đặt layout cho pCenter
-            pCenter.setLayout(new java.awt.BorderLayout());
-
-            // Thêm layout cho pCenter
-            pCenter.add(pt2, java.awt.BorderLayout.CENTER);
 
             // Cập nhật lại giao diện
             pCenter.revalidate();
@@ -451,6 +362,7 @@ public Main() {
             pCenter.revalidate();
             pCenter.repaint();
         }); 
+        
 }
 
     
@@ -463,6 +375,7 @@ public Main() {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         Panel = new javax.swing.JPanel();
         pWest = new javax.swing.JPanel();
@@ -474,15 +387,14 @@ public Main() {
         lblName = new javax.swing.JLabel();
         lblRole = new javax.swing.JLabel();
         pMenu = new Swing.RoundPanel();
+        jspMenu = new javax.swing.JScrollPane();
+        Menu = new javax.swing.JPanel();
         btnThongKe = new javax.swing.JButton();
         btnPhieuNhap = new javax.swing.JButton();
-        btnPhieuXuat = new javax.swing.JButton();
         btnNhaCungCap = new javax.swing.JButton();
         btnSanPham = new javax.swing.JButton();
-        btnMaGiamGia = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JSeparator();
         btnHoaDon = new javax.swing.JButton();
-        btnPhieuTra = new javax.swing.JButton();
         btnKhachHang = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         btnNhanVien = new javax.swing.JButton();
@@ -493,7 +405,6 @@ public Main() {
         anhCenter = new SmoothImageLabel("/Icon/mainBackGround.png") ;
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1200, 600));
 
         Panel.setBackground(new java.awt.Color(51, 51, 51));
         Panel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -573,6 +484,13 @@ public Main() {
         pMenu.setMaximumSize(new java.awt.Dimension(230, 480));
         pMenu.setMinimumSize(new java.awt.Dimension(230, 480));
         pMenu.setPreferredSize(new java.awt.Dimension(230, 480));
+        pMenu.setLayout(new javax.swing.BoxLayout(pMenu, javax.swing.BoxLayout.LINE_AXIS));
+
+        jspMenu.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
+        Menu.setMaximumSize(new java.awt.Dimension(10, 1000000));
+        Menu.setMinimumSize(new java.awt.Dimension(10, 10));
+        Menu.setPreferredSize(new java.awt.Dimension(10, 600));
 
         btnThongKe.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnThongKe.setText("Thống Kê");
@@ -583,7 +501,12 @@ public Main() {
         btnThongKe.setMaximumSize(new java.awt.Dimension(208, 40));
         btnThongKe.setMinimumSize(new java.awt.Dimension(208, 40));
         btnThongKe.setPreferredSize(new java.awt.Dimension(208, 40));
-        pMenu.add(btnThongKe);
+        btnThongKe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThongKeActionPerformed(evt);
+            }
+        });
+        Menu.add(btnThongKe);
 
         btnPhieuNhap.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnPhieuNhap.setText("Phiếu Nhập");
@@ -593,17 +516,7 @@ public Main() {
         btnPhieuNhap.setMaximumSize(new java.awt.Dimension(208, 40));
         btnPhieuNhap.setMinimumSize(new java.awt.Dimension(208, 40));
         btnPhieuNhap.setPreferredSize(new java.awt.Dimension(208, 40));
-        pMenu.add(btnPhieuNhap);
-
-        btnPhieuXuat.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnPhieuXuat.setText("Phiếu Xuất");
-        btnPhieuXuat.setAlignmentX(0.5F);
-        btnPhieuXuat.setAlignmentY(0.0F);
-        btnPhieuXuat.setBorderPainted(false);
-        btnPhieuXuat.setMaximumSize(new java.awt.Dimension(208, 40));
-        btnPhieuXuat.setMinimumSize(new java.awt.Dimension(208, 40));
-        btnPhieuXuat.setPreferredSize(new java.awt.Dimension(208, 40));
-        pMenu.add(btnPhieuXuat);
+        Menu.add(btnPhieuNhap);
 
         btnNhaCungCap.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnNhaCungCap.setText("Nhà Cung Cấp");
@@ -618,7 +531,7 @@ public Main() {
                 btnNhaCungCapActionPerformed(evt);
             }
         });
-        pMenu.add(btnNhaCungCap);
+        Menu.add(btnNhaCungCap);
 
         btnSanPham.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnSanPham.setText("Sản Phẩm");
@@ -634,26 +547,10 @@ public Main() {
                 btnSanPhamActionPerformed(evt);
             }
         });
-        pMenu.add(btnSanPham);
-
-        btnMaGiamGia.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnMaGiamGia.setText("Mã giảm giá");
-        btnMaGiamGia.setToolTipText("");
-        btnMaGiamGia.setAlignmentX(0.5F);
-        btnMaGiamGia.setAlignmentY(0.0F);
-        btnMaGiamGia.setBorderPainted(false);
-        btnMaGiamGia.setMaximumSize(new java.awt.Dimension(208, 40));
-        btnMaGiamGia.setMinimumSize(new java.awt.Dimension(208, 40));
-        btnMaGiamGia.setPreferredSize(new java.awt.Dimension(208, 40));
-        btnMaGiamGia.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMaGiamGiaActionPerformed(evt);
-            }
-        });
-        pMenu.add(btnMaGiamGia);
+        Menu.add(btnSanPham);
 
         jSeparator2.setPreferredSize(new java.awt.Dimension(100, 10));
-        pMenu.add(jSeparator2);
+        Menu.add(jSeparator2);
 
         btnHoaDon.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnHoaDon.setText("Hoá Đơn");
@@ -668,23 +565,7 @@ public Main() {
                 btnHoaDonActionPerformed(evt);
             }
         });
-        pMenu.add(btnHoaDon);
-
-        btnPhieuTra.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnPhieuTra.setText("Phiếu Trả");
-        btnPhieuTra.setAlignmentX(0.5F);
-        btnPhieuTra.setAlignmentY(0.0F);
-        btnPhieuTra.setBorderPainted(false);
-        btnPhieuTra.setMaximumSize(new java.awt.Dimension(208, 40));
-        btnPhieuTra.setMinimumSize(new java.awt.Dimension(208, 40));
-        btnPhieuTra.setPreferredSize(new java.awt.Dimension(208, 40));
-        btnPhieuTra.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPhieuTraActionPerformed(evt);
-            }
-        });
-        pMenu.add(btnPhieuTra);
-        btnPhieuTra.getAccessibleContext().setAccessibleDescription("");
+        Menu.add(btnHoaDon);
 
         btnKhachHang.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnKhachHang.setText("Khách Hàng");
@@ -694,10 +575,10 @@ public Main() {
         btnKhachHang.setMaximumSize(new java.awt.Dimension(208, 40));
         btnKhachHang.setMinimumSize(new java.awt.Dimension(208, 40));
         btnKhachHang.setPreferredSize(new java.awt.Dimension(208, 40));
-        pMenu.add(btnKhachHang);
+        Menu.add(btnKhachHang);
 
         jSeparator1.setPreferredSize(new java.awt.Dimension(100, 10));
-        pMenu.add(jSeparator1);
+        Menu.add(jSeparator1);
 
         btnNhanVien.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnNhanVien.setText("Nhân Viên");
@@ -706,7 +587,7 @@ public Main() {
         btnNhanVien.setMaximumSize(new java.awt.Dimension(208, 40));
         btnNhanVien.setMinimumSize(new java.awt.Dimension(208, 40));
         btnNhanVien.setPreferredSize(new java.awt.Dimension(208, 40));
-        pMenu.add(btnNhanVien);
+        Menu.add(btnNhanVien);
 
         btnTaiKhoan.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnTaiKhoan.setText("Tài Khoản");
@@ -716,7 +597,11 @@ public Main() {
         btnTaiKhoan.setMaximumSize(new java.awt.Dimension(208, 40));
         btnTaiKhoan.setMinimumSize(new java.awt.Dimension(208, 40));
         btnTaiKhoan.setPreferredSize(new java.awt.Dimension(208, 40));
-        pMenu.add(btnTaiKhoan);
+        Menu.add(btnTaiKhoan);
+
+        jspMenu.setViewportView(Menu);
+
+        pMenu.add(jspMenu);
 
         rpWest.add(pMenu, java.awt.BorderLayout.LINE_END);
         pMenu.getAccessibleContext().setAccessibleName("");
@@ -769,10 +654,6 @@ public Main() {
         login.setVisible(true);
     }//GEN-LAST:event_btnDangXuatActionPerformed
 
-    private void btnPhieuTraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPhieuTraActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnPhieuTraActionPerformed
-
     private void btnHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHoaDonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnHoaDonActionPerformed
@@ -785,9 +666,9 @@ public Main() {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnNhaCungCapActionPerformed
 
-    private void btnMaGiamGiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMaGiamGiaActionPerformed
+    private void btnThongKeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThongKeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnMaGiamGiaActionPerformed
+    }//GEN-LAST:event_btnThongKeActionPerformed
     private void addActionListeners(List<JButton> buttons) {
         for (JButton button : buttons) {
             button.addActionListener(this::changeButtonColor);
@@ -859,23 +740,22 @@ public Main() {
     }    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel Menu;
     private javax.swing.JPanel Panel;
     private javax.swing.JLabel anhCenter;
     private Swing.RoundPanel anhNV;
     private javax.swing.JButton btnDangXuat;
     private javax.swing.JButton btnHoaDon;
     private javax.swing.JButton btnKhachHang;
-    private javax.swing.JButton btnMaGiamGia;
     private javax.swing.JButton btnNhaCungCap;
     private javax.swing.JButton btnNhanVien;
     private javax.swing.JButton btnPhieuNhap;
-    private javax.swing.JButton btnPhieuTra;
-    private javax.swing.JButton btnPhieuXuat;
     private javax.swing.JButton btnSanPham;
     private javax.swing.JButton btnTaiKhoan;
     private javax.swing.JButton btnThongKe;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JScrollPane jspMenu;
     private javax.swing.JLabel lblAvatar;
     private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblRole;

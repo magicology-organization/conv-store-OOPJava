@@ -16,6 +16,8 @@ public class CTHoaDonDAO {
         this.conn = ConnectDB.getConnection();
     }
 
+    /* ===================== Queries ===================== */
+
     public List<CTHoaDon> findAllByMaHD(String maHD) {
         String sql = "SELECT maHD, maSP, soLuong, donGia FROM CTHoaDon WHERE maHD=?";
         List<CTHoaDon> list = new ArrayList<>();
@@ -46,6 +48,8 @@ public class CTHoaDonDAO {
         return Optional.empty();
     }
 
+    /* ===================== Mutations ===================== */
+
     public boolean insert(CTHoaDon ct) {
         if (ct == null || isBlank(ct.getMaHD()) || isBlank(ct.getMaSP()))
             return false;
@@ -54,7 +58,7 @@ public class CTHoaDonDAO {
             ps.setString(1, ct.getMaHD());
             ps.setString(2, ct.getMaSP());
             ps.setInt(3, ct.getSoLuong());
-            ps.setBigDecimal(4, ct.getDonGia()); // BigDecimal
+            ps.setBigDecimal(4, nvl(ct.getDonGia()));
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -68,7 +72,7 @@ public class CTHoaDonDAO {
         String sql = "UPDATE CTHoaDon SET soLuong=?, donGia=? WHERE maHD=? AND maSP=?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, ct.getSoLuong());
-            ps.setBigDecimal(2, ct.getDonGia()); // BigDecimal
+            ps.setBigDecimal(2, nvl(ct.getDonGia()));
             ps.setString(3, ct.getMaHD());
             ps.setString(4, ct.getMaSP());
             return ps.executeUpdate() > 0;
@@ -90,16 +94,21 @@ public class CTHoaDonDAO {
         }
     }
 
+    /* ===================== Helpers ===================== */
+
     private static CTHoaDon mapRow(ResultSet rs) throws SQLException {
         return new CTHoaDon(
                 rs.getString("maHD"),
                 rs.getString("maSP"),
                 rs.getInt("soLuong"),
-                rs.getBigDecimal("donGia") // BigDecimal
-        );
+                rs.getBigDecimal("donGia"));
     }
 
     private static boolean isBlank(String s) {
         return s == null || s.trim().isEmpty();
+    }
+
+    private static BigDecimal nvl(BigDecimal v) {
+        return v == null ? BigDecimal.ZERO : v;
     }
 }

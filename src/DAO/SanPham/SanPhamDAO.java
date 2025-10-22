@@ -30,6 +30,138 @@ public class SanPhamDAO {
         return list;
     }
 
+    public List<Object[]> findAllWithDetails() {
+        String sql = """
+                    SELECT sp.maSP,
+                           sp.tenSP,
+                           sp.moTaSP,
+                           dm.tenDM       AS danhMuc,
+                           xx.tenXX       AS xuatXu,
+                           dvt.tenDVT     AS donViTinh,
+                           sp.giaNhap,
+                           sp.donGia,
+                           sp.soLuong,
+                           sp.HSD         AS hsd
+                    FROM SanPham sp
+                    JOIN DanhMuc   dm  ON dm.maDM   = sp.maDM
+                    JOIN XuatXu    xx  ON xx.maXX   = sp.maXX
+                    JOIN DonViTinh dvt ON dvt.maDVT = sp.maDVT
+                    ORDER BY sp.maSP ASC
+                """;
+        List<Object[]> out = new ArrayList<>();
+        try (PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                out.add(new Object[] {
+                        rs.getString("maSP"), // 0
+                        rs.getString("tenSP"), // 1
+                        rs.getString("moTaSP"), // 2
+                        rs.getString("danhMuc"), // 3
+                        rs.getString("xuatXu"), // 4
+                        rs.getString("donViTinh"), // 5
+                        rs.getBigDecimal("giaNhap"), // 6
+                        rs.getBigDecimal("donGia"), // 7
+                        rs.getInt("soLuong"), // 8
+                        rs.getTimestamp("hsd") // 9 (có thể null)
+                });
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return out;
+    }
+
+    public List<Object[]> findAllWithDetailsByName(String keyword) {
+        String kw = (keyword == null) ? "" : keyword.trim();
+        String sql = """
+                    SELECT sp.maSP,
+                           sp.tenSP,
+                           sp.moTaSP,
+                           dm.tenDM       AS danhMuc,
+                           xx.tenXX       AS xuatXu,
+                           dvt.tenDVT     AS donViTinh,
+                           sp.giaNhap,
+                           sp.donGia,
+                           sp.soLuong,
+                           sp.HSD         AS hsd
+                    FROM SanPham sp
+                    JOIN DanhMuc   dm  ON dm.maDM   = sp.maDM
+                    JOIN XuatXu    xx  ON xx.maXX   = sp.maXX
+                    JOIN DonViTinh dvt ON dvt.maDVT = sp.maDVT
+                    WHERE sp.tenSP LIKE ?
+                    ORDER BY sp.tenSP ASC, sp.maSP ASC
+                """;
+
+        List<Object[]> out = new ArrayList<>();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, "%" + kw + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    out.add(new Object[] {
+                            rs.getString("maSP"),
+                            rs.getString("tenSP"),
+                            rs.getString("moTaSP"),
+                            rs.getString("danhMuc"),
+                            rs.getString("xuatXu"),
+                            rs.getString("donViTinh"),
+                            rs.getBigDecimal("giaNhap"),
+                            rs.getBigDecimal("donGia"),
+                            rs.getInt("soLuong"),
+                            rs.getTimestamp("hsd") // 9
+                    });
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Lỗi khi tìm kiếm sản phẩm theo tên!", e);
+        }
+        return out;
+    }
+
+    public List<Object[]> findAllWithDetailsByDanhMuc(String tenDM) {
+        String sql = """
+                    SELECT sp.maSP,
+                           sp.tenSP,
+                           sp.moTaSP,
+                           dm.tenDM       AS danhMuc,
+                           xx.tenXX       AS xuatXu,
+                           dvt.tenDVT     AS donViTinh,
+                           sp.giaNhap,
+                           sp.donGia,
+                           sp.soLuong,
+                           sp.HSD         AS hsd
+                    FROM SanPham sp
+                    JOIN DanhMuc   dm  ON dm.maDM   = sp.maDM
+                    JOIN XuatXu    xx  ON xx.maXX   = sp.maXX
+                    JOIN DonViTinh dvt ON dvt.maDVT = sp.maDVT
+                    WHERE dm.tenDM = ?
+                    ORDER BY sp.tenSP ASC
+                """;
+
+        List<Object[]> out = new ArrayList<>();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, tenDM);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    out.add(new Object[] {
+                            rs.getString("maSP"),
+                            rs.getString("tenSP"),
+                            rs.getString("moTaSP"),
+                            rs.getString("danhMuc"),
+                            rs.getString("xuatXu"),
+                            rs.getString("donViTinh"),
+                            rs.getBigDecimal("giaNhap"),
+                            rs.getBigDecimal("donGia"),
+                            rs.getInt("soLuong"),
+                            rs.getTimestamp("hsd")
+                    });
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Lỗi lọc theo danh mục!", e);
+        }
+        return out;
+    }
+
     public Optional<SanPham> findById(String maSP) {
         if (isBlank(maSP))
             return Optional.empty();
@@ -130,6 +262,24 @@ public class SanPhamDAO {
         }
         return list;
     }
+    public boolean capNhatTonKhoSauBan(String maSP, int soLuongBan) {
+        String sql = """
+            UPDATE SanPham
+            SET soLuong = soLuong - ?
+            WHERE maSP = ? AND soLuong >= ?
+        """;
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, soLuongBan);
+            ps.setString(2, maSP);
+            ps.setInt(3, soLuongBan);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
     private static SanPham mapRow(ResultSet rs) throws SQLException {
         SanPham sp = new SanPham();

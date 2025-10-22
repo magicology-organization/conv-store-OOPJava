@@ -30,18 +30,65 @@ public class KhachHangDAO {
         return list;
     }
 
-    public Optional<KhachHang> findById(String maKH) {
-        String sql = "SELECT maKH, tenKH, gioiTinh, SDT FROM KhachHang WHERE maKH = ?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, maKH);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next())
-                    return Optional.of(mapRow(rs));
+    public List<Object[]> findAllWithDetails() {
+        String sql = """
+            SELECT maKH, tenKH, gioiTinh, sdt
+            FROM KhachHang
+            ORDER BY maKH ASC
+        """;
+        List<Object[]> out = new ArrayList<>();
+        try (PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                String gt = rs.getString("gioiTinh");
+                if (gt == null) gt = "";
+                else if (gt.equalsIgnoreCase("1") || gt.equalsIgnoreCase("true")) gt = "Nam";
+                else if (gt.equalsIgnoreCase("0") || gt.equalsIgnoreCase("false")) gt = "Nữ";
+
+                out.add(new Object[]{
+                    rs.getString("maKH"),
+                    rs.getString("tenKH"),
+                    gt,
+                    rs.getString("sdt")
+                });
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return Optional.empty();
+        return out;
+    }
+
+
+
+
+    public List<KhachHang> search(String keyword) {
+        String sql = """
+            SELECT maKH, tenKH, gioiTinh, SDT
+            FROM KhachHang
+            WHERE tenKH LIKE ? OR SDT LIKE ?
+            ORDER BY tenKH
+        """;
+        List<KhachHang> list = new ArrayList<>();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, "%" + keyword + "%");
+            ps.setString(2, "%" + keyword + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    KhachHang kh = new KhachHang();
+                    kh.setMaKH(rs.getString("maKH"));
+                    kh.setTenKH(rs.getString("tenKH"));
+                    // Chuẩn hóa giới tính
+                    Object raw = rs.getObject("gioiTinh");
+                    if (raw instanceof Boolean) kh.setGioiTinh(((Boolean) raw) ? "Nam" : "Nữ");
+                    else kh.setGioiTinh(String.valueOf(raw));
+                    kh.setSdt(rs.getString("SDT"));
+                    list.add(kh);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 
     public boolean insert(KhachHang kh) {
@@ -58,12 +105,31 @@ public class KhachHangDAO {
         }
     }
 
+    public KhachHang findById(String maKH) {
+        String sql = "SELECT * FROM KhachHang WHERE maKH = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, maKH);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                KhachHang kh = new KhachHang();
+                kh.setMaKH(rs.getString("maKH"));
+                kh.setTenKH(rs.getString("tenKH"));
+                kh.setSdt(rs.getString("sdt"));
+                kh.setGioiTinh(rs.getString("gioiTinh"));
+                return kh;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public boolean update(KhachHang kh) {
-        String sql = "UPDATE KhachHang SET tenKH=?, gioiTinh=?, SDT=? WHERE maKH=?";
+        String sql = "UPDATE KhachHang SET tenKH=?, sdt=?, gioiTinh=? WHERE maKH=?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, kh.getTenKH());
-            ps.setString(2, kh.getGioiTinh());
-            ps.setString(3, kh.getSdt());
+            ps.setString(2, kh.getSdt());
+            ps.setString(3, kh.getGioiTinh());
             ps.setString(4, kh.getMaKH());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -72,16 +138,48 @@ public class KhachHangDAO {
         }
     }
 
-    public boolean deleteById(String maKH) {
-        String sql = "DELETE FROM KhachHang WHERE maKH = ?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, maKH);
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+public boolean deleteById(String maKH) {
+    String sql = "DELETE FROM KhachHang WHERE maKH = ?";
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, maKH);
+        return ps.executeUpdate() > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
     }
+}
+
+// Thêm vào class DAO.KhachHang.KhachHangDAO
+public Optional<Entity.KhachHang.KhachHang> findByPhone(String sdt) {
+    String sql = "SELECT maKH, tenKH, SDT, gioiTinh FROM KhachHang WHERE SDT = ?";
+    try (PreparedStatement ps = ConnectDB.getConnection().prepareStatement(sql)) {
+        ps.setString(1, sdt);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                Entity.KhachHang.KhachHang kh = new Entity.KhachHang.KhachHang();
+                kh.setMaKH(rs.getString("maKH"));
+                kh.setTenKH(rs.getString("tenKH"));
+                kh.setSdt(rs.getString("SDT"));
+
+                // Chuẩn hóa giới tính về String "Nam"/"Nữ"
+                Object raw = rs.getObject("gioiTinh");
+                String gt;
+                if (raw instanceof Boolean)
+                    gt = ((Boolean) raw) ? "Nam" : "Nữ";
+                else if (raw instanceof Number)
+                    gt = (((Number) raw).intValue() == 1) ? "Nam" : "Nữ";
+                else
+                    gt = String.valueOf(raw);
+                kh.setGioiTinh(gt);
+
+                return Optional.of(kh);
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return Optional.empty();
+}
 
     /* ===================== Helpers ===================== */
 
@@ -92,25 +190,5 @@ public class KhachHangDAO {
         kh.setGioiTinh(rs.getString("gioiTinh"));
         kh.setSdt(rs.getString("SDT")); // SQL Server không phân biệt hoa/thường
         return kh;
-    }
-
-    /* (tuỳ chọn) tìm theo từ khoá tên/SDT */
-    public List<KhachHang> search(String keyword) {
-        String k = "%" + (keyword == null ? "" : keyword.trim()) + "%";
-        String sql = "SELECT maKH, tenKH, gioiTinh, SDT FROM KhachHang " +
-                "WHERE maKH LIKE ? OR tenKH LIKE ? OR SDT LIKE ? ORDER BY maKH";
-        List<KhachHang> list = new ArrayList<>();
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, k);
-            ps.setString(2, k);
-            ps.setString(3, k);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next())
-                    list.add(mapRow(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return list;
     }
 }

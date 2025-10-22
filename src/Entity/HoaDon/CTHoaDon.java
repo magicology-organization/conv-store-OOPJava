@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 public class CTHoaDon {
-    private String maHD; // nvarchar(10) PK phần 1
-    private String maSP; // nvarchar(10) PK phần 2
+    private String maHD; // nvarchar(10) - PK phần 1
+    private String maSP; // nvarchar(10) - PK phần 2
     private int soLuong; // int NOT NULL
     private BigDecimal donGia; // DECIMAL(18,2) NOT NULL
 
@@ -19,7 +19,7 @@ public class CTHoaDon {
         this.donGia = donGia;
     }
 
-    // Getters & Setters
+    // --- Getters & Setters ---
     public String getMaHD() {
         return maHD;
     }
@@ -52,12 +52,8 @@ public class CTHoaDon {
         this.donGia = donGia;
     }
 
-    // Tính thành tiền = soLuong * donGia
-    public BigDecimal getThanhTien() {
-        return donGia.multiply(BigDecimal.valueOf(soLuong));
-    }
 
-    // equals/hashCode dựa trên khóa ghép maHD + maSP
+    // --- equals & hashCode dựa trên khóa ghép maHD + maSP ---
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -76,7 +72,11 @@ public class CTHoaDon {
 
     @Override
     public String toString() {
-        return "CTHoaDon{maHD='" + maHD + "', maSP='" + maSP +
-                "', soLuong=" + soLuong + ", donGia=" + donGia + "}";
+        return "CTHoaDon{" +
+                "maHD='" + maHD + '\'' +
+                ", maSP='" + maSP + '\'' +
+                ", soLuong=" + soLuong +
+                ", donGia=" + donGia +
+                '}';
     }
 }
