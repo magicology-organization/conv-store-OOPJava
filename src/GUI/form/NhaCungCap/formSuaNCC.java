@@ -1,6 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
 package GUI.form.NhaCungCap;
 
@@ -8,12 +8,13 @@ package GUI.form.NhaCungCap;
  *
  * @author ADMIN
  */
-public class formSuaNCC extends javax.swing.JFrame {
+public class formSuaNCC extends javax.swing.JDialog {
 
     /**
      * Creates new form formSuaNCC
      */
-    public formSuaNCC() {
+    public formSuaNCC(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
     }
 
@@ -26,21 +27,129 @@ public class formSuaNCC extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        roundPanel = new Swing.RoundPanel();
+        pNorth = new javax.swing.JPanel();
+        lblThemKH = new javax.swing.JLabel();
+        pCenter = new javax.swing.JPanel();
+        pThongTin = new javax.swing.JPanel();
+        lblTen = new javax.swing.JLabel();
+        txtHoTen = new javax.swing.JTextField();
+        lblSDT = new javax.swing.JLabel();
+        txtSDT = new javax.swing.JTextField();
+        lblDiaChi = new javax.swing.JLabel();
+        txtDiaChi = new javax.swing.JTextField();
+        pSouth = new javax.swing.JPanel();
+        btnHuy = new javax.swing.JButton();
+        btnSua = new javax.swing.JButton();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(600, 400));
+
+        roundPanel.setBackground(new java.awt.Color(255, 255, 255));
+        roundPanel.setMaximumSize(new java.awt.Dimension(600, 400));
+        roundPanel.setName(""); // NOI18N
+        roundPanel.setLayout(new java.awt.BorderLayout());
+
+        pNorth.setBackground(new java.awt.Color(204, 255, 204));
+        pNorth.setMaximumSize(new java.awt.Dimension(600, 50));
+        pNorth.setLayout(new java.awt.BorderLayout());
+
+        lblThemKH.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblThemKH.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblThemKH.setText("Sửa nhà cung cấp");
+        lblThemKH.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lblThemKH.setMaximumSize(new java.awt.Dimension(600, 50));
+        lblThemKH.setMinimumSize(new java.awt.Dimension(600, 50));
+        lblThemKH.setPreferredSize(new java.awt.Dimension(600, 50));
+        pNorth.add(lblThemKH, java.awt.BorderLayout.CENTER);
+
+        roundPanel.add(pNorth, java.awt.BorderLayout.PAGE_START);
+
+        pCenter.setBackground(new java.awt.Color(255, 255, 255));
+        pCenter.setMaximumSize(new java.awt.Dimension(600, 300));
+        pCenter.setMinimumSize(new java.awt.Dimension(600, 300));
+        pCenter.setPreferredSize(new java.awt.Dimension(600, 300));
+
+        pThongTin.setBackground(new java.awt.Color(255, 255, 255));
+        pThongTin.setMaximumSize(new java.awt.Dimension(550, 300));
+        pThongTin.setMinimumSize(new java.awt.Dimension(550, 300));
+        pThongTin.setPreferredSize(new java.awt.Dimension(550, 300));
+        pThongTin.setLayout(new java.awt.GridLayout(5, 2, 5, 0));
+
+        lblTen.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblTen.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblTen.setText("Tên nhà cung cấp:");
+        lblTen.setAlignmentX(20.0F);
+        lblTen.setAlignmentY(20.0F);
+        pThongTin.add(lblTen);
+
+        txtHoTen.setPreferredSize(new java.awt.Dimension(350, 22));
+        pThongTin.add(txtHoTen);
+
+        lblSDT.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblSDT.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblSDT.setText("SĐT:");
+        pThongTin.add(lblSDT);
+
+        txtSDT.setPreferredSize(new java.awt.Dimension(350, 22));
+        pThongTin.add(txtSDT);
+
+        lblDiaChi.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblDiaChi.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblDiaChi.setText("Địa chỉ:");
+        pThongTin.add(lblDiaChi);
+
+        txtDiaChi.setPreferredSize(new java.awt.Dimension(350, 22));
+        pThongTin.add(txtDiaChi);
+
+        pCenter.add(pThongTin);
+
+        roundPanel.add(pCenter, java.awt.BorderLayout.CENTER);
+
+        pSouth.setBackground(new java.awt.Color(255, 255, 255));
+        pSouth.setMaximumSize(new java.awt.Dimension(600, 50));
+        pSouth.setMinimumSize(new java.awt.Dimension(600, 50));
+        pSouth.setPreferredSize(new java.awt.Dimension(600, 50));
+
+        btnHuy.setBackground(new java.awt.Color(255, 103, 102));
+        btnHuy.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnHuy.setForeground(new java.awt.Color(255, 255, 255));
+        btnHuy.setText("Huỷ");
+        btnHuy.setPreferredSize(new java.awt.Dimension(90, 35));
+        btnHuy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHuyActionPerformed(evt);
+            }
+        });
+        pSouth.add(btnHuy);
+
+        btnSua.setBackground(new java.awt.Color(15, 204, 102));
+        btnSua.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnSua.setForeground(new java.awt.Color(255, 255, 255));
+        btnSua.setText("Sửa");
+        btnSua.setPreferredSize(new java.awt.Dimension(90, 35));
+        btnSua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSuaActionPerformed(evt);
+            }
+        });
+        pSouth.add(btnSua);
+
+        roundPanel.add(pSouth, java.awt.BorderLayout.PAGE_END);
+
+        getContentPane().add(roundPanel, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyActionPerformed
+        // TODO add your handling code here:
+        dispose();
+    }//GEN-LAST:event_btnHuyActionPerformed
+
+    private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSuaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -69,14 +178,35 @@ public class formSuaNCC extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new formSuaNCC().setVisible(true);
+                formSuaNCC dialog = new formSuaNCC(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnHuy;
+    private javax.swing.JButton btnSua;
+    private javax.swing.JLabel lblDiaChi;
+    private javax.swing.JLabel lblSDT;
+    private javax.swing.JLabel lblTen;
+    private javax.swing.JLabel lblThemKH;
+    private javax.swing.JPanel pCenter;
+    private javax.swing.JPanel pNorth;
+    private javax.swing.JPanel pSouth;
+    private javax.swing.JPanel pThongTin;
+    private Swing.RoundPanel roundPanel;
+    private javax.swing.JTextField txtDiaChi;
+    private javax.swing.JTextField txtHoTen;
+    private javax.swing.JTextField txtSDT;
     // End of variables declaration//GEN-END:variables
 }

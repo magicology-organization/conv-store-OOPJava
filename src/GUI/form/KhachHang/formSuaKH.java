@@ -1,20 +1,59 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
 package GUI.form.KhachHang;
+
+import DAO.KhachHang.KhachHangDAO;
+import Entity.KhachHang.KhachHang;
+import javax.swing.ButtonGroup;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author ADMIN
  */
-public class formSuaKH extends javax.swing.JFrame {
-
+public class formSuaKH extends javax.swing.JDialog {
+    private String maKH;                         // mã khách hàng được truyền vào
+    private final KhachHangDAO khDAO = new KhachHangDAO();
+    private ButtonGroup grpGioiTinh;  
     /**
      * Creates new form formSuaKH
      */
-    public formSuaKH() {
+    public formSuaKH(java.awt.Frame parent, boolean modal, String maKH) {
+        super(parent, modal);
         initComponents();
+        this.maKH = maKH;
+        groupGenderButtons();
+        txtMaKH.setEditable(false);
+        loadData();
+}
+    private void groupGenderButtons() {
+        grpGioiTinh = new ButtonGroup();
+        grpGioiTinh.add(rbtnNam);
+        grpGioiTinh.add(rbtnNu);
+}
+
+
+    private void loadData() {
+        if (maKH == null || maKH.isEmpty()) return;
+
+        KhachHang kh = khDAO.findById(maKH);
+        if (kh == null) {
+            JOptionPane.showMessageDialog(this, "Không tìm thấy khách hàng có mã: " + maKH);
+            dispose();
+            return;
+        }
+
+        txtMaKH.setText(kh.getMaKH());
+        txtHoTen.setText(kh.getTenKH());
+        txtSDT.setText(kh.getSdt());
+
+        if ("Nam".equalsIgnoreCase(kh.getGioiTinh())) {
+            rbtnNam.setSelected(true);
+        } else {
+            rbtnNu.setSelected(true);
+        }
     }
 
     /**
@@ -26,21 +65,210 @@ public class formSuaKH extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        roundPanel = new Swing.RoundPanel();
+        pNorth = new javax.swing.JPanel();
+        title = new javax.swing.JLabel();
+        pCenter = new javax.swing.JPanel();
+        pThongTin = new javax.swing.JPanel();
+        lblMaKH = new javax.swing.JLabel();
+        txtMaKH = new javax.swing.JTextField();
+        lblTen = new javax.swing.JLabel();
+        txtHoTen = new javax.swing.JTextField();
+        lblGioiTinh = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        rbtnNam = new javax.swing.JRadioButton();
+        rbtnNu = new javax.swing.JRadioButton();
+        lblSDT = new javax.swing.JLabel();
+        txtSDT = new javax.swing.JTextField();
+        pSouth = new javax.swing.JPanel();
+        btnHuy = new javax.swing.JButton();
+        btnSua = new javax.swing.JButton();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        roundPanel.setBackground(new java.awt.Color(255, 255, 255));
+        roundPanel.setMaximumSize(new java.awt.Dimension(600, 400));
+        roundPanel.setName(""); // NOI18N
+        roundPanel.setLayout(new java.awt.BorderLayout());
+
+        pNorth.setBackground(new java.awt.Color(204, 255, 204));
+        pNorth.setMaximumSize(new java.awt.Dimension(600, 50));
+        pNorth.setMinimumSize(new java.awt.Dimension(600, 50));
+        pNorth.setPreferredSize(new java.awt.Dimension(600, 50));
+        pNorth.setLayout(new java.awt.BorderLayout());
+
+        title.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        title.setText(" Sửa khách hàng");
+        title.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        title.setMaximumSize(new java.awt.Dimension(190, 32));
+        title.setMinimumSize(new java.awt.Dimension(190, 32));
+        title.setPreferredSize(new java.awt.Dimension(190, 32));
+        pNorth.add(title, java.awt.BorderLayout.CENTER);
+
+        roundPanel.add(pNorth, java.awt.BorderLayout.PAGE_START);
+
+        pCenter.setBackground(new java.awt.Color(255, 255, 255));
+        pCenter.setMaximumSize(new java.awt.Dimension(600, 300));
+        pCenter.setMinimumSize(new java.awt.Dimension(600, 300));
+        pCenter.setPreferredSize(new java.awt.Dimension(600, 300));
+
+        pThongTin.setBackground(new java.awt.Color(255, 255, 255));
+        pThongTin.setMaximumSize(new java.awt.Dimension(550, 300));
+        pThongTin.setMinimumSize(new java.awt.Dimension(550, 300));
+        pThongTin.setPreferredSize(new java.awt.Dimension(550, 300));
+        pThongTin.setLayout(new java.awt.GridLayout(6, 2, 5, 0));
+
+        lblMaKH.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblMaKH.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblMaKH.setText("Mã khách hàng:");
+        lblMaKH.setAlignmentX(20.0F);
+        lblMaKH.setAlignmentY(20.0F);
+        pThongTin.add(lblMaKH);
+
+        txtMaKH.setPreferredSize(new java.awt.Dimension(350, 22));
+        txtMaKH.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMaKHActionPerformed(evt);
+            }
+        });
+        pThongTin.add(txtMaKH);
+
+        lblTen.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblTen.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblTen.setText("Họ tên:");
+        lblTen.setAlignmentX(20.0F);
+        lblTen.setAlignmentY(20.0F);
+        pThongTin.add(lblTen);
+
+        txtHoTen.setPreferredSize(new java.awt.Dimension(350, 22));
+        txtHoTen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtHoTenActionPerformed(evt);
+            }
+        });
+        pThongTin.add(txtHoTen);
+
+        lblGioiTinh.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblGioiTinh.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblGioiTinh.setText("Giới tính:");
+        pThongTin.add(lblGioiTinh);
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.LINE_AXIS));
+
+        rbtnNam.setText("Nam");
+        rbtnNam.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbtnNamActionPerformed(evt);
+            }
+        });
+        jPanel2.add(rbtnNam);
+
+        rbtnNu.setText("Nữ");
+        jPanel2.add(rbtnNu);
+
+        pThongTin.add(jPanel2);
+
+        lblSDT.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblSDT.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblSDT.setText("SĐT:");
+        pThongTin.add(lblSDT);
+
+        txtSDT.setPreferredSize(new java.awt.Dimension(350, 22));
+        pThongTin.add(txtSDT);
+
+        pCenter.add(pThongTin);
+
+        roundPanel.add(pCenter, java.awt.BorderLayout.CENTER);
+
+        pSouth.setBackground(new java.awt.Color(255, 255, 255));
+        pSouth.setMaximumSize(new java.awt.Dimension(600, 50));
+        pSouth.setMinimumSize(new java.awt.Dimension(600, 50));
+        pSouth.setPreferredSize(new java.awt.Dimension(600, 50));
+
+        btnHuy.setBackground(new java.awt.Color(255, 103, 102));
+        btnHuy.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnHuy.setForeground(new java.awt.Color(255, 255, 255));
+        btnHuy.setText("Huỷ");
+        btnHuy.setPreferredSize(new java.awt.Dimension(90, 35));
+        btnHuy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHuyActionPerformed(evt);
+            }
+        });
+        pSouth.add(btnHuy);
+
+        btnSua.setBackground(new java.awt.Color(15, 204, 102));
+        btnSua.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnSua.setForeground(new java.awt.Color(255, 255, 255));
+        btnSua.setText("Sửa");
+        btnSua.setPreferredSize(new java.awt.Dimension(90, 35));
+        btnSua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSuaActionPerformed(evt);
+            }
+        });
+        pSouth.add(btnSua);
+
+        roundPanel.add(pSouth, java.awt.BorderLayout.PAGE_END);
+
+        getContentPane().add(roundPanel, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtHoTenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHoTenActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtHoTenActionPerformed
+
+    private void rbtnNamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnNamActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbtnNamActionPerformed
+
+    private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyActionPerformed
+        // TODO add your handling code here:
+        dispose();
+    }//GEN-LAST:event_btnHuyActionPerformed
+
+    private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
+        // TODO add your handling code here:
+        if (maKH == null || maKH.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Không có mã khách hàng để sửa!");
+            return;
+        }
+
+        String ten = txtHoTen.getText().trim();
+        String sdt = txtSDT.getText().trim();
+        String gioiTinh = rbtnNam.isSelected() ? "Nam" : "Nữ";
+
+        if (ten.isEmpty() || sdt.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ họ tên và SĐT!");
+            return;
+        }
+        if (!sdt.matches("\\d{9,11}")) {
+            JOptionPane.showMessageDialog(this, "SĐT phải có 9–11 chữ số.");
+            return;
+        }
+
+        KhachHang kh = new KhachHang();
+        kh.setMaKH(maKH);
+        kh.setTenKH(ten);
+        kh.setSdt(sdt);
+        kh.setGioiTinh(gioiTinh);
+
+        boolean ok = khDAO.update(kh);
+        if (ok) {
+            JOptionPane.showMessageDialog(this, "Cập nhật khách hàng thành công!");
+            dispose(); // đóng form
+        } else {
+            JOptionPane.showMessageDialog(this, "Cập nhật thất bại! Vui lòng thử lại.");
+        }
+    }//GEN-LAST:event_btnSuaActionPerformed
+
+    private void txtMaKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaKHActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMaKHActionPerformed
 
     /**
      * @param args the command line arguments
@@ -69,14 +297,41 @@ public class formSuaKH extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new formSuaKH().setVisible(true);
+                // 👇 truyền mã KH mẫu để form tự load dữ liệu
+                formSuaKH dialog = new formSuaKH(new javax.swing.JFrame(), true, "KH001");
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setLocationRelativeTo(null);
+                dialog.setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnHuy;
+    private javax.swing.JButton btnSua;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lblGioiTinh;
+    private javax.swing.JLabel lblMaKH;
+    private javax.swing.JLabel lblSDT;
+    private javax.swing.JLabel lblTen;
+    private javax.swing.JPanel pCenter;
+    private javax.swing.JPanel pNorth;
+    private javax.swing.JPanel pSouth;
+    private javax.swing.JPanel pThongTin;
+    private javax.swing.JRadioButton rbtnNam;
+    private javax.swing.JRadioButton rbtnNu;
+    private Swing.RoundPanel roundPanel;
+    private javax.swing.JLabel title;
+    private javax.swing.JTextField txtHoTen;
+    private javax.swing.JTextField txtMaKH;
+    private javax.swing.JTextField txtSDT;
     // End of variables declaration//GEN-END:variables
 }

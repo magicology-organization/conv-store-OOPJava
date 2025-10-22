@@ -4,8 +4,8 @@
  */
 package GUI;
 
-import DAO.TaiKhoanDAO;
-import Entity.TaiKhoan;
+import DAO.TaiKhoan.TaiKhoanDAO;
+import Entity.TaiKhoan.TaiKhoan;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLaf;
@@ -75,8 +75,8 @@ public class Login extends javax.swing.JFrame {
     }
 
     private void loginLayout() {
-        txtUser.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, new FlatSVGIcon("./icon/username.svg"));
-        txtPassword.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, new FlatSVGIcon("./icon/password.svg"));
+        txtTK.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, new FlatSVGIcon("./icon/username.svg"));
+        txtMK.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, new FlatSVGIcon("./icon/password.svg"));
 
     }
 
@@ -89,66 +89,65 @@ public class Login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        txtUser = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        txtPassword = new javax.swing.JPasswordField();
+        Panel = new javax.swing.JPanel();
+        pWest = new javax.swing.JPanel();
+        anh = new javax.swing.JLabel();
+        pCenter = new javax.swing.JPanel();
+        tilte = new javax.swing.JLabel();
+        lblTK = new javax.swing.JLabel();
+        txtTK = new javax.swing.JTextField();
+        lblMK = new javax.swing.JLabel();
+        txtMK = new javax.swing.JPasswordField();
         btnLog = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setResizable(false);
 
-        jPanel1.setBackground(new java.awt.Color(0, 153, 102));
-        jPanel1.setLayout(new java.awt.BorderLayout());
+        Panel.setBackground(new java.awt.Color(0, 153, 102));
+        Panel.setLayout(new java.awt.BorderLayout());
 
-        jPanel2.setBackground(new java.awt.Color(0, 204, 0));
-        jPanel2.setAlignmentX(0.0F);
-        jPanel2.setAlignmentY(0.0F);
-        jPanel2.setPreferredSize(new java.awt.Dimension(600, 600));
-        jPanel2.setLayout(new java.awt.BorderLayout());
+        pWest.setBackground(new java.awt.Color(0, 204, 0));
+        pWest.setAlignmentX(0.0F);
+        pWest.setAlignmentY(0.0F);
+        pWest.setPreferredSize(new java.awt.Dimension(600, 600));
+        pWest.setLayout(new java.awt.BorderLayout());
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/AnhMain.jpg"))); // NOI18N
-        jLabel2.setAlignmentY(0.0F);
-        jPanel2.add(jLabel2, java.awt.BorderLayout.CENTER);
+        anh.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        anh.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        anh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/AnhMain.jpg"))); // NOI18N
+        anh.setAlignmentY(0.0F);
+        pWest.add(anh, java.awt.BorderLayout.CENTER);
 
-        jPanel1.add(jPanel2, java.awt.BorderLayout.LINE_START);
+        Panel.add(pWest, java.awt.BorderLayout.LINE_START);
 
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel3.setPreferredSize(new java.awt.Dimension(400, 422));
+        pCenter.setBackground(new java.awt.Color(255, 255, 255));
+        pCenter.setPreferredSize(new java.awt.Dimension(400, 422));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 204, 204));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("ĐĂNG NHẬP");
-        jLabel1.setAlignmentY(0.0F);
-        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        tilte.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
+        tilte.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        tilte.setText("ĐĂNG NHẬP");
+        tilte.setAlignmentY(0.0F);
+        tilte.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel3.setText("Tài Khoản");
+        lblTK.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblTK.setText("Tài Khoản");
 
-        txtUser.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        txtUser.setForeground(new java.awt.Color(51, 51, 51));
-        txtUser.setSelectionColor(new java.awt.Color(0, 153, 153));
-        txtUser.addActionListener(new java.awt.event.ActionListener() {
+        txtTK.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        txtTK.setForeground(new java.awt.Color(51, 51, 51));
+        txtTK.setSelectionColor(new java.awt.Color(0, 153, 153));
+        txtTK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtUserActionPerformed(evt);
+                txtTKActionPerformed(evt);
             }
         });
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel4.setText("Mật Khẩu");
+        lblMK.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblMK.setText("Mật Khẩu");
 
-        txtPassword.addActionListener(new java.awt.event.ActionListener() {
+        txtMK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPasswordActionPerformed(evt);
+                txtMKActionPerformed(evt);
             }
         });
 
@@ -162,54 +161,54 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(115, 115, 115)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout pCenterLayout = new javax.swing.GroupLayout(pCenter);
+        pCenter.setLayout(pCenterLayout);
+        pCenterLayout.setHorizontalGroup(
+            pCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pCenterLayout.createSequentialGroup()
+                .addGroup(pCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pCenterLayout.createSequentialGroup()
                         .addGap(30, 30, 30)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel3)
-                            .addComponent(txtUser)
-                            .addComponent(jLabel4)
-                            .addComponent(txtPassword)
-                            .addComponent(btnLog, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE))))
+                        .addGroup(pCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblTK)
+                            .addComponent(txtTK)
+                            .addComponent(lblMK)
+                            .addComponent(txtMK)
+                            .addComponent(btnLog, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)))
+                    .addGroup(pCenterLayout.createSequentialGroup()
+                        .addGap(114, 114, 114)
+                        .addComponent(tilte, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(36, Short.MAX_VALUE))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(148, 148, 148)
-                .addComponent(jLabel1)
-                .addGap(38, 38, 38)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+        pCenterLayout.setVerticalGroup(
+            pCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pCenterLayout.createSequentialGroup()
+                .addGap(168, 168, 168)
+                .addComponent(tilte)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel4)
+                .addComponent(lblTK)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtTK, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(lblMK)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtMK, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnLog, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(206, Short.MAX_VALUE))
         );
 
-        jPanel1.add(jPanel3, java.awt.BorderLayout.CENTER);
+        Panel.add(pCenter, java.awt.BorderLayout.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 630, Short.MAX_VALUE)
+            .addComponent(Panel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 630, Short.MAX_VALUE)
         );
 
         pack();
@@ -217,8 +216,8 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogActionPerformed
-        String user = txtUser.getText().trim();
-        String pass = new String(txtPassword.getPassword()).trim();
+        String user = txtTK.getText().trim();
+        String pass = new String(txtMK.getPassword()).trim();
 
         TaiKhoanDAO dao = new TaiKhoanDAO();
 //        TaiKhoan tk = dao.dangNhap(user, pass);
@@ -226,27 +225,27 @@ public class Login extends javax.swing.JFrame {
         // Kiểm tra để trống
         if (user.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Tài khoản để trống. Vui lòng nhập tên tài khoản!");
-            txtUser.requestFocus();
+            txtTK.requestFocus();
             return;
         }
 
         if (pass.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Mật khẩu để trống. Vui lòng nhập mật khẩu!");
-            txtPassword.requestFocus();
+            txtMK.requestFocus();
             return;
         }
 
         // Kiểm tra mật khẩu ít nhất 8 ký tự
         if (pass.length() < 8 && pass.length() > 16) {
             JOptionPane.showMessageDialog(this, "Mật khẩu phải từ 8-16 ký tự!");
-            txtPassword.requestFocus();
+            txtMK.requestFocus();
             return;
         }
 
         // Nếu cần regex thêm như kiểm tra user chỉ có chữ cái/số:
         if (!user.matches("^[a-zA-Z0-9_]{3,}$")) {
             JOptionPane.showMessageDialog(this, "Tên tài khoản không hợp lệ. Chỉ chứa chữ, số, hoặc dấu gạch dưới và ít nhất 3 ký tự!");
-            txtUser.requestFocus();
+            txtTK.requestFocus();
             return;
         }
 
@@ -259,24 +258,24 @@ public class Login extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnLogActionPerformed
 
-    private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
+    private void txtMKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMKActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtPasswordActionPerformed
+    }//GEN-LAST:event_txtMKActionPerformed
 
-    private void txtUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserActionPerformed
+    private void txtTKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTKActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtUserActionPerformed
+    }//GEN-LAST:event_txtTKActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel Panel;
+    private javax.swing.JLabel anh;
     private javax.swing.JButton btnLog;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPasswordField txtPassword;
-    private javax.swing.JTextField txtUser;
+    private javax.swing.JLabel lblMK;
+    private javax.swing.JLabel lblTK;
+    private javax.swing.JPanel pCenter;
+    private javax.swing.JPanel pWest;
+    private javax.swing.JLabel tilte;
+    private javax.swing.JPasswordField txtMK;
+    private javax.swing.JTextField txtTK;
     // End of variables declaration//GEN-END:variables
 }
