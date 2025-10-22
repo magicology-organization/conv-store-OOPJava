@@ -35,6 +35,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -635,7 +636,7 @@ public Main() {
         pCenter.setMinimumSize(new java.awt.Dimension(0, 0));
         pCenter.setLayout(new java.awt.BorderLayout());
 
-        anhCenter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/src/Icon/mainBackground.png"))); // NOI18N
+        anhCenter.setIcon(new ImageIcon(Main.class.getResource("/Icon/mainBackground.png"))); // NOI18N
         anhCenter.setMaximumSize(new java.awt.Dimension(1400, 1400));
         anhCenter.setMinimumSize(new java.awt.Dimension(1400, 1400));
         anhCenter.setPreferredSize(new java.awt.Dimension(1400, 1400));
