@@ -262,12 +262,13 @@ public class SanPhamDAO {
         }
         return list;
     }
+
     public boolean capNhatTonKhoSauBan(String maSP, int soLuongBan) {
         String sql = """
-            UPDATE SanPham
-            SET soLuong = soLuong - ?
-            WHERE maSP = ? AND soLuong >= ?
-        """;
+                    UPDATE SanPham
+                    SET soLuong = soLuong - ?
+                    WHERE maSP = ? AND soLuong >= ?
+                """;
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, soLuongBan);
@@ -280,6 +281,21 @@ public class SanPhamDAO {
         }
     }
 
+    public boolean capNhatTonKhoSauNhap(String maSP, int soLuongNhap) {
+        String sql = """
+                    UPDATE SanPham
+                    SET soLuong = soLuong + ?
+                    WHERE maSP = ?
+                """;
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, soLuongNhap);
+            ps.setString(2, maSP);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     private static SanPham mapRow(ResultSet rs) throws SQLException {
         SanPham sp = new SanPham();

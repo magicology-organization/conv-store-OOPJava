@@ -146,14 +146,14 @@ public class frmHoaDon extends javax.swing.JPanel {
         pCenter.setLayout(new java.awt.BorderLayout());
 
         scrollTableCenter.setMinimumSize(new java.awt.Dimension(1200, 500));
-        scrollTableCenter.setPreferredSize(new java.awt.Dimension(1200, 500));
+        scrollTableCenter.setPreferredSize(null);
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "STT", "Mã hóa đơn", "Tên khách hàng", "SĐT", "Tên nhân viên", "Ngày mua", "Tổng hóa đơn", "Kiểu thanh toán"
+                "STT", "Mã hóa đơn", "Tên khách hàng", "SĐT", "Tên nhân viên", "Ngày mua", "Kiểu thanh toán", "Tổng hóa đơn"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -169,6 +169,10 @@ public class frmHoaDon extends javax.swing.JPanel {
         table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         table.setShowHorizontalLines(true);
         scrollTableCenter.setViewportView(table);
+        if (table.getColumnModel().getColumnCount() > 0) {
+            table.getColumnModel().getColumn(6).setResizable(false);
+            table.getColumnModel().getColumn(7).setResizable(false);
+        }
 
         pCenter.add(scrollTableCenter, java.awt.BorderLayout.CENTER);
 

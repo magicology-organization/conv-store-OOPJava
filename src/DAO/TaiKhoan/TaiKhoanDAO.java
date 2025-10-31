@@ -179,6 +179,8 @@ public class TaiKhoanDAO {
     }
 
     public List<TaiKhoan> findByMaNV(String maNV) {
+        if (isBlank(maNV))
+            return java.util.Collections.emptyList();
         String sql = "SELECT maTK, tenTK, matKhauTK, maNV FROM TaiKhoan WHERE maNV = ? ORDER BY maTK";
         List<TaiKhoan> list = new ArrayList<>();
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -194,6 +196,8 @@ public class TaiKhoanDAO {
     }
 
     public boolean deleteByMaNV(String maNV) {
+        if (isBlank(maNV))
+            return false;
         String sql = "DELETE FROM TaiKhoan WHERE maNV = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             if (isBlank(maNV)) ps.setNull(1, Types.NVARCHAR);

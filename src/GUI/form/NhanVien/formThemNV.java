@@ -32,6 +32,8 @@ public class formThemNV extends javax.swing.JDialog {
         tilte = new javax.swing.JLabel();
         pCenter = new javax.swing.JPanel();
         pThongTin = new javax.swing.JPanel();
+        lblMa = new javax.swing.JLabel();
+        txtMa = new javax.swing.JTextField();
         lblTen = new javax.swing.JLabel();
         txtTen = new javax.swing.JTextField();
         lblGioiTinh = new javax.swing.JLabel();
@@ -90,6 +92,17 @@ public class formThemNV extends javax.swing.JDialog {
         pThongTin.setPreferredSize(new java.awt.Dimension(440, 350));
         pThongTin.setLayout(new java.awt.GridLayout(9, 1, 5, 0));
 
+        lblMa.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblMa.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblMa.setText("Mã nhân viên:");
+        lblMa.setAlignmentX(20.0F);
+        lblMa.setAlignmentY(20.0F);
+        pThongTin.add(lblMa);
+
+        txtMa.setEditable(false);
+        txtMa.setPreferredSize(new java.awt.Dimension(350, 22));
+        pThongTin.add(txtMa);
+
         lblTen.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblTen.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblTen.setText("Tên nhân viên:");
@@ -106,7 +119,7 @@ public class formThemNV extends javax.swing.JDialog {
         pThongTin.add(lblGioiTinh);
 
         pGioiTinh.setBackground(new java.awt.Color(255, 255, 255));
-        pGioiTinh.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 17));
+        pGioiTinh.setLayout(new javax.swing.BoxLayout(pGioiTinh, javax.swing.BoxLayout.LINE_AXIS));
 
         rbtnNam.setText("Nam");
         rbtnNam.addActionListener(new java.awt.event.ActionListener() {
@@ -164,7 +177,7 @@ public class formThemNV extends javax.swing.JDialog {
         pThongTin.add(lblChucVu);
 
         pChucVu.setBackground(new java.awt.Color(255, 255, 255));
-        pChucVu.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 17));
+        pChucVu.setLayout(new javax.swing.BoxLayout(pChucVu, javax.swing.BoxLayout.LINE_AXIS));
 
         rbtnQuanLy.setText("Quản lý");
         pChucVu.add(rbtnQuanLy);
@@ -303,6 +316,7 @@ public class formThemNV extends javax.swing.JDialog {
     private javax.swing.JLabel lblCC;
     private javax.swing.JLabel lblChucVu;
     private javax.swing.JLabel lblGioiTinh;
+    private javax.swing.JLabel lblMa;
     private javax.swing.JLabel lblNgayLam;
     private javax.swing.JLabel lblNgaySinh;
     private javax.swing.JLabel lblSDT;
@@ -321,6 +335,7 @@ public class formThemNV extends javax.swing.JDialog {
     private Swing.RoundPanel roundPanel;
     private javax.swing.JLabel tilte;
     private javax.swing.JTextField txtCCCD;
+    private javax.swing.JTextField txtMa;
     private javax.swing.JTextField txtSDT;
     private javax.swing.JTextField txtTen;
     // End of variables declaration//GEN-END:variables

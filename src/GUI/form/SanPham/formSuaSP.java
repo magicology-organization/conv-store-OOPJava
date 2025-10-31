@@ -106,6 +106,7 @@ public class formSuaSP extends javax.swing.JDialog {
         lblSP.setPreferredSize(new java.awt.Dimension(300, 20));
         pThongTin.add(lblSP);
 
+        txtMaSP.setEditable(false);
         txtMaSP.setMaximumSize(new java.awt.Dimension(300, 20));
         txtMaSP.setMinimumSize(new java.awt.Dimension(300, 20));
         txtMaSP.setPreferredSize(new java.awt.Dimension(300, 20));

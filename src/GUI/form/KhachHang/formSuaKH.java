@@ -117,7 +117,7 @@ public class formSuaKH extends javax.swing.JDialog {
         pThongTin.setMaximumSize(new java.awt.Dimension(550, 300));
         pThongTin.setMinimumSize(new java.awt.Dimension(550, 300));
         pThongTin.setPreferredSize(new java.awt.Dimension(550, 300));
-        pThongTin.setLayout(new java.awt.GridLayout(6, 2, 5, 0));
+        pThongTin.setLayout(new java.awt.GridLayout(7, 2, 5, 0));
 
         lblMaKH.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblMaKH.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -126,6 +126,7 @@ public class formSuaKH extends javax.swing.JDialog {
         lblMaKH.setAlignmentY(20.0F);
         pThongTin.add(lblMaKH);
 
+        txtMaKH.setEditable(false);
         txtMaKH.setPreferredSize(new java.awt.Dimension(350, 22));
         txtMaKH.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

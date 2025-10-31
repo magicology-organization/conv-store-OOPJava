@@ -50,6 +50,9 @@ public class formThemSP extends javax.swing.JDialog {
         comboXuatXu = new javax.swing.JComboBox<>();
         lblSoLuong = new javax.swing.JLabel();
         txtSoLuong = new javax.swing.JTextField();
+        lblMoTa = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
         pSouth = new javax.swing.JPanel();
         btnHuy = new javax.swing.JButton();
         btnThem = new javax.swing.JButton();
@@ -64,8 +67,8 @@ public class formThemSP extends javax.swing.JDialog {
         setMinimumSize(new java.awt.Dimension(700, 450));
 
         roundPanel.setBackground(new java.awt.Color(255, 255, 255));
-        roundPanel.setMaximumSize(new java.awt.Dimension(700, 450));
-        roundPanel.setMinimumSize(new java.awt.Dimension(700, 450));
+        roundPanel.setMaximumSize(new java.awt.Dimension(700, 500));
+        roundPanel.setMinimumSize(new java.awt.Dimension(700, 500));
         roundPanel.setName(""); // NOI18N
         roundPanel.setPreferredSize(new java.awt.Dimension(700, 450));
         roundPanel.setLayout(new java.awt.BorderLayout());
@@ -94,7 +97,7 @@ public class formThemSP extends javax.swing.JDialog {
         pThongTin.setMinimumSize(new java.awt.Dimension(440, 350));
         pThongTin.setName(""); // NOI18N
         pThongTin.setPreferredSize(new java.awt.Dimension(440, 350));
-        pThongTin.setLayout(new java.awt.GridLayout(9, 1, 5, 0));
+        pThongTin.setLayout(new java.awt.GridLayout(11, 1, 5, 0));
 
         lblSP.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblSP.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -230,6 +233,20 @@ public class formThemSP extends javax.swing.JDialog {
         txtSoLuong.setMinimumSize(new java.awt.Dimension(350, 22));
         txtSoLuong.setPreferredSize(new java.awt.Dimension(250, 30));
         pThongTin.add(txtSoLuong);
+
+        lblMoTa.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblMoTa.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblMoTa.setText("Mô tả:");
+        lblMoTa.setMaximumSize(new java.awt.Dimension(170, 38));
+        lblMoTa.setMinimumSize(new java.awt.Dimension(170, 38));
+        lblMoTa.setPreferredSize(new java.awt.Dimension(180, 38));
+        pThongTin.add(lblMoTa);
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        pThongTin.add(jScrollPane1);
 
         pCenter.add(pThongTin, java.awt.BorderLayout.CENTER);
 
@@ -455,12 +472,15 @@ public class formThemSP extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> comboDVT;
     private javax.swing.JComboBox<String> comboDanhMuc;
     private javax.swing.JComboBox<String> comboXuatXu;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel lblAnh;
     private javax.swing.JLabel lblDanhMuc;
     private javax.swing.JLabel lblDonViTinh;
     private javax.swing.JLabel lblGiaBan;
     private javax.swing.JLabel lblGiaNhap;
     private javax.swing.JLabel lblHSD;
+    private javax.swing.JLabel lblMoTa;
     private javax.swing.JLabel lblSP;
     private javax.swing.JLabel lblSoLuong;
     private javax.swing.JLabel lblTen;
