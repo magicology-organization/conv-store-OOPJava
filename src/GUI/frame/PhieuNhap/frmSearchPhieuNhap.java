@@ -56,10 +56,10 @@ public class frmSearchPhieuNhap extends javax.swing.JPanel {
         pTimKiem_Row5_Col2 = new javax.swing.JPanel();
         btnTim = new javax.swing.JButton();
         pCenter = new javax.swing.JPanel();
-        scrollTableCenter = new javax.swing.JScrollPane();
-        table = new javax.swing.JTable();
         centerTilte = new javax.swing.JPanel();
         titleName1 = new javax.swing.JLabel();
+        scrollTableCenter = new javax.swing.JScrollPane();
+        table = new javax.swing.JTable();
         pSouth = new javax.swing.JPanel();
         btnChiTiet = new javax.swing.JButton();
 
@@ -246,8 +246,26 @@ public class frmSearchPhieuNhap extends javax.swing.JPanel {
 
         pCenter.setLayout(new java.awt.BorderLayout());
 
-        scrollTableCenter.setMinimumSize(new java.awt.Dimension(1200, 250));
-        scrollTableCenter.setPreferredSize(new java.awt.Dimension(1200, 250));
+        centerTilte.setBackground(new java.awt.Color(204, 255, 204));
+        centerTilte.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        centerTilte.setMinimumSize(new java.awt.Dimension(1200, 50));
+        centerTilte.setPreferredSize(new java.awt.Dimension(1200, 50));
+        centerTilte.setLayout(new java.awt.BorderLayout());
+
+        titleName1.setBackground(new java.awt.Color(0, 0, 0));
+        titleName1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        titleName1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        titleName1.setText("Thông tin phiếu nhập");
+        titleName1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        titleName1.setMinimumSize(new java.awt.Dimension(1200, 32));
+        titleName1.setPreferredSize(new java.awt.Dimension(1200, 32));
+        centerTilte.add(titleName1, java.awt.BorderLayout.CENTER);
+
+        pCenter.add(centerTilte, java.awt.BorderLayout.PAGE_START);
+
+        scrollTableCenter.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollTableCenter.setMinimumSize(new java.awt.Dimension(1200, 500));
+        scrollTableCenter.setPreferredSize(new java.awt.Dimension(1200, 500));
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -265,30 +283,14 @@ public class frmSearchPhieuNhap extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        table.setMinimumSize(new java.awt.Dimension(1200, 250));
-        table.setPreferredSize(new java.awt.Dimension(1200, 250));
+        table.setMinimumSize(null);
+        table.setName(""); // NOI18N
+        table.setPreferredSize(null);
         table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         table.setShowHorizontalLines(true);
         scrollTableCenter.setViewportView(table);
 
         pCenter.add(scrollTableCenter, java.awt.BorderLayout.CENTER);
-
-        centerTilte.setBackground(new java.awt.Color(204, 255, 204));
-        centerTilte.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        centerTilte.setMinimumSize(new java.awt.Dimension(1200, 50));
-        centerTilte.setPreferredSize(new java.awt.Dimension(1200, 50));
-        centerTilte.setLayout(new java.awt.BorderLayout());
-
-        titleName1.setBackground(new java.awt.Color(0, 0, 0));
-        titleName1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        titleName1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titleName1.setText("Thông tin phiếu nhập");
-        titleName1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        titleName1.setMinimumSize(new java.awt.Dimension(1200, 32));
-        titleName1.setPreferredSize(new java.awt.Dimension(1200, 32));
-        centerTilte.add(titleName1, java.awt.BorderLayout.CENTER);
-
-        pCenter.add(centerTilte, java.awt.BorderLayout.PAGE_START);
 
         Panel.add(pCenter, java.awt.BorderLayout.CENTER);
 

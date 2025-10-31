@@ -32,6 +32,8 @@ public class formThongTinNV extends javax.swing.JDialog {
         tilte = new javax.swing.JLabel();
         pCenter = new javax.swing.JPanel();
         pThongTin = new javax.swing.JPanel();
+        lblMa = new javax.swing.JLabel();
+        txtMa = new javax.swing.JTextField();
         lblTen = new javax.swing.JLabel();
         txtTen = new javax.swing.JTextField();
         lblGioiTinh = new javax.swing.JLabel();
@@ -52,7 +54,6 @@ public class formThongTinNV extends javax.swing.JDialog {
         rbtnNhanVien = new javax.swing.JRadioButton();
         pSouth = new javax.swing.JPanel();
         btnHuy = new javax.swing.JButton();
-        btnThem = new javax.swing.JButton();
         pEast = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -88,6 +89,17 @@ public class formThongTinNV extends javax.swing.JDialog {
         pThongTin.setPreferredSize(new java.awt.Dimension(440, 350));
         pThongTin.setLayout(new java.awt.GridLayout(9, 1, 5, 0));
 
+        lblMa.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblMa.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblMa.setText("Mã nhân viên:");
+        lblMa.setAlignmentX(20.0F);
+        lblMa.setAlignmentY(20.0F);
+        pThongTin.add(lblMa);
+
+        txtMa.setEditable(false);
+        txtMa.setPreferredSize(new java.awt.Dimension(350, 22));
+        pThongTin.add(txtMa);
+
         lblTen.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblTen.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblTen.setText("Tên nhân viên:");
@@ -95,6 +107,7 @@ public class formThongTinNV extends javax.swing.JDialog {
         lblTen.setAlignmentY(20.0F);
         pThongTin.add(lblTen);
 
+        txtTen.setEditable(false);
         txtTen.setPreferredSize(new java.awt.Dimension(350, 22));
         pThongTin.add(txtTen);
 
@@ -104,7 +117,7 @@ public class formThongTinNV extends javax.swing.JDialog {
         pThongTin.add(lblGioiTinh);
 
         pGioiTinh.setBackground(new java.awt.Color(255, 255, 255));
-        pGioiTinh.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 17));
+        pGioiTinh.setLayout(new javax.swing.BoxLayout(pGioiTinh, javax.swing.BoxLayout.LINE_AXIS));
 
         rbtnNam.setText("Nam");
         rbtnNam.addActionListener(new java.awt.event.ActionListener() {
@@ -123,16 +136,12 @@ public class formThongTinNV extends javax.swing.JDialog {
         lblNgaySinh.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblNgaySinh.setText("Ngày sinh:");
         pThongTin.add(lblNgaySinh);
-
-        dateNgaySinh.setBackground(new java.awt.Color(255, 255, 255));
         pThongTin.add(dateNgaySinh);
 
         lblNgayLam.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblNgayLam.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblNgayLam.setText("Ngày vào làm:");
         pThongTin.add(lblNgayLam);
-
-        dateNgayLam.setBackground(new java.awt.Color(255, 255, 255));
         pThongTin.add(dateNgayLam);
 
         lblSDT.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -140,6 +149,7 @@ public class formThongTinNV extends javax.swing.JDialog {
         lblSDT.setText("SDT:");
         pThongTin.add(lblSDT);
 
+        txtSDT.setEditable(false);
         txtSDT.setPreferredSize(new java.awt.Dimension(185, 22));
         txtSDT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -153,7 +163,13 @@ public class formThongTinNV extends javax.swing.JDialog {
         lblCC.setText("Căn cước:");
         pThongTin.add(lblCC);
 
+        txtCCCD.setEditable(false);
         txtCCCD.setPreferredSize(new java.awt.Dimension(350, 22));
+        txtCCCD.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCCCDActionPerformed(evt);
+            }
+        });
         pThongTin.add(txtCCCD);
 
         lblChucVu.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -162,7 +178,7 @@ public class formThongTinNV extends javax.swing.JDialog {
         pThongTin.add(lblChucVu);
 
         pChucVu.setBackground(new java.awt.Color(255, 255, 255));
-        pChucVu.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 17));
+        pChucVu.setLayout(new javax.swing.BoxLayout(pChucVu, javax.swing.BoxLayout.LINE_AXIS));
 
         rbtnQuanLy.setText("Quản lý");
         pChucVu.add(rbtnQuanLy);
@@ -194,20 +210,6 @@ public class formThongTinNV extends javax.swing.JDialog {
             }
         });
         pSouth.add(btnHuy);
-
-        btnThem.setBackground(new java.awt.Color(15, 204, 102));
-        btnThem.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnThem.setForeground(new java.awt.Color(255, 255, 255));
-        btnThem.setText("Thêm");
-        btnThem.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
-        btnThem.setPreferredSize(new java.awt.Dimension(90, 35));
-        btnThem.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
-        btnThem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnThemActionPerformed(evt);
-            }
-        });
-        pSouth.add(btnThem);
 
         roundPanel.add(pSouth, java.awt.BorderLayout.SOUTH);
 
@@ -246,9 +248,9 @@ public class formThongTinNV extends javax.swing.JDialog {
         dispose();
     }//GEN-LAST:event_btnHuyActionPerformed
 
-    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
+    private void txtCCCDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCCCDActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnThemActionPerformed
+    }//GEN-LAST:event_txtCCCDActionPerformed
 
     /**
      * @param args the command line arguments
@@ -294,12 +296,12 @@ public class formThongTinNV extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnHuy;
-    private javax.swing.JButton btnThem;
     private com.toedter.calendar.JDateChooser dateNgayLam;
     private com.toedter.calendar.JDateChooser dateNgaySinh;
     private javax.swing.JLabel lblCC;
     private javax.swing.JLabel lblChucVu;
     private javax.swing.JLabel lblGioiTinh;
+    private javax.swing.JLabel lblMa;
     private javax.swing.JLabel lblNgayLam;
     private javax.swing.JLabel lblNgaySinh;
     private javax.swing.JLabel lblSDT;
@@ -318,6 +320,7 @@ public class formThongTinNV extends javax.swing.JDialog {
     private Swing.RoundPanel roundPanel;
     private javax.swing.JLabel tilte;
     private javax.swing.JTextField txtCCCD;
+    private javax.swing.JTextField txtMa;
     private javax.swing.JTextField txtSDT;
     private javax.swing.JTextField txtTen;
     // End of variables declaration//GEN-END:variables

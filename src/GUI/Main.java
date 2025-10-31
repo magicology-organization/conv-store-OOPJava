@@ -4,6 +4,7 @@
  */
 package GUI;
 
+import Entity.TaiKhoan.TaiKhoan;
 import GUI.frame.HoaDon.frmHoaDon;
 import GUI.frame.HoaDon.frmSearchHoaDon;
 import GUI.frame.KhachHang.frmKhachHang;
@@ -35,7 +36,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
-import javax.swing.ImageIcon;
 
 /**
  *
@@ -43,25 +43,26 @@ import javax.swing.ImageIcon;
  */
 public class Main extends javax.swing.JFrame {
     private RoundedPopupMenu popupMenuSP;
-    private RoundedPopupMenu popupMenuMGG;
     private RoundedPopupMenu popupMenuNCC;
     private RoundedPopupMenu popupMenuKH;
     private RoundedPopupMenu popupMenuNV;
     private RoundedPopupMenu popupMenuTK;
     private RoundedPopupMenu popupMenuHD;
-    private RoundedPopupMenu popupMenuPT;
     private RoundedPopupMenu popupMenuPN;
-    private RoundedPopupMenu popupMenuPX;
+    private final TaiKhoan taiKhoan;
+
     /**
      * Creates new form Main
      */
-public Main() {
-    initComponents();
-    setTitle("Phần mềm quản lý cửa hàng tiện lợi");
-    setExtendedState(JFrame.MAXIMIZED_BOTH);
-    addActionListeners(Arrays.asList(btnThongKe, btnHoaDon, btnKhachHang, btnNhaCungCap, btnNhanVien, btnPhieuNhap,
+    public Main(TaiKhoan taiKhoan) {
+        this.taiKhoan = taiKhoan;
+        initComponents();
+        capNhatThongTinNguoiDung();
+        setTitle("Phần mềm quản lý cửa hàng tiện lợi");
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        addActionListeners(Arrays.asList(btnThongKe, btnHoaDon, btnKhachHang, btnNhaCungCap, btnNhanVien, btnPhieuNhap,
                 btnTaiKhoan, btnSanPham, btnDangXuat));
-    //---------------MENU---------------------//
+        // ---------------MENU---------------------//
         // Menu Phiếu Nhập
         popupMenuPN = new RoundedPopupMenu();
         RoundedMenuItem itemPN1 = new RoundedMenuItem("Cập nhật");
@@ -73,8 +74,8 @@ public Main() {
         popupMenuPN.add(new JSeparator());
 
         btnPhieuNhap.addActionListener(e -> popupMenuPN.show(btnPhieuNhap, btnPhieuNhap.getWidth(), 2));
-        setFontForMenuItems(new RoundedMenuItem[]{itemPN1, itemPN2});
-     
+        setFontForMenuItems(new RoundedMenuItem[] { itemPN1, itemPN2 });
+
         // Menu Nhà Cung Cấp
         popupMenuNCC = new RoundedPopupMenu();
         RoundedMenuItem itemNCC1 = new RoundedMenuItem("Cập nhật");
@@ -86,7 +87,7 @@ public Main() {
         popupMenuNCC.add(new JSeparator());
 
         btnNhaCungCap.addActionListener(e -> popupMenuNCC.show(btnNhaCungCap, btnNhaCungCap.getWidth(), 2));
-        setFontForMenuItems(new RoundedMenuItem[]{itemNCC1, itemNCC2});
+        setFontForMenuItems(new RoundedMenuItem[] { itemNCC1, itemNCC2 });
 
         // Menu Hóa đơn
         popupMenuHD = new RoundedPopupMenu();
@@ -99,8 +100,8 @@ public Main() {
         popupMenuHD.add(new JSeparator());
 
         btnHoaDon.addActionListener(e -> popupMenuHD.show(btnHoaDon, btnHoaDon.getWidth(), 2));
-        setFontForMenuItems(new RoundedMenuItem[]{itemHD1, itemHD2});
-    
+        setFontForMenuItems(new RoundedMenuItem[] { itemHD1, itemHD2 });
+
         // Menu nhân viên
         popupMenuNV = new RoundedPopupMenu();
         RoundedMenuItem itemNV1 = new RoundedMenuItem("Cập nhật");
@@ -112,7 +113,7 @@ public Main() {
         popupMenuNV.add(new JSeparator());
 
         btnNhanVien.addActionListener(e -> popupMenuNV.show(btnNhanVien, btnNhanVien.getWidth(), 2));
-        setFontForMenuItems(new RoundedMenuItem[]{itemNV1, itemNV2});     
+        setFontForMenuItems(new RoundedMenuItem[] { itemNV1, itemNV2 });
 
         // Menu khách hàng
         popupMenuKH = new RoundedPopupMenu();
@@ -125,8 +126,8 @@ public Main() {
         popupMenuKH.add(new JSeparator());
 
         btnKhachHang.addActionListener(e -> popupMenuKH.show(btnKhachHang, btnKhachHang.getWidth(), 2));
-        setFontForMenuItems(new RoundedMenuItem[]{itemKH1, itemKH2});    
-        
+        setFontForMenuItems(new RoundedMenuItem[] { itemKH1, itemKH2 });
+
         // Menu tài khoản
         popupMenuTK = new RoundedPopupMenu();
         RoundedMenuItem itemTK1 = new RoundedMenuItem("Cập nhật");
@@ -138,7 +139,7 @@ public Main() {
         popupMenuTK.add(new JSeparator());
 
         btnTaiKhoan.addActionListener(e -> popupMenuTK.show(btnTaiKhoan, btnTaiKhoan.getWidth(), 2));
-        setFontForMenuItems(new RoundedMenuItem[]{itemTK1, itemTK2});    
+        setFontForMenuItems(new RoundedMenuItem[] { itemTK1, itemTK2 });
 
         // Menu SẢN PHẨM
         popupMenuSP = new RoundedPopupMenu();
@@ -151,9 +152,9 @@ public Main() {
         popupMenuSP.add(new JSeparator());
 
         btnSanPham.addActionListener(e -> popupMenuSP.show(btnSanPham, btnSanPham.getWidth(), 2));
-        setFontForMenuItems(new RoundedMenuItem[]{itemSP1, itemSP2});       
-        
-      //-------------SỰ KIỆN------------//
+        setFontForMenuItems(new RoundedMenuItem[] { itemSP1, itemSP2 });
+
+        // -------------SỰ KIỆN------------//
         // Sự kiện nhà cung cấp
         itemNCC1.addActionListener(e -> {
             frmNhaCungCap ncc1 = new frmNhaCungCap();
@@ -183,7 +184,7 @@ public Main() {
             pCenter.revalidate();
             pCenter.repaint();
         });
-        
+
         // Sự kiện Hóa đơn
         itemHD1.addActionListener(e -> {
             frmHoaDon hd1 = new frmHoaDon();
@@ -213,7 +214,7 @@ public Main() {
             pCenter.revalidate();
             pCenter.repaint();
         });
-        
+
         // Sự kiện phiếu nhập
         itemPN1.addActionListener(e -> {
             frmPhieuNhap pn1 = new frmPhieuNhap();
@@ -272,7 +273,7 @@ public Main() {
             // Cập nhật lại giao diện
             pCenter.revalidate();
             pCenter.repaint();
-        });    
+        });
 
         // Sự kiện Nhân viên
         itemNV1.addActionListener(e -> {
@@ -302,7 +303,7 @@ public Main() {
             // Cập nhật lại giao diện
             pCenter.revalidate();
             pCenter.repaint();
-        });   
+        });
 
         // Sự kiện Tài khoản
         itemTK1.addActionListener(e -> {
@@ -332,8 +333,8 @@ public Main() {
             // Cập nhật lại giao diện
             pCenter.revalidate();
             pCenter.repaint();
-        }); 
-        
+        });
+
         // Sự kiện Sản phẩm
         itemSP1.addActionListener(e -> {
             frmSanPham sp1 = new frmSanPham();
@@ -362,11 +363,8 @@ public Main() {
             // Cập nhật lại giao diện
             pCenter.revalidate();
             pCenter.repaint();
-        }); 
-        
-}
-
-    
+        });
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -374,9 +372,9 @@ public Main() {
      * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         Panel = new javax.swing.JPanel();
         pWest = new javax.swing.JPanel();
@@ -403,7 +401,7 @@ public Main() {
         pDangXuat = new Swing.RoundPanel();
         btnDangXuat = new javax.swing.JButton();
         pCenter = new javax.swing.JPanel();
-        anhCenter = new SmoothImageLabel("/Icon/mainBackGround.png") ;
+        anhCenter = new SmoothImageLabel("/Icon/mainBackGround.png");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -457,24 +455,25 @@ public Main() {
         javax.swing.GroupLayout thongtinNVLayout = new javax.swing.GroupLayout(thongtinNV);
         thongtinNV.setLayout(thongtinNVLayout);
         thongtinNVLayout.setHorizontalGroup(
-            thongtinNVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(thongtinNVLayout.createSequentialGroup()
-                .addComponent(lblName, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(thongtinNVLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblRole, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+                thongtinNVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(thongtinNVLayout.createSequentialGroup()
+                                .addComponent(lblName, javax.swing.GroupLayout.PREFERRED_SIZE, 130,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(thongtinNVLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(lblRole, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap()));
         thongtinNVLayout.setVerticalGroup(
-            thongtinNVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(thongtinNVLayout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(lblName)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblRole, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(23, 23, 23))
-        );
+                thongtinNVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(thongtinNVLayout.createSequentialGroup()
+                                .addGap(14, 14, 14)
+                                .addComponent(lblName)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblRole, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(23, 23, 23)));
 
         pThongTin.add(thongtinNV, java.awt.BorderLayout.CENTER);
 
@@ -490,7 +489,6 @@ public Main() {
         jspMenu.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
         Menu.setMaximumSize(new java.awt.Dimension(10, 1000000));
-        Menu.setMinimumSize(new java.awt.Dimension(10, 10));
         Menu.setPreferredSize(new java.awt.Dimension(10, 600));
 
         btnThongKe.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -498,15 +496,9 @@ public Main() {
         btnThongKe.setAlignmentX(0.5F);
         btnThongKe.setAlignmentY(0.0F);
         btnThongKe.setBorderPainted(false);
-        btnThongKe.setHideActionText(true);
         btnThongKe.setMaximumSize(new java.awt.Dimension(208, 40));
         btnThongKe.setMinimumSize(new java.awt.Dimension(208, 40));
         btnThongKe.setPreferredSize(new java.awt.Dimension(208, 40));
-        btnThongKe.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnThongKeActionPerformed(evt);
-            }
-        });
         Menu.add(btnThongKe);
 
         btnPhieuNhap.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -636,7 +628,7 @@ public Main() {
         pCenter.setMinimumSize(new java.awt.Dimension(0, 0));
         pCenter.setLayout(new java.awt.BorderLayout());
 
-        anhCenter.setIcon(new ImageIcon(Main.class.getResource("/Icon/mainBackground.png"))); // NOI18N
+        anhCenter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/src/Icon/mainBackground.png"))); // NOI18N
         anhCenter.setMaximumSize(new java.awt.Dimension(1400, 1400));
         anhCenter.setMinimumSize(new java.awt.Dimension(1400, 1400));
         anhCenter.setPreferredSize(new java.awt.Dimension(1400, 1400));
@@ -649,33 +641,31 @@ public Main() {
         setBounds(0, 0, 1214, 608);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnDangXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangXuatActionPerformed
+    private void btnDangXuatActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnDangXuatActionPerformed
         this.dispose();
         Login login = new Login();
         login.setVisible(true);
-    }//GEN-LAST:event_btnDangXuatActionPerformed
+    }// GEN-LAST:event_btnDangXuatActionPerformed
 
-    private void btnHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHoaDonActionPerformed
+    private void btnHoaDonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnHoaDonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnHoaDonActionPerformed
+    }// GEN-LAST:event_btnHoaDonActionPerformed
 
-    private void btnSanPhamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSanPhamActionPerformed
+    private void btnSanPhamActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnSanPhamActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnSanPhamActionPerformed
+    }// GEN-LAST:event_btnSanPhamActionPerformed
 
-    private void btnNhaCungCapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNhaCungCapActionPerformed
+    private void btnNhaCungCapActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnNhaCungCapActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnNhaCungCapActionPerformed
+    }// GEN-LAST:event_btnNhaCungCapActionPerformed
 
-    private void btnThongKeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThongKeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnThongKeActionPerformed
     private void addActionListeners(List<JButton> buttons) {
         for (JButton button : buttons) {
             button.addActionListener(this::changeButtonColor);
         }
     }
-        private void changeButtonColor(ActionEvent e) {
+
+    private void changeButtonColor(ActionEvent e) {
 
         JButton sourceButton = (JButton) e.getSource();
         Component[] components = sourceButton.getParent().getComponents();
@@ -690,41 +680,76 @@ public Main() {
         // Đổi màu nút được chọn
         sourceButton.setBackground(new Color(0, 155, 118));
     }
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        try {
-            // Trỏ tới folder chứa file myTheme.properties trên classpath
-            // Ví dụ bạn để file tại: src/resources/theme/myTheme.properties
-            FlatLaf.registerCustomDefaultsSource("theme");
+    // public static void main(String args[]) {
+    // try {
+    // // Trỏ tới folder chứa file myTheme.properties trên classpath
+    // // Ví dụ bạn để file tại: src/resources/theme/myTheme.properties
+    // FlatLaf.registerCustomDefaultsSource("theme");
 
-            // Đảm bảo file myTheme.properties được nạp cùng FlatLaf
-            UIManager.put("FlatLaf.additionalDefaults", "myTheme.properties");
+    // // Đảm bảo file myTheme.properties được nạp cùng FlatLaf
+    // UIManager.put("FlatLaf.additionalDefaults", "myTheme.properties");
 
-            // Chọn nền FlatLightLaf (áp dụng toàn bộ)
-            UIManager.setLookAndFeel(new FlatLightLaf());
+    // // Chọn nền FlatLightLaf (áp dụng toàn bộ)
+    // UIManager.setLookAndFeel(new FlatLightLaf());
 
-            // (Tuỳ chọn) Nếu muốn ép accent qua code:
-            // UIManager.put("@accentColor", "#FFFFFF");
+    // // (Tuỳ chọn) Nếu muốn ép accent qua code:
+    // // UIManager.put("@accentColor", "#FFFFFF");
 
-            // Cập nhật UI nếu có component tạo trước LAF
-            FlatLaf.updateUI();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    // // Cập nhật UI nếu có component tạo trước LAF
+    // FlatLaf.updateUI();
+    // } catch (Exception ex) {
+    // ex.printStackTrace();
+    // }
 
-        // Tạo UI như bình thường
-        java.awt.EventQueue.invokeLater(() -> {
-            new Main().setVisible(true);
-        });
-    }
-        private void setFontForMenuItems(RoundedMenuItem[] items) {
+    // // Tạo UI như bình thường
+    // java.awt.EventQueue.invokeLater(() -> {
+    // // new Main().setVisible(true);
+    // });
+    // }
+    private void setFontForMenuItems(RoundedMenuItem[] items) {
         Font font = new Font("Segoe UI", Font.BOLD, 12); // Thiết lập font ở đây
         for (RoundedMenuItem item : items) {
             item.setFont(font);
         }
     }
+
+    private void capNhatThongTinNguoiDung() {
+        if (taiKhoan == null)
+            return;
+
+        String maNV = taiKhoan.getMaNV();
+        if (maNV == null || maNV.isBlank()) {
+            lblName.setText("Không xác định");
+            lblRole.setText("");
+            lblAvatar.setIcon(new FlatSVGIcon("./icon/man.svg"));
+            return;
+        }
+
+        DAO.NhanVien.NhanVienDAO nvDao = new DAO.NhanVien.NhanVienDAO();
+        java.util.Optional<Entity.NhanVien.NhanVien> oNv = nvDao.findById(maNV);
+
+        if (oNv.isPresent()) {
+            Entity.NhanVien.NhanVien nv = oNv.get();
+            lblName.setText(nv.getTenNV());
+            lblRole.setText(nv.getChucVu());
+
+            String gioiTinh = nv.getGioiTinh();
+            if (gioiTinh != null && gioiTinh.equalsIgnoreCase("Nữ")) {
+                lblAvatar.setIcon(new FlatSVGIcon("./icon/woman.svg"));
+            } else {
+                lblAvatar.setIcon(new FlatSVGIcon("./icon/man.svg"));
+            }
+        } else {
+            lblName.setText("Không tìm thấy nhân viên");
+            lblRole.setText("");
+            lblAvatar.setIcon(new FlatSVGIcon("./icon/man.svg"));
+        }
+    }
+
     public void replaceMainPanel(JPanel newPanel) {
         // Xóa tất cả các phần cũ trong mainPanel
         pCenter.removeAll();
@@ -738,7 +763,7 @@ public Main() {
         // Cập nhật lại giao diện
         pCenter.revalidate();
         pCenter.repaint();
-    }    
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Menu;
@@ -769,24 +794,27 @@ public Main() {
     private Swing.RoundPanel thongtinNV;
     // End of variables declaration//GEN-END:variables
 }
+
 class BackgroundPanel extends javax.swing.JPanel {
     private java.awt.Image bg;
 
     public BackgroundPanel(String resourcePath) {
         setOpaque(true);
         java.net.URL url = getClass().getResource(resourcePath);
-        if (url == null) throw new IllegalArgumentException("Không tìm thấy ảnh: " + resourcePath);
+        if (url == null)
+            throw new IllegalArgumentException("Không tìm thấy ảnh: " + resourcePath);
         bg = new javax.swing.ImageIcon(url).getImage();
     }
 
     @Override
     protected void paintComponent(java.awt.Graphics g) {
         super.paintComponent(g);
-        if (bg == null) return;
+        if (bg == null)
+            return;
 
         java.awt.Graphics2D g2 = (java.awt.Graphics2D) g.create();
         g2.setRenderingHint(java.awt.RenderingHints.KEY_INTERPOLATION,
-                            java.awt.RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                java.awt.RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
         int W = getWidth(), H = getHeight();
         int w = bg.getWidth(null), h = bg.getHeight(null);
@@ -799,5 +827,3 @@ class BackgroundPanel extends javax.swing.JPanel {
         g2.dispose();
     }
 }
-
-

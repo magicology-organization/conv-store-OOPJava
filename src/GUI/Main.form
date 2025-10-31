@@ -245,9 +245,6 @@
                             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[10, 1000000]"/>
                             </Property>
-                            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[10, 10]"/>
-                            </Property>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[10, 600]"/>
                             </Property>
@@ -264,7 +261,6 @@
                                 <Property name="alignmentX" type="float" value="0.5"/>
                                 <Property name="alignmentY" type="float" value="0.0"/>
                                 <Property name="borderPainted" type="boolean" value="false"/>
-                                <Property name="hideActionText" type="boolean" value="true"/>
                                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                                   <Dimension value="[208, 40]"/>
                                 </Property>
@@ -275,9 +271,6 @@
                                   <Dimension value="[208, 40]"/>
                                 </Property>
                               </Properties>
-                              <Events>
-                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnThongKeActionPerformed"/>
-                              </Events>
                             </Component>
                             <Component class="javax.swing.JButton" name="btnPhieuNhap">
                               <Properties>

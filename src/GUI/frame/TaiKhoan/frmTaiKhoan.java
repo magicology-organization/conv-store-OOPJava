@@ -143,8 +143,8 @@ public class frmTaiKhoan extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        table.setMinimumSize(new java.awt.Dimension(1200, 250));
-        table.setPreferredSize(new java.awt.Dimension(1200, 250));
+        table.setMinimumSize(null);
+        table.setPreferredSize(null);
         table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         table.setShowHorizontalLines(true);
         scrollTableCenter.setViewportView(table);

@@ -32,6 +32,8 @@ public class formThongTinTK extends javax.swing.JDialog {
         title = new javax.swing.JLabel();
         pCenter = new javax.swing.JPanel();
         pThongTin = new javax.swing.JPanel();
+        lblMa = new javax.swing.JLabel();
+        txtMa = new javax.swing.JTextField();
         lblTK = new javax.swing.JLabel();
         txtHoTen = new javax.swing.JTextField();
         lblMK = new javax.swing.JLabel();
@@ -75,7 +77,18 @@ public class formThongTinTK extends javax.swing.JDialog {
         pThongTin.setMaximumSize(new java.awt.Dimension(550, 300));
         pThongTin.setMinimumSize(new java.awt.Dimension(550, 300));
         pThongTin.setPreferredSize(new java.awt.Dimension(550, 300));
-        pThongTin.setLayout(new java.awt.GridLayout(4, 2, 5, 0));
+        pThongTin.setLayout(new java.awt.GridLayout(7, 2, 5, 0));
+
+        lblMa.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblMa.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblMa.setText("Mã tài khoản:");
+        lblMa.setAlignmentX(20.0F);
+        lblMa.setAlignmentY(20.0F);
+        pThongTin.add(lblMa);
+
+        txtMa.setEditable(false);
+        txtMa.setPreferredSize(new java.awt.Dimension(350, 22));
+        pThongTin.add(txtMa);
 
         lblTK.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblTK.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -107,7 +120,7 @@ public class formThongTinTK extends javax.swing.JDialog {
         lblNV.setText("Nhân viên:");
         pThongTin.add(lblNV);
 
-        cboNhanVien.setEditable(true);
+        cboNhanVien.setBackground(new java.awt.Color(242, 242, 242));
         cboNhanVien.setPreferredSize(new java.awt.Dimension(350, 22));
         pThongTin.add(cboNhanVien);
 
@@ -194,6 +207,7 @@ public class formThongTinTK extends javax.swing.JDialog {
     private javax.swing.JButton btnHuy;
     private javax.swing.JComboBox<String> cboNhanVien;
     private javax.swing.JLabel lblMK;
+    private javax.swing.JLabel lblMa;
     private javax.swing.JLabel lblNV;
     private javax.swing.JLabel lblTK;
     private javax.swing.JPanel pCenter;
@@ -203,6 +217,7 @@ public class formThongTinTK extends javax.swing.JDialog {
     private Swing.RoundPanel roundPanel;
     private javax.swing.JLabel title;
     private javax.swing.JTextField txtHoTen;
+    private javax.swing.JTextField txtMa;
     private javax.swing.JTextField txtPassword;
     // End of variables declaration//GEN-END:variables
 }

@@ -25,42 +25,46 @@ public class PhieuNhapDAO {
         String sql = "SELECT maPN, maNV, maNCC, thoiGian FROM PhieuNhap ORDER BY maPN";
         List<PhieuNhap> list = new ArrayList<>();
         try (PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) list.add(mapRow(rs));
-        } catch (SQLException e) { e.printStackTrace(); }
+                ResultSet rs = ps.executeQuery()) {
+            while (rs.next())
+                list.add(mapRow(rs));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return list;
     }
-        public List<Object[]> findAllWithDetails() {
+
+    public List<Object[]> findAllWithDetails() {
         String sql = """
-            SELECT pn.maPN,
-                   ncc.tenNCC,
-                   ncc.SDT       AS soDienThoai,
-                   nv.tenNV,
-                   pn.thoiGian,
-                   ISNULL(SUM(ct.soLuong * ct.donGia), 0) AS tongHoaDon
-            FROM PhieuNhap pn
-            JOIN NhaCungCap ncc ON ncc.maNCC = pn.maNCC
-            JOIN NhanVien   nv  ON nv.maNV   = pn.maNV
-            LEFT JOIN CTPhieuNhap ct ON ct.maPN = pn.maPN
-            GROUP BY pn.maPN, ncc.tenNCC, ncc.SDT, nv.tenNV, pn.thoiGian
-            ORDER BY pn.maPN ASC
-        """;
+                    SELECT pn.maPN,
+                           ncc.tenNCC,
+                           ncc.SDT       AS soDienThoai,
+                           nv.tenNV,
+                           pn.thoiGian,
+                           ISNULL(SUM(ct.soLuong * ct.donGia), 0) AS tongHoaDon
+                    FROM PhieuNhap pn
+                    JOIN NhaCungCap ncc ON ncc.maNCC = pn.maNCC
+                    JOIN NhanVien   nv  ON nv.maNV   = pn.maNV
+                    LEFT JOIN CTPhieuNhap ct ON ct.maPN = pn.maPN
+                    GROUP BY pn.maPN, ncc.tenNCC, ncc.SDT, nv.tenNV, pn.thoiGian
+                    ORDER BY pn.maPN ASC
+                """;
 
         List<Object[]> out = new ArrayList<>();
         try (Connection conn = ConnectDB.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 LocalDateTime tg = rs.getTimestamp("thoiGian").toLocalDateTime();
                 BigDecimal tong = rs.getBigDecimal("tongHoaDon");
-                out.add(new Object[]{
-                        rs.getString("maPN"),        // 0
-                        rs.getString("tenNCC"),      // 1
+                out.add(new Object[] {
+                        rs.getString("maPN"), // 0
+                        rs.getString("tenNCC"), // 1
                         rs.getString("soDienThoai"), // 2
-                        rs.getString("tenNV"),       // 3
-                        tg,                          // 4 (LocalDateTime)
-                        tong                         // 5 (BigDecimal)
+                        rs.getString("tenNV"), // 3
+                        tg, // 4 (LocalDateTime)
+                        tong // 5 (BigDecimal)
                 });
             }
         } catch (SQLException e) {
@@ -68,20 +72,81 @@ public class PhieuNhapDAO {
         }
         return out;
     }
+
+    public String taoMaPhieuNhap() {
+        final String prefix = "PN-";
+        final String sql = "SELECT ISNULL(MAX(CAST(SUBSTRING(maPN, 4, 10) AS INT)), 0) AS maxNo " +
+                "FROM PhieuNhap WHERE maPN LIKE 'PN-%'";
+
+        int next = 1;
+        try (PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                next = rs.getInt("maxNo") + 1;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Lỗi tạo mã phiếu nhập", e);
+        }
+
+        return prefix + String.format("%05d", next);
+    }
+
     public Optional<PhieuNhap> findById(String maPN) {
-        if (isBlank(maPN)) return Optional.empty();
+        if (isBlank(maPN))
+            return Optional.empty();
         String sql = "SELECT maPN, maNV, maNCC, thoiGian FROM PhieuNhap WHERE maPN=?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, maPN);
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) return Optional.of(mapRow(rs));
+                if (rs.next())
+                    return Optional.of(mapRow(rs));
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return Optional.empty();
     }
 
+    public List<Object[]> findByMaNCC(String maNCC) {
+        List<Object[]> list = new ArrayList<>();
+
+        String sql = """
+                    SELECT
+                        pn.maPN,
+                        nv.tenNV,
+                        pn.thoiGian,
+                        ISNULL(SUM(ct.soLuong * ct.donGia), 0) AS tongHoaDon
+                    FROM PhieuNhap pn
+                    JOIN NhanVien nv ON nv.maNV = pn.maNV
+                    LEFT JOIN CTPhieuNhap ct ON ct.maPN = pn.maPN
+                    WHERE pn.maNCC = ?
+                    GROUP BY pn.maPN, nv.tenNV, pn.thoiGian
+                    ORDER BY pn.maPN ASC
+                """;
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, maNCC);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String maPN = rs.getString("maPN");
+                String tenNV = rs.getString("tenNV");
+                java.sql.Timestamp tg = rs.getTimestamp("thoiGian");
+                java.time.LocalDateTime thoiGian = tg != null ? tg.toLocalDateTime() : null;
+                double tong = rs.getDouble("tongHoaDon");
+
+                list.add(new Object[] { maPN, tenNV, thoiGian, tong });
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
     public boolean insert(PhieuNhap pn) {
-        if (pn == null || isBlank(pn.getMaPN())) return false;
+        if (pn == null || isBlank(pn.getMaPN()))
+            return false;
         String sql = "INSERT INTO PhieuNhap(maPN, maNV, maNCC, thoiGian) VALUES(?,?,?,?)";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, pn.getMaPN());
@@ -89,11 +154,15 @@ public class PhieuNhapDAO {
             ps.setString(3, pn.getMaNCC());
             setDateTimeOrNull(ps, 4, pn.getThoiGian());
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) { e.printStackTrace(); return false; }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public boolean update(PhieuNhap pn) {
-        if (pn == null || isBlank(pn.getMaPN())) return false;
+        if (pn == null || isBlank(pn.getMaPN()))
+            return false;
         String sql = "UPDATE PhieuNhap SET maNV=?, maNCC=?, thoiGian=? WHERE maPN=?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, pn.getMaNV());
@@ -101,16 +170,23 @@ public class PhieuNhapDAO {
             setDateTimeOrNull(ps, 3, pn.getThoiGian());
             ps.setString(4, pn.getMaPN());
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) { e.printStackTrace(); return false; }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public boolean delete(String maPN) {
-        if (isBlank(maPN)) return false;
+        if (isBlank(maPN))
+            return false;
         String sql = "DELETE FROM PhieuNhap WHERE maPN=?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, maPN);
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) { e.printStackTrace(); return false; }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     private static PhieuNhap mapRow(ResultSet rs) throws SQLException {
@@ -119,14 +195,19 @@ public class PhieuNhapDAO {
         pn.setMaNV(rs.getString("maNV"));
         pn.setMaNCC(rs.getString("maNCC"));
         Timestamp ts = rs.getTimestamp("thoiGian");
-        if (ts != null) pn.setThoiGian(ts.toLocalDateTime());
+        if (ts != null)
+            pn.setThoiGian(ts.toLocalDateTime());
         return pn;
     }
 
     private static void setDateTimeOrNull(PreparedStatement ps, int idx, LocalDateTime dt) throws SQLException {
-        if (dt == null) ps.setNull(idx, Types.TIMESTAMP); else ps.setTimestamp(idx, Timestamp.valueOf(dt));
+        if (dt == null)
+            ps.setNull(idx, Types.TIMESTAMP);
+        else
+            ps.setTimestamp(idx, Timestamp.valueOf(dt));
     }
 
-    private static boolean isBlank(String s) { return s == null || s.trim().isEmpty(); }
+    private static boolean isBlank(String s) {
+        return s == null || s.trim().isEmpty();
+    }
 }
-

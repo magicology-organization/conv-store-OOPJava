@@ -30,9 +30,11 @@ public class formThongTinKH extends javax.swing.JDialog {
         jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         roundPanel = new Swing.RoundPanel();
         pNorth = new javax.swing.JPanel();
-        title = new javax.swing.JLabel();
+        lblThemKH = new javax.swing.JLabel();
         pCenter = new javax.swing.JPanel();
         pThongTin = new javax.swing.JPanel();
+        lblMaKH = new javax.swing.JLabel();
+        txtMaKH = new javax.swing.JTextField();
         lblTen = new javax.swing.JLabel();
         txtHoTen = new javax.swing.JTextField();
         lblGioiTinh = new javax.swing.JLabel();
@@ -41,38 +43,39 @@ public class formThongTinKH extends javax.swing.JDialog {
         rbtnNu = new javax.swing.JRadioButton();
         lblSDT = new javax.swing.JLabel();
         txtSDT = new javax.swing.JTextField();
-        lblTuoi = new javax.swing.JLabel();
-        txtTuoi = new javax.swing.JTextField();
+        pTilteTable = new javax.swing.JPanel();
+        tilteTable = new javax.swing.JLabel();
+        scrollTableCenter = new javax.swing.JScrollPane();
+        table = new javax.swing.JTable();
         pSouth = new javax.swing.JPanel();
         btnHuy = new javax.swing.JButton();
+        btnChiTiet = new javax.swing.JButton();
 
         jCheckBoxMenuItem1.setSelected(true);
         jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(600, 400));
+        setMinimumSize(new java.awt.Dimension(600, 600));
 
         roundPanel.setBackground(new java.awt.Color(255, 255, 255));
-        roundPanel.setMaximumSize(new java.awt.Dimension(600, 400));
-        roundPanel.setMinimumSize(new java.awt.Dimension(600, 400));
+        roundPanel.setMaximumSize(new java.awt.Dimension(600, 600));
+        roundPanel.setMinimumSize(new java.awt.Dimension(600, 600));
         roundPanel.setName(""); // NOI18N
-        roundPanel.setPreferredSize(new java.awt.Dimension(600, 400));
+        roundPanel.setPreferredSize(new java.awt.Dimension(600, 600));
         roundPanel.setLayout(new java.awt.BorderLayout());
 
         pNorth.setBackground(new java.awt.Color(204, 255, 204));
         pNorth.setMaximumSize(new java.awt.Dimension(600, 50));
-        pNorth.setMinimumSize(new java.awt.Dimension(600, 50));
-        pNorth.setPreferredSize(new java.awt.Dimension(600, 50));
         pNorth.setLayout(new java.awt.BorderLayout());
 
-        title.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        title.setText(" Thông tin khách hàng");
-        title.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        title.setMaximumSize(new java.awt.Dimension(190, 32));
-        title.setMinimumSize(new java.awt.Dimension(190, 32));
-        title.setPreferredSize(new java.awt.Dimension(190, 32));
-        pNorth.add(title, java.awt.BorderLayout.CENTER);
+        lblThemKH.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblThemKH.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblThemKH.setText(" Thông tin khách hàng");
+        lblThemKH.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lblThemKH.setMaximumSize(new java.awt.Dimension(600, 50));
+        lblThemKH.setMinimumSize(new java.awt.Dimension(600, 50));
+        lblThemKH.setPreferredSize(new java.awt.Dimension(600, 50));
+        pNorth.add(lblThemKH, java.awt.BorderLayout.CENTER);
 
         roundPanel.add(pNorth, java.awt.BorderLayout.PAGE_START);
 
@@ -82,10 +85,26 @@ public class formThongTinKH extends javax.swing.JDialog {
         pCenter.setPreferredSize(new java.awt.Dimension(600, 300));
 
         pThongTin.setBackground(new java.awt.Color(255, 255, 255));
-        pThongTin.setMaximumSize(new java.awt.Dimension(550, 300));
-        pThongTin.setMinimumSize(new java.awt.Dimension(550, 300));
-        pThongTin.setPreferredSize(new java.awt.Dimension(550, 300));
-        pThongTin.setLayout(new java.awt.GridLayout(6, 2, 5, 0));
+        pThongTin.setMaximumSize(new java.awt.Dimension(550, 150));
+        pThongTin.setMinimumSize(new java.awt.Dimension(550, 150));
+        pThongTin.setPreferredSize(new java.awt.Dimension(550, 150));
+        pThongTin.setLayout(new java.awt.GridLayout(5, 2, 5, 0));
+
+        lblMaKH.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblMaKH.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblMaKH.setText("Mã khách hàng:");
+        lblMaKH.setAlignmentX(20.0F);
+        lblMaKH.setAlignmentY(20.0F);
+        pThongTin.add(lblMaKH);
+
+        txtMaKH.setEditable(false);
+        txtMaKH.setPreferredSize(new java.awt.Dimension(350, 22));
+        txtMaKH.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMaKHActionPerformed(evt);
+            }
+        });
+        pThongTin.add(txtMaKH);
 
         lblTen.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblTen.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -133,16 +152,50 @@ public class formThongTinKH extends javax.swing.JDialog {
         txtSDT.setPreferredSize(new java.awt.Dimension(350, 22));
         pThongTin.add(txtSDT);
 
-        lblTuoi.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblTuoi.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblTuoi.setText("Tuổi:");
-        pThongTin.add(lblTuoi);
-
-        txtTuoi.setEditable(false);
-        txtTuoi.setPreferredSize(new java.awt.Dimension(350, 22));
-        pThongTin.add(txtTuoi);
-
         pCenter.add(pThongTin);
+
+        pTilteTable.setMinimumSize(new java.awt.Dimension(550, 40));
+        pTilteTable.setPreferredSize(new java.awt.Dimension(550, 40));
+
+        tilteTable.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        tilteTable.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        tilteTable.setText("Lịch sử giao dịch");
+        tilteTable.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        tilteTable.setMaximumSize(new java.awt.Dimension(600, 40));
+        tilteTable.setMinimumSize(new java.awt.Dimension(600, 40));
+        tilteTable.setPreferredSize(new java.awt.Dimension(600, 40));
+        pTilteTable.add(tilteTable);
+
+        pCenter.add(pTilteTable);
+
+        scrollTableCenter.setMinimumSize(new java.awt.Dimension(550, 280));
+        scrollTableCenter.setPreferredSize(new java.awt.Dimension(550, 280));
+
+        table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "STT", "Mã hóa đơn", "Tên nhân viên", "Ngày mua", "Tổng hóa đơn"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        table.setMaximumSize(null);
+        table.setMinimumSize(null);
+        table.setName(""); // NOI18N
+        table.setPreferredSize(null);
+        table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        table.setShowHorizontalLines(true);
+        scrollTableCenter.setViewportView(table);
+
+        pCenter.add(scrollTableCenter);
 
         roundPanel.add(pCenter, java.awt.BorderLayout.CENTER);
 
@@ -163,6 +216,21 @@ public class formThongTinKH extends javax.swing.JDialog {
         });
         pSouth.add(btnHuy);
 
+        btnChiTiet.setBackground(new java.awt.Color(15, 204, 102));
+        btnChiTiet.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnChiTiet.setForeground(new java.awt.Color(255, 255, 255));
+        btnChiTiet.setText("Chi tiết");
+        btnChiTiet.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnChiTiet.setMaximumSize(new java.awt.Dimension(85, 35));
+        btnChiTiet.setMinimumSize(new java.awt.Dimension(85, 35));
+        btnChiTiet.setPreferredSize(new java.awt.Dimension(90, 35));
+        btnChiTiet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChiTietActionPerformed(evt);
+            }
+        });
+        pSouth.add(btnChiTiet);
+
         roundPanel.add(pSouth, java.awt.BorderLayout.PAGE_END);
 
         getContentPane().add(roundPanel, java.awt.BorderLayout.CENTER);
@@ -172,16 +240,23 @@ public class formThongTinKH extends javax.swing.JDialog {
 
     private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyActionPerformed
         // TODO add your handling code here:
-        dispose();
     }//GEN-LAST:event_btnHuyActionPerformed
+
+    private void txtMaKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaKHActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMaKHActionPerformed
+
+    private void txtHoTenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHoTenActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtHoTenActionPerformed
 
     private void rbtnNamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnNamActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_rbtnNamActionPerformed
 
-    private void txtHoTenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHoTenActionPerformed
+    private void btnChiTietActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChiTietActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtHoTenActionPerformed
+    }//GEN-LAST:event_btnChiTietActionPerformed
 
     /**
      * @param args the command line arguments
@@ -226,23 +301,28 @@ public class formThongTinKH extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnChiTiet;
     private javax.swing.JButton btnHuy;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblGioiTinh;
+    private javax.swing.JLabel lblMaKH;
     private javax.swing.JLabel lblSDT;
     private javax.swing.JLabel lblTen;
-    private javax.swing.JLabel lblTuoi;
+    private javax.swing.JLabel lblThemKH;
     private javax.swing.JPanel pCenter;
     private javax.swing.JPanel pNorth;
     private javax.swing.JPanel pSouth;
     private javax.swing.JPanel pThongTin;
+    private javax.swing.JPanel pTilteTable;
     private javax.swing.JRadioButton rbtnNam;
     private javax.swing.JRadioButton rbtnNu;
     private Swing.RoundPanel roundPanel;
-    private javax.swing.JLabel title;
+    private javax.swing.JScrollPane scrollTableCenter;
+    private javax.swing.JTable table;
+    private javax.swing.JLabel tilteTable;
     private javax.swing.JTextField txtHoTen;
+    private javax.swing.JTextField txtMaKH;
     private javax.swing.JTextField txtSDT;
-    private javax.swing.JTextField txtTuoi;
     // End of variables declaration//GEN-END:variables
 }

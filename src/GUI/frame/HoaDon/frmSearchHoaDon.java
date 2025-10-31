@@ -56,10 +56,10 @@ public class frmSearchHoaDon extends javax.swing.JPanel {
         pTimKiem_Row5_Col2 = new javax.swing.JPanel();
         btnTim = new javax.swing.JButton();
         pCenter = new javax.swing.JPanel();
-        scrollTableCenter = new javax.swing.JScrollPane();
-        table = new javax.swing.JTable();
         centerTilte = new javax.swing.JPanel();
         titleName1 = new javax.swing.JLabel();
+        scrollTableCenter = new javax.swing.JScrollPane();
+        table = new javax.swing.JTable();
         pSouth = new javax.swing.JPanel();
         btnChiTiet = new javax.swing.JButton();
 
@@ -250,33 +250,6 @@ public class frmSearchHoaDon extends javax.swing.JPanel {
         pCenter.setPreferredSize(new java.awt.Dimension(1200, 300));
         pCenter.setLayout(new java.awt.BorderLayout());
 
-        scrollTableCenter.setMinimumSize(new java.awt.Dimension(1200, 250));
-        scrollTableCenter.setPreferredSize(new java.awt.Dimension(1200, 250));
-
-        table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "STT", "Mã hóa đơn", "Tên khách hàng", "SĐT khách", "Tên nhân viên", "Ngày mua", "Tổng hóa đơn", "Kiểu thanh toán"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        table.setMinimumSize(new java.awt.Dimension(1200, 250));
-        table.setPreferredSize(new java.awt.Dimension(1200, 250));
-        table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        table.setShowHorizontalLines(true);
-        scrollTableCenter.setViewportView(table);
-
-        pCenter.add(scrollTableCenter, java.awt.BorderLayout.CENTER);
-
         centerTilte.setBackground(new java.awt.Color(204, 255, 204));
         centerTilte.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         centerTilte.setMinimumSize(new java.awt.Dimension(1200, 50));
@@ -293,6 +266,32 @@ public class frmSearchHoaDon extends javax.swing.JPanel {
         centerTilte.add(titleName1, java.awt.BorderLayout.CENTER);
 
         pCenter.add(centerTilte, java.awt.BorderLayout.PAGE_START);
+
+        scrollTableCenter.setMinimumSize(new java.awt.Dimension(1200, 500));
+
+        table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "STT", "Mã hóa đơn", "Tên khách hàng", "SĐT", "Tên nhân viên", "Ngày mua", "Kiểu thanh toán", "Tổng hóa đơn"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        table.setMinimumSize(null);
+        table.setPreferredSize(null);
+        table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        table.setShowHorizontalLines(true);
+        scrollTableCenter.setViewportView(table);
+
+        pCenter.add(scrollTableCenter, java.awt.BorderLayout.CENTER);
 
         Panel.add(pCenter, java.awt.BorderLayout.CENTER);
 

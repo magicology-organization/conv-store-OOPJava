@@ -59,7 +59,6 @@ public class formThongTinSP extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         setMinimumSize(new java.awt.Dimension(700, 450));
-        setPreferredSize(new java.awt.Dimension(700, 450));
 
         roundPanel.setBackground(new java.awt.Color(255, 255, 255));
         roundPanel.setMaximumSize(new java.awt.Dimension(700, 450));
@@ -166,7 +165,6 @@ public class formThongTinSP extends javax.swing.JDialog {
         lblHSD.setPreferredSize(new java.awt.Dimension(170, 38));
         pThongTin.add(lblHSD);
 
-        DateHSD.setBackground(new java.awt.Color(255, 255, 255));
         DateHSD.setDateFormatString("d, MMM,y\n");
         DateHSD.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         DateHSD.setMinimumSize(new java.awt.Dimension(140, 30));
@@ -181,6 +179,7 @@ public class formThongTinSP extends javax.swing.JDialog {
         lblDanhMuc.setPreferredSize(new java.awt.Dimension(170, 38));
         pThongTin.add(lblDanhMuc);
 
+        comboDanhMuc.setBackground(new java.awt.Color(242, 242, 242));
         comboDanhMuc.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         comboDanhMuc.setPreferredSize(new java.awt.Dimension(250, 22));
         comboDanhMuc.addActionListener(new java.awt.event.ActionListener() {
@@ -198,6 +197,7 @@ public class formThongTinSP extends javax.swing.JDialog {
         lblDonViTinh.setPreferredSize(new java.awt.Dimension(170, 38));
         pThongTin.add(lblDonViTinh);
 
+        comboDVT.setBackground(new java.awt.Color(242, 242, 242));
         comboDVT.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         comboDVT.setPreferredSize(new java.awt.Dimension(250, 22));
         comboDVT.addActionListener(new java.awt.event.ActionListener() {
@@ -215,6 +215,7 @@ public class formThongTinSP extends javax.swing.JDialog {
         lblXuatXu.setPreferredSize(new java.awt.Dimension(170, 38));
         pThongTin.add(lblXuatXu);
 
+        comboXuatXu.setBackground(new java.awt.Color(242, 242, 242));
         comboXuatXu.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         comboXuatXu.setPreferredSize(new java.awt.Dimension(250, 22));
         comboXuatXu.addActionListener(new java.awt.event.ActionListener() {
