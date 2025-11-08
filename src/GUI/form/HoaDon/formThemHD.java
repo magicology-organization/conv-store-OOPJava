@@ -475,7 +475,7 @@ public class formThemHD extends javax.swing.JPanel {
         txtTienThua.setText(currencyFormat.format(thua));
     }
 
-    // Thanh toán
+    //Thanh toán
     private void thanhToan() {
         String maHD = txtMaHD.getText().trim();
         if (maHD.isEmpty()) {
@@ -483,7 +483,7 @@ public class formThemHD extends javax.swing.JPanel {
             return;
         }
         if (tableChiTiet.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(this, "Chưa thông tin đơn!");
+            JOptionPane.showMessageDialog(this, "Chưa có thông tin đơn hàng!");
             return;
         }
 
@@ -512,22 +512,26 @@ public class formThemHD extends javax.swing.JPanel {
             return;
         }
 
-        // Tạo entity & set dữ liệu hóa đơn
         Entity.HoaDon.HoaDon hd = new Entity.HoaDon.HoaDon();
         hd.setMaHD(maHD);
-        hd.setMaNV(maNV);
-        hd.setMaKH(maKH);
+
+        Entity.NhanVien.NhanVien nv = new Entity.NhanVien.NhanVien();
+        nv.setMaNV(maNV);
+        hd.setNhanVien(nv);
+
+        Entity.KhachHang.KhachHang kh = new Entity.KhachHang.KhachHang();
+        kh.setMaKH(maKH);
+        hd.setKhachHang(kh);
+
         hd.setThoiGian(java.time.LocalDateTime.now());
         hd.setKieuThanhToan(String.valueOf(cboKieuThanhToan.getSelectedItem()));
 
-        // Lưu hóa đơn
         DAO.HoaDon.HoaDonDAO hdDao = new DAO.HoaDon.HoaDonDAO();
         if (!hdDao.insert(hd)) {
             JOptionPane.showMessageDialog(this, "Lưu hóa đơn thất bại (trùng mã?)");
             return;
         }
 
-        // Lưu chi tiết hóa đơn & cập nhật tồn kho
         javax.swing.table.DefaultTableModel m = (javax.swing.table.DefaultTableModel) tableChiTiet.getModel();
         DAO.HoaDon.CTHoaDonDAO ctDao = new DAO.HoaDon.CTHoaDonDAO();
         DAO.SanPham.SanPhamDAO spDao = new DAO.SanPham.SanPhamDAO();
@@ -538,8 +542,17 @@ public class formThemHD extends javax.swing.JPanel {
             java.math.BigDecimal donGia = parseMoney(String.valueOf(m.getValueAt(i, 4)));
 
             Entity.HoaDon.CTHoaDon ct = new Entity.HoaDon.CTHoaDon();
-            ct.setMaHD(maHD);
-            ct.setMaSP(maSP);
+
+            // Gán hóa đơn
+            Entity.HoaDon.HoaDon hoaDonRef = new Entity.HoaDon.HoaDon();
+            hoaDonRef.setMaHD(maHD);
+            ct.setHoaDon(hoaDonRef);
+
+            // Gán sản phẩm
+            Entity.SanPham.SanPham sp = new Entity.SanPham.SanPham();
+            sp.setMaSP(maSP);
+            ct.setSanPham(sp);
+
             ct.setSoLuong(soLuong);
             ct.setDonGia(donGia);
 
@@ -556,6 +569,7 @@ public class formThemHD extends javax.swing.JPanel {
                                 " (có thể không đủ hàng!)");
             }
         }
+
         JOptionPane.showMessageDialog(this, "Đã lưu hóa đơn thành công!");
 
         try {

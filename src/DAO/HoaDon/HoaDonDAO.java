@@ -2,12 +2,12 @@ package DAO.HoaDon;
 
 import ConnectDB.ConnectDB;
 import Entity.HoaDon.HoaDon;
+import Entity.KhachHang.KhachHang;
+import Entity.NhanVien.NhanVien;
 
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class HoaDonDAO {
     private final Connection conn;
@@ -36,16 +36,7 @@ public class HoaDonDAO {
     }
 
     /**
-     * Trả về danh sách tổng hợp để load lên bảng:
-     * [0] maHD
-     * [1] tenKH
-     * [2] soDienThoai
-     * [3] thoiGian (LocalDateTime)
-     * [4] tenNV
-     * [5] tongHoaDon (BigDecimal)
-     * [6] giamGia (BigDecimal)
-     * [7] tongTien (BigDecimal)
-     * [8] kieuThanhToan
+     * Sinh mã hóa đơn tự động: HD-00001, HD-00002, ...
      */
     public String taoMaHoaDon() {
         final String prefix = "HD-";
@@ -65,6 +56,9 @@ public class HoaDonDAO {
         return prefix + String.format("%05d", next);
     }
 
+    /**
+     * Trả về danh sách chi tiết hóa đơn (dùng để load bảng thống kê)
+     */
     public List<Object[]> findAllWithDetails() {
         List<Object[]> list = new ArrayList<>();
         String sql = """
@@ -106,10 +100,7 @@ public class HoaDonDAO {
     }
 
     public Optional<HoaDon> findById(String maHD) {
-        String sql = """
-                    SELECT maHD, maNV, maKH, thoiGian, kieuThanhToan
-                    FROM HoaDon WHERE maHD = ?
-                """;
+        String sql = "SELECT maHD, maNV, maKH, thoiGian, kieuThanhToan FROM HoaDon WHERE maHD = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, maHD);
             try (ResultSet rs = ps.executeQuery()) {
@@ -129,8 +120,8 @@ public class HoaDonDAO {
                 """;
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, hd.getMaHD());
-            ps.setString(2, hd.getMaNV());
-            ps.setString(3, hd.getMaKH());
+            ps.setString(2, hd.getNhanVien() != null ? hd.getNhanVien().getMaNV() : null);
+            ps.setString(3, hd.getKhachHang() != null ? hd.getKhachHang().getMaKH() : null);
             setTimestampOrNull(ps, 4, hd.getThoiGian());
             ps.setString(5, hd.getKieuThanhToan());
             return ps.executeUpdate() > 0;
@@ -147,8 +138,8 @@ public class HoaDonDAO {
                     WHERE maHD=?
                 """;
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, hd.getMaNV());
-            ps.setString(2, hd.getMaKH());
+            ps.setString(1, hd.getNhanVien() != null ? hd.getNhanVien().getMaNV() : null);
+            ps.setString(2, hd.getKhachHang() != null ? hd.getKhachHang().getMaKH() : null);
             setTimestampOrNull(ps, 3, hd.getThoiGian());
             ps.setString(4, hd.getKieuThanhToan());
             ps.setString(5, hd.getMaHD());
@@ -175,15 +166,26 @@ public class HoaDonDAO {
     private HoaDon mapRow(ResultSet rs) throws SQLException {
         HoaDon hd = new HoaDon();
         hd.setMaHD(rs.getString("maHD"));
-        hd.setMaNV(rs.getString("maNV"));
-        hd.setMaKH(rs.getString("maKH"));
+
+        String maNV = rs.getString("maNV");
+        if (maNV != null && !maNV.trim().isEmpty()) {
+            NhanVien nv = new NhanVien();
+            nv.setMaNV(maNV);
+            hd.setNhanVien(nv);
+        }
+
+        String maKH = rs.getString("maKH");
+        if (maKH != null && !maKH.trim().isEmpty()) {
+            KhachHang kh = new KhachHang();
+            kh.setMaKH(maKH);
+            hd.setKhachHang(kh);
+        }
+
         Timestamp ts = rs.getTimestamp("thoiGian");
         if (ts != null)
             hd.setThoiGian(ts.toLocalDateTime());
+
         hd.setKieuThanhToan(rs.getString("kieuThanhToan"));
-        // Nếu entity HoaDon còn các field cũ (tongTruocGiam, giamGiaHoaDon,
-        // maGiamGiaCodeSnap),
-        // chỉ cần không set là được (không còn trong bảng).
         return hd;
     }
 
