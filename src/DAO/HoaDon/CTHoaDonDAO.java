@@ -2,12 +2,12 @@ package DAO.HoaDon;
 
 import ConnectDB.ConnectDB;
 import Entity.HoaDon.CTHoaDon;
+import Entity.HoaDon.HoaDon;
+import Entity.SanPham.SanPham;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import java.math.BigDecimal;
+import java.util.*;
 
 public class CTHoaDonDAO {
     private final Connection conn;
@@ -16,16 +16,16 @@ public class CTHoaDonDAO {
         this.conn = ConnectDB.getConnection();
     }
 
-    /* ===================== Queries ===================== */
 
     public List<CTHoaDon> findAllByMaHD(String maHD) {
-        String sql = "SELECT maHD, maSP, soLuong, donGia FROM CTHoaDon WHERE maHD=?";
+        String sql = "SELECT maHD, maSP, soLuong, donGia FROM CTHoaDon WHERE maHD = ?";
         List<CTHoaDon> list = new ArrayList<>();
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, maHD);
             try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next())
+                while (rs.next()) {
                     list.add(mapRow(rs));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -48,15 +48,14 @@ public class CTHoaDonDAO {
         return Optional.empty();
     }
 
-    /* ===================== Mutations ===================== */
-
     public boolean insert(CTHoaDon ct) {
-        if (ct == null || isBlank(ct.getMaHD()) || isBlank(ct.getMaSP()))
+        if (ct == null || ct.getHoaDon() == null || ct.getSanPham() == null)
             return false;
-        String sql = "INSERT INTO CTHoaDon(maHD, maSP, soLuong, donGia) VALUES(?,?,?,?)";
+
+        String sql = "INSERT INTO CTHoaDon(maHD, maSP, soLuong, donGia) VALUES (?, ?, ?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, ct.getMaHD());
-            ps.setString(2, ct.getMaSP());
+            ps.setString(1, ct.getHoaDon().getMaHD());
+            ps.setString(2, ct.getSanPham().getMaSP());
             ps.setInt(3, ct.getSoLuong());
             ps.setBigDecimal(4, nvl(ct.getDonGia()));
             return ps.executeUpdate() > 0;
@@ -67,14 +66,15 @@ public class CTHoaDonDAO {
     }
 
     public boolean update(CTHoaDon ct) {
-        if (ct == null || isBlank(ct.getMaHD()) || isBlank(ct.getMaSP()))
+        if (ct == null || ct.getHoaDon() == null || ct.getSanPham() == null)
             return false;
+
         String sql = "UPDATE CTHoaDon SET soLuong=?, donGia=? WHERE maHD=? AND maSP=?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, ct.getSoLuong());
             ps.setBigDecimal(2, nvl(ct.getDonGia()));
-            ps.setString(3, ct.getMaHD());
-            ps.setString(4, ct.getMaSP());
+            ps.setString(3, ct.getHoaDon().getMaHD());
+            ps.setString(4, ct.getSanPham().getMaSP());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -94,18 +94,27 @@ public class CTHoaDonDAO {
         }
     }
 
-    /* ===================== Helpers ===================== */
-
-    private static CTHoaDon mapRow(ResultSet rs) throws SQLException {
-        return new CTHoaDon(
-                rs.getString("maHD"),
-                rs.getString("maSP"),
-                rs.getInt("soLuong"),
-                rs.getBigDecimal("donGia"));
+    public boolean deleteByMaHD(String maHD) {
+        String sql = "DELETE FROM CTHoaDon WHERE maHD = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, maHD);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
+    
+    private static CTHoaDon mapRow(ResultSet rs) throws SQLException {
+        String maHD = rs.getString("maHD");
+        String maSP = rs.getString("maSP");
+        int soLuong = rs.getInt("soLuong");
+        BigDecimal donGia = rs.getBigDecimal("donGia");
 
-    private static boolean isBlank(String s) {
-        return s == null || s.trim().isEmpty();
+        HoaDon hoaDon = new HoaDon(maHD);
+        SanPham sanPham = new SanPham(maSP);
+
+        return new CTHoaDon(hoaDon, sanPham, soLuong, donGia);
     }
 
     private static BigDecimal nvl(BigDecimal v) {
