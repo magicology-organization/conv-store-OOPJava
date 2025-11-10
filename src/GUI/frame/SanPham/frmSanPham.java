@@ -97,12 +97,15 @@ public class frmSanPham extends javax.swing.JPanel {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         Panel = new javax.swing.JPanel();
         pNorth = new javax.swing.JPanel();
         titleName = new javax.swing.JLabel();
+        pCongCu = new javax.swing.JPanel();
+        txtTimKiem = new javax.swing.JTextField();
+        btnTimKiem = new javax.swing.JButton();
         pCenter = new javax.swing.JPanel();
         scrollTableCenter = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
@@ -110,6 +113,7 @@ public class frmSanPham extends javax.swing.JPanel {
         btnThem = new javax.swing.JButton();
         btnXoa = new javax.swing.JButton();
         btnSua = new javax.swing.JButton();
+        btnChiTiet = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -120,7 +124,7 @@ public class frmSanPham extends javax.swing.JPanel {
         pNorth.setBackground(new java.awt.Color(204, 255, 204));
         pNorth.setMinimumSize(new java.awt.Dimension(1200, 50));
         pNorth.setName(""); // NOI18N
-        pNorth.setPreferredSize(new java.awt.Dimension(1200, 50));
+        pNorth.setPreferredSize(new java.awt.Dimension(1200, 100));
         pNorth.setLayout(new java.awt.BorderLayout());
 
         titleName.setBackground(new java.awt.Color(0, 0, 0));
@@ -132,6 +136,34 @@ public class frmSanPham extends javax.swing.JPanel {
         titleName.setPreferredSize(new java.awt.Dimension(1200, 32));
         pNorth.add(titleName, java.awt.BorderLayout.CENTER);
 
+        pCongCu.setBackground(new java.awt.Color(222, 222, 222));
+        pCongCu.setMinimumSize(new java.awt.Dimension(1200, 40));
+        pCongCu.setPreferredSize(new java.awt.Dimension(1200, 35));
+        pCongCu.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 5, 3));
+
+        txtTimKiem.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        txtTimKiem.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        txtTimKiem.setMinimumSize(new java.awt.Dimension(150, 30));
+        txtTimKiem.setName(""); // NOI18N
+        txtTimKiem.setPreferredSize(new java.awt.Dimension(200, 25));
+        pCongCu.add(txtTimKiem);
+
+        btnTimKiem.setBackground(new java.awt.Color(0, 204, 51));
+        btnTimKiem.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnTimKiem.setForeground(new java.awt.Color(255, 255, 255));
+        btnTimKiem.setText("Tìm");
+        btnTimKiem.setMaximumSize(new java.awt.Dimension(80, 30));
+        btnTimKiem.setMinimumSize(new java.awt.Dimension(80, 30));
+        btnTimKiem.setPreferredSize(new java.awt.Dimension(80, 30));
+        btnTimKiem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimKiemActionPerformed(evt);
+            }
+        });
+        pCongCu.add(btnTimKiem);
+
+        pNorth.add(pCongCu, java.awt.BorderLayout.PAGE_END);
+
         Panel.add(pNorth, java.awt.BorderLayout.PAGE_START);
 
         pCenter.setMinimumSize(new java.awt.Dimension(0, 0));
@@ -141,19 +173,19 @@ public class frmSanPham extends javax.swing.JPanel {
         scrollTableCenter.setPreferredSize(new java.awt.Dimension(1200, 500));
 
         table.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][] {
+            new Object [][] {
 
-                },
-                new String[] {
-                        "STT", "Mã sản phẩm", "Tên sản phẩm", "Mô tả", "Danh mục", "Xuất xứ", "ĐVT", "Giá nhập",
-                        "Đơn giá", "Tồn kho"
-                }) {
-            boolean[] canEdit = new boolean[] {
-                    false, false, false, false, false, false, false, false, false, false
+            },
+            new String [] {
+                "STT", "Mã sản phẩm", "Tên sản phẩm", "Mô tả", "Danh mục", "Xuất xứ", "ĐVT", "Giá nhập", "Đơn giá", "Tồn kho"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
+                return canEdit [columnIndex];
             }
         });
         table.setMinimumSize(null);
@@ -200,7 +232,7 @@ public class frmSanPham extends javax.swing.JPanel {
         });
         pSouth.add(btnXoa);
 
-        btnSua.setBackground(new java.awt.Color(153, 153, 153));
+        btnSua.setBackground(new java.awt.Color(204, 204, 204));
         btnSua.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnSua.setForeground(new java.awt.Color(255, 255, 255));
         btnSua.setText("Sửa");
@@ -215,10 +247,67 @@ public class frmSanPham extends javax.swing.JPanel {
         });
         pSouth.add(btnSua);
 
+        btnChiTiet.setBackground(new java.awt.Color(153, 153, 153));
+        btnChiTiet.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnChiTiet.setForeground(new java.awt.Color(255, 255, 255));
+        btnChiTiet.setText("Chi tiết");
+        btnChiTiet.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnChiTiet.setMaximumSize(new java.awt.Dimension(85, 35));
+        btnChiTiet.setMinimumSize(new java.awt.Dimension(85, 35));
+        btnChiTiet.setPreferredSize(new java.awt.Dimension(105, 35));
+        btnChiTiet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChiTietActionPerformed(evt);
+            }
+        });
+        pSouth.add(btnChiTiet);
+
         Panel.add(pSouth, java.awt.BorderLayout.PAGE_END);
 
         add(Panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnTimKiemActionPerformed
+
+    private void btnChiTietActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChiTietActionPerformed
+        // TODO add your handling code here:
+        int row = table.getSelectedRow();
+        if (row < 0) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Vui lòng chọn một nhà cung cấp để xem chi tiết!",
+                "Thông báo", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Lấy mã nhà cung cấp từ bảng
+        String maNCC = table.getValueAt(row, 1).toString();
+
+        // Lấy dữ liệu từ DAO
+        DAO.PhieuNhap.NhaCungCapDAO dao = new DAO.PhieuNhap.NhaCungCapDAO();
+        Entity.PhieuNhap.NhaCungCap ncc = dao.findById(maNCC).orElse(null);
+
+        if (ncc == null) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Không tìm thấy thông tin nhà cung cấp!",
+                "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Mở form chi tiết
+        javax.swing.JFrame parent = (javax.swing.JFrame) javax.swing.SwingUtilities.getWindowAncestor(this);
+        GUI.form.NhaCungCap.formThongTinNCC dialog = new GUI.form.NhaCungCap.formThongTinNCC(parent, true);
+
+        // Gán dữ liệu vào form
+        dialog.setTitle("Thông tin nhà cung cấp - " + ncc.getTenNCC());
+        dialog.setLocationRelativeTo(this);
+
+        // Điền dữ liệu vào form
+        dialog.setThongTinNCC(ncc);
+
+        dialog.setVisible(true);
+    }//GEN-LAST:event_btnChiTietActionPerformed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
@@ -301,14 +390,18 @@ public class frmSanPham extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Panel;
+    private javax.swing.JButton btnChiTiet;
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnThem;
+    private javax.swing.JButton btnTimKiem;
     private javax.swing.JButton btnXoa;
     private javax.swing.JPanel pCenter;
+    private javax.swing.JPanel pCongCu;
     private javax.swing.JPanel pNorth;
     private javax.swing.JPanel pSouth;
     private javax.swing.JScrollPane scrollTableCenter;
     private javax.swing.JTable table;
     private javax.swing.JLabel titleName;
+    private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
 }

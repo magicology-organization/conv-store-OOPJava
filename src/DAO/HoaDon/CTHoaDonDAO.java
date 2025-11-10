@@ -104,6 +104,35 @@ public class CTHoaDonDAO {
             return false;
         }
     }
+
+    public List<CTHoaDon> thongTinChiTietIn(String maHD) {
+        String sql = """
+                    SELECT ct.maHD, ct.maSP, sp.tenSP, ct.soLuong, ct.donGia
+                    FROM CTHoaDon ct
+                    JOIN SanPham sp ON sp.maSP = ct.maSP
+                    WHERE ct.maHD = ?
+                """;
+
+        List<CTHoaDon> list = new ArrayList<>();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, maHD);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    HoaDon hd = new HoaDon(rs.getString("maHD"));
+                    SanPham sp = new SanPham(rs.getString("maSP"));
+                    sp.setTenSP(rs.getString("tenSP"));
+
+                    int soLuong = rs.getInt("soLuong");
+                    BigDecimal donGia = rs.getBigDecimal("donGia");
+
+                    list.add(new CTHoaDon(hd, sp, soLuong, donGia));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
     
     private static CTHoaDon mapRow(ResultSet rs) throws SQLException {
         String maHD = rs.getString("maHD");

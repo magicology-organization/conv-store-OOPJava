@@ -101,11 +101,15 @@ public class frmPhieuNhap extends javax.swing.JPanel {
         Panel = new javax.swing.JPanel();
         pNorth = new javax.swing.JPanel();
         titleName = new javax.swing.JLabel();
+        pCongCu = new javax.swing.JPanel();
+        txtTimKiem = new javax.swing.JTextField();
+        btnTimKiem = new javax.swing.JButton();
         pCenter = new javax.swing.JPanel();
         scrollTableCenter = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
         pSouth = new javax.swing.JPanel();
         btnThem = new javax.swing.JButton();
+        btnChiTiet = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -116,7 +120,7 @@ public class frmPhieuNhap extends javax.swing.JPanel {
         pNorth.setBackground(new java.awt.Color(204, 255, 204));
         pNorth.setMinimumSize(new java.awt.Dimension(1200, 50));
         pNorth.setName(""); // NOI18N
-        pNorth.setPreferredSize(new java.awt.Dimension(1200, 50));
+        pNorth.setPreferredSize(new java.awt.Dimension(1200, 100));
         pNorth.setLayout(new java.awt.BorderLayout());
 
         titleName.setBackground(new java.awt.Color(0, 0, 0));
@@ -127,6 +131,34 @@ public class frmPhieuNhap extends javax.swing.JPanel {
         titleName.setMinimumSize(new java.awt.Dimension(1200, 32));
         titleName.setPreferredSize(new java.awt.Dimension(1200, 32));
         pNorth.add(titleName, java.awt.BorderLayout.CENTER);
+
+        pCongCu.setBackground(new java.awt.Color(222, 222, 222));
+        pCongCu.setMinimumSize(new java.awt.Dimension(1200, 40));
+        pCongCu.setPreferredSize(new java.awt.Dimension(1200, 35));
+        pCongCu.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 5, 3));
+
+        txtTimKiem.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        txtTimKiem.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        txtTimKiem.setMinimumSize(new java.awt.Dimension(150, 30));
+        txtTimKiem.setName(""); // NOI18N
+        txtTimKiem.setPreferredSize(new java.awt.Dimension(200, 25));
+        pCongCu.add(txtTimKiem);
+
+        btnTimKiem.setBackground(new java.awt.Color(0, 204, 51));
+        btnTimKiem.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnTimKiem.setForeground(new java.awt.Color(255, 255, 255));
+        btnTimKiem.setText("Tìm");
+        btnTimKiem.setMaximumSize(new java.awt.Dimension(80, 30));
+        btnTimKiem.setMinimumSize(new java.awt.Dimension(80, 30));
+        btnTimKiem.setPreferredSize(new java.awt.Dimension(80, 30));
+        btnTimKiem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimKiemActionPerformed(evt);
+            }
+        });
+        pCongCu.add(btnTimKiem);
+
+        pNorth.add(pCongCu, java.awt.BorderLayout.PAGE_END);
 
         Panel.add(pNorth, java.awt.BorderLayout.NORTH);
 
@@ -183,6 +215,21 @@ public class frmPhieuNhap extends javax.swing.JPanel {
         });
         pSouth.add(btnThem);
 
+        btnChiTiet.setBackground(new java.awt.Color(153, 153, 153));
+        btnChiTiet.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnChiTiet.setForeground(new java.awt.Color(255, 255, 255));
+        btnChiTiet.setText("Chi tiết");
+        btnChiTiet.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnChiTiet.setMaximumSize(new java.awt.Dimension(85, 35));
+        btnChiTiet.setMinimumSize(new java.awt.Dimension(85, 35));
+        btnChiTiet.setPreferredSize(new java.awt.Dimension(105, 35));
+        btnChiTiet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChiTietActionPerformed(evt);
+            }
+        });
+        pSouth.add(btnChiTiet);
+
         Panel.add(pSouth, java.awt.BorderLayout.SOUTH);
 
         add(Panel, java.awt.BorderLayout.CENTER);
@@ -207,15 +254,59 @@ public class frmPhieuNhap extends javax.swing.JPanel {
     }
     }//GEN-LAST:event_btnThemActionPerformed
 
+    private void btnChiTietActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChiTietActionPerformed
+        // TODO add your handling code here:
+        int row = table.getSelectedRow();
+        if (row < 0) {
+            JOptionPane.showMessageDialog(this,
+                    "Vui lòng chọn một phiếu nhập để xem chi tiết!",
+                    "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Giả định cột 0 là STT, cột 1 là Mã hóa đơn
+        String maPN = table.getValueAt(row, 1).toString().trim();
+        if (maPN.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Không thể xác định mã hóa đơn!",
+                    "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Kiểm tra hóa đơn có tồn tại không
+        DAO.PhieuNhap.PhieuNhapDAO pnDao = new DAO.PhieuNhap.PhieuNhapDAO();
+        Entity.PhieuNhap.PhieuNhap pn = pnDao.findById(maPN).orElse(null);
+        if (pn == null) {
+            JOptionPane.showMessageDialog(this,
+                    "Không tìm thấy phiếu nhập có mã: " + maPN,
+                    "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Mở form chi tiết hóa đơn
+        javax.swing.JFrame parentFrame = (javax.swing.JFrame) javax.swing.SwingUtilities.getWindowAncestor(this);
+        GUI.form.PhieuNhap.formThongTinPN frm = new GUI.form.PhieuNhap.formThongTinPN(parentFrame, true, maPN);
+        frm.setLocationRelativeTo(this);
+        frm.setVisible(true);
+    }//GEN-LAST:event_btnChiTietActionPerformed
+
+    private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnTimKiemActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Panel;
+    private javax.swing.JButton btnChiTiet;
     private javax.swing.JButton btnThem;
+    private javax.swing.JButton btnTimKiem;
     private javax.swing.JPanel pCenter;
+    private javax.swing.JPanel pCongCu;
     private javax.swing.JPanel pNorth;
     private javax.swing.JPanel pSouth;
     private javax.swing.JScrollPane scrollTableCenter;
     private javax.swing.JTable table;
     private javax.swing.JLabel titleName;
+    private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
 }
