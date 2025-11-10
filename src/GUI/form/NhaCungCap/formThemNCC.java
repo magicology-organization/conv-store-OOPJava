@@ -210,7 +210,7 @@ public class formThemNCC extends javax.swing.JDialog {
 
         try {
             // Tạo đối tượng NCC
-            Entity.Phieu.NhaCungCap ncc = new Entity.Phieu.NhaCungCap();
+            Entity.PhieuNhap.NhaCungCap ncc = new Entity.PhieuNhap.NhaCungCap();
             ncc.setMaNCC(ma);
             ncc.setTenNCC(ten);
             ncc.setSdt(sdt);

@@ -5,7 +5,7 @@
 package GUI.frame.NhaCungCap;
 
 import DAO.PhieuNhap.NhaCungCapDAO;
-import Entity.Phieu.NhaCungCap;
+import Entity.PhieuNhap.NhaCungCap;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -284,7 +284,7 @@ public class frmNhaCungCap extends javax.swing.JPanel {
 
         String maNCC = table.getValueAt(row, 1).toString(); // Cột mã NCC
         DAO.PhieuNhap.NhaCungCapDAO dao = new DAO.PhieuNhap.NhaCungCapDAO();
-        Entity.Phieu.NhaCungCap ncc = dao.findById(maNCC).orElse(null);
+        Entity.PhieuNhap.NhaCungCap ncc = dao.findById(maNCC).orElse(null);
 
         if (ncc == null) {
             javax.swing.JOptionPane.showMessageDialog(this,

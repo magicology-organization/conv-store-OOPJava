@@ -7,7 +7,7 @@ package GUI.frame.NhaCungCap;
 import javax.swing.table.DefaultTableModel;
 
 import DAO.PhieuNhap.NhaCungCapDAO;
-import Entity.Phieu.NhaCungCap;
+import Entity.PhieuNhap.NhaCungCap;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -420,7 +420,7 @@ public class frmSearchNhaCungCap extends javax.swing.JPanel {
 
         // Lấy dữ liệu từ DAO
         DAO.PhieuNhap.NhaCungCapDAO dao = new DAO.PhieuNhap.NhaCungCapDAO();
-        Entity.Phieu.NhaCungCap ncc = dao.findById(maNCC).orElse(null);
+        Entity.PhieuNhap.NhaCungCap ncc = dao.findById(maNCC).orElse(null);
 
         if (ncc == null) {
             javax.swing.JOptionPane.showMessageDialog(this,

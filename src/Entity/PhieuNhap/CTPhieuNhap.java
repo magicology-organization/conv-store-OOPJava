@@ -1,4 +1,4 @@
-package Entity.Phieu;
+package Entity.PhieuNhap;
 
 import java.math.BigDecimal;
 import java.util.Objects;

@@ -5,7 +5,7 @@
 package DAO.PhieuNhap;
 
 import ConnectDB.ConnectDB;
-import Entity.Phieu.PhieuNhap;
+import Entity.PhieuNhap.PhieuNhap;
 import java.math.BigDecimal;
 
 import java.sql.*;

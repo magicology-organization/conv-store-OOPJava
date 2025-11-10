@@ -37,7 +37,7 @@ public class formThongTinNCC extends javax.swing.JDialog {
         table.setRowSelectionAllowed(true);
         table.setColumnSelectionAllowed(false);
     }
-    public void setThongTinNCC(Entity.Phieu.NhaCungCap ncc) {
+    public void setThongTinNCC(Entity.PhieuNhap.NhaCungCap ncc) {
         if (ncc == null)
             return;
         txtMa.setText(ncc.getMaNCC());

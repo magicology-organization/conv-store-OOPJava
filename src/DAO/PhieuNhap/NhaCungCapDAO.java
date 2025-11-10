@@ -5,7 +5,7 @@
 package DAO.PhieuNhap;
 
 import ConnectDB.ConnectDB;
-import Entity.Phieu.NhaCungCap;
+import Entity.PhieuNhap.NhaCungCap;
 
 import java.sql.*;
 import java.util.ArrayList;

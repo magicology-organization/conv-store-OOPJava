@@ -293,7 +293,7 @@ public class formThemPN extends javax.swing.JPanel {
         try {
             // ĐÚNG package:
             DAO.PhieuNhap.NhaCungCapDAO dao = new DAO.PhieuNhap.NhaCungCapDAO();
-            java.util.List<Entity.Phieu.NhaCungCap> list = dao.findAll();
+            java.util.List<Entity.PhieuNhap.NhaCungCap> list = dao.findAll();
 
             javax.swing.DefaultComboBoxModel model = new javax.swing.DefaultComboBoxModel();
             for (var ncc : list) {
@@ -483,7 +483,7 @@ public class formThemPN extends javax.swing.JPanel {
         }
 
         // Lạo entity & set dữ liệu phiếu nhập
-        Entity.Phieu.PhieuNhap pn = new Entity.Phieu.PhieuNhap();
+        Entity.PhieuNhap.PhieuNhap pn = new Entity.PhieuNhap.PhieuNhap();
         pn.setMaPN(maPN);
         pn.setMaNV(maNV);
         pn.setMaNCC(maNCC);
@@ -506,7 +506,7 @@ public class formThemPN extends javax.swing.JPanel {
             int soLuong = parseInt(String.valueOf(m.getValueAt(i, 3)));
             java.math.BigDecimal donGia = parseMoney(String.valueOf(m.getValueAt(i, 4)));
 
-            Entity.Phieu.CTPhieuNhap ct = new Entity.Phieu.CTPhieuNhap();
+            Entity.PhieuNhap.CTPhieuNhap ct = new Entity.PhieuNhap.CTPhieuNhap();
             ct.setMaPN(maPN);
             ct.setMaSP(maSP);
             ct.setSoLuong(soLuong);

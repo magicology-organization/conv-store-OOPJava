@@ -1,7 +1,7 @@
 package DAO.PhieuNhap;
 
 import ConnectDB.ConnectDB;
-import Entity.Phieu.CTPhieuNhap;
+import Entity.PhieuNhap.CTPhieuNhap;
 
 import java.sql.*;
 import java.util.ArrayList;
