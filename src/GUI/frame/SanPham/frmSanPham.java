@@ -9,7 +9,6 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.JLabel;
-import javax.swing.JScrollBar;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -18,7 +17,6 @@ import javax.swing.table.DefaultTableModel;
  * @author ADMIN
  */
 public class frmSanPham extends javax.swing.JPanel {
-    private int startIndex = 0;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     private final DecimalFormat currencyFormat = new DecimalFormat("#,### VND");
 
@@ -28,25 +26,12 @@ public class frmSanPham extends javax.swing.JPanel {
     public frmSanPham() {
         initComponents();
         configureTable();
-        // Thêm sự kiện cuộn bảng
-        scrollTableCenter.getVerticalScrollBar().addAdjustmentListener(e -> {
-            JScrollBar vertical = scrollTableCenter.getVerticalScrollBar();
-            int max = vertical.getMaximum();
-            int current = vertical.getValue();
-            int visible = vertical.getVisibleAmount();
-
-            // Kiểm tra nếu người dùng đã cuộn đến cuối bảng
-            if (current + visible >= max) {
-                startIndex += 10; // Tăng chỉ mục bắt đầu để tải dữ liệu tiếp theo
-                loadDataTable(); // Tải thêm dữ liệu
-            }
-        });
+        loadDataTable();
     }
 
     private void configureTable() {
         // Ngăn không cho phép người dùng chỉnh sửa bảng
-        table.setDefaultEditor(Object.class, null); // Điều này vô hiệu hóa khả năng chỉnh sửa của bất kỳ ô nào trong
-                                                    // bảng.
+        table.setDefaultEditor(Object.class, null); 
 
         // Căn giữa cho tất cả các cell trong bảng
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -67,9 +52,6 @@ public class frmSanPham extends javax.swing.JPanel {
 
         SanPhamDAO dao = new SanPhamDAO();
         List<Object[]> list = dao.findAllWithDetails();
-        // Giả định trong SanPhamDAO có hàm join lấy đầy đủ: mã SP, tên SP, mô tả, danh
-        // mục, xuất xứ, DVT, giá nhập, giá bán, tồn kho
-
         int stt = 1;
         for (Object[] row : list) {
             String giaNhap = currencyFormat.format(row[6]); // giá nhập
@@ -315,7 +297,7 @@ public class frmSanPham extends javax.swing.JPanel {
         GUI.form.SanPham.formThemSP dialog = new GUI.form.SanPham.formThemSP(parentFrame, true);
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-        loadDataTable(); // Tải lại dữ liệu sau khi thêm
+        loadDataTable(); 
     }// GEN-LAST:event_btnThemActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnXoaActionPerformed
@@ -385,7 +367,7 @@ public class frmSanPham extends javax.swing.JPanel {
         GUI.form.SanPham.formSuaSP dialog = new GUI.form.SanPham.formSuaSP(parentFrame, true, maSP);
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-        loadDataTable(); // Tải lại dữ liệu sau khi sửa
+        loadDataTable(); 
     }// GEN-LAST:event_btnSuaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

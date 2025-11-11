@@ -33,8 +33,7 @@ public class frmSearchPhieuNhap extends javax.swing.JPanel {
 
     private void configureTable() {
         // Ngăn không cho phép người dùng chỉnh sửa bảng
-        table.setDefaultEditor(Object.class, null); // Điều này vô hiệu hóa khả năng chỉnh sửa của bất kỳ ô nào trong
-                                                    // bảng.
+        table.setDefaultEditor(Object.class, null); 
 
         // Căn giữa cho tất cả các cell trong bảng
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();

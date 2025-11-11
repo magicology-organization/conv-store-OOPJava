@@ -5,11 +5,8 @@
 package GUI.frame.NhanVien;
 
 import DAO.NhanVien.NhanVienDAO;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.JLabel;
-import javax.swing.JScrollBar;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -18,33 +15,17 @@ import javax.swing.table.DefaultTableModel;
  * @author ADMIN
  */
 public class frmNhanVien extends javax.swing.JPanel {
-    private int startIndex = 0;
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-    private final DecimalFormat currencyFormat = new DecimalFormat("#,### VND");
     /**
      * Creates new form frmNhanVien
      */
     public frmNhanVien() {
         initComponents();
         configureTable();
-        // Thêm sự kiện cuộn bảng
-        scrollTableCenter.getVerticalScrollBar().addAdjustmentListener(e -> {
-            JScrollBar vertical = scrollTableCenter.getVerticalScrollBar();
-            int max = vertical.getMaximum();
-            int current = vertical.getValue();
-            int visible = vertical.getVisibleAmount();
-
-            // Kiểm tra nếu người dùng đã cuộn đến cuối bảng
-            if (current + visible >= max) {
-                startIndex += 10; // Tăng chỉ mục bắt đầu để tải dữ liệu tiếp theo
-                loadDataTable(); // Tải thêm dữ liệu
-            }
-        });
+        loadDataTable();
     }
     private void configureTable() {
         // Ngăn không cho phép người dùng chỉnh sửa bảng
-        table.setDefaultEditor(Object.class, null); // Điều này vô hiệu hóa khả năng chỉnh sửa của bất kỳ ô nào trong
-                                                      // bảng.
+        table.setDefaultEditor(Object.class, null);                                                   
 
         // Căn giữa cho tất cả các cell trong bảng
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();

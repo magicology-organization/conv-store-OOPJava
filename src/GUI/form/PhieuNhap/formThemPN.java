@@ -55,10 +55,9 @@ public class formThemPN extends javax.swing.JPanel {
             javax.swing.JOptionPane.showMessageDialog(this, "Không thể tạo mã phiếu nhập tự động!");
         }
     }
-
-    // ====== UI setup ======
+    // UI setup 
     private void configureTables() {
-        // ====== Bảng Sản phẩm ======
+        // Bảng Sản phẩm 
         tableSP.setDefaultEditor(Object.class, null); // không cho sửa
         for (int i = 0; i < tableSP.getColumnCount(); i++) {
             javax.swing.table.DefaultTableCellRenderer renderer = new javax.swing.table.DefaultTableCellRenderer();
@@ -66,7 +65,7 @@ public class formThemPN extends javax.swing.JPanel {
             tableSP.getColumnModel().getColumn(i).setCellRenderer(renderer);
         }
 
-        // ====== Bảng Chi tiết ======
+        // Bảng Chi tiết 
         tableChiTiet.setDefaultEditor(Object.class, null); // không cho sửa
         for (int i = 0; i < tableChiTiet.getColumnCount(); i++) {
             javax.swing.table.DefaultTableCellRenderer renderer = new javax.swing.table.DefaultTableCellRenderer();
@@ -74,11 +73,11 @@ public class formThemPN extends javax.swing.JPanel {
             tableChiTiet.getColumnModel().getColumn(i).setCellRenderer(renderer);
         }
 
-        // ====== Chọn 1 dòng mỗi lần ======
+        // Chọn 1 dòng mỗi lần
         tableSP.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tableChiTiet.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
-        // ====== Cho phép chọn dòng ======
+        // Cho phép chọn dòng 
         tableSP.setRowSelectionAllowed(true);
         tableSP.setColumnSelectionAllowed(false);
         tableChiTiet.setRowSelectionAllowed(true);
@@ -133,7 +132,7 @@ public class formThemPN extends javax.swing.JPanel {
         }
     }
 
-    // ====== Event wiring ======
+    // Event wiring
     private void initEvents() {
         // Enter trong ô mã NV -> tra nhân viên
         txtTenNV.addActionListener(e -> lookupNhanVienByMa());

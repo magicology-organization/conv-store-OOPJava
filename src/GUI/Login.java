@@ -22,7 +22,7 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
-        getRootPane().setDefaultButton(btnLog); 
+        getRootPane().setDefaultButton(btnLog);
         // --- nền ảnh cho pWest ---
         pWest.removeAll();
         pWest.setLayout(new java.awt.BorderLayout());
@@ -76,7 +76,8 @@ public class Login extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         Panel = new javax.swing.JPanel();
@@ -121,7 +122,7 @@ public class Login extends javax.swing.JFrame {
 
         anh.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         anh.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        anh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/src/Icon/mainBackground.png"))); // NOI18N
+        anh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/mainBackground.png"))); // NOI18N
         anh.setAlignmentY(0.0F);
         pWest.add(anh, java.awt.BorderLayout.CENTER);
 
@@ -141,13 +142,11 @@ public class Login extends javax.swing.JFrame {
         javax.swing.GroupLayout pTitleTopLayout = new javax.swing.GroupLayout(pTitleTop);
         pTitleTop.setLayout(pTitleTopLayout);
         pTitleTopLayout.setHorizontalGroup(
-            pTitleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
+                pTitleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 400, Short.MAX_VALUE));
         pTitleTopLayout.setVerticalGroup(
-            pTitleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 156, Short.MAX_VALUE)
-        );
+                pTitleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 156, Short.MAX_VALUE));
 
         pTitle.add(pTitleTop, java.awt.BorderLayout.CENTER);
 
@@ -163,19 +162,18 @@ public class Login extends javax.swing.JFrame {
         javax.swing.GroupLayout pTitleDownLayout = new javax.swing.GroupLayout(pTitleDown);
         pTitleDown.setLayout(pTitleDownLayout);
         pTitleDownLayout.setHorizontalGroup(
-            pTitleDownLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pTitleDownLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(lblTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
+                pTitleDownLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pTitleDownLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(lblTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 400,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)));
         pTitleDownLayout.setVerticalGroup(
-            pTitleDownLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pTitleDownLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(lblTitle)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
+                pTitleDownLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pTitleDownLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(lblTitle)
+                                .addGap(0, 0, Short.MAX_VALUE)));
 
         pTitle.add(pTitleDown, java.awt.BorderLayout.SOUTH);
 
@@ -214,13 +212,11 @@ public class Login extends javax.swing.JFrame {
         javax.swing.GroupLayout cachDong1Layout = new javax.swing.GroupLayout(cachDong1);
         cachDong1.setLayout(cachDong1Layout);
         cachDong1Layout.setHorizontalGroup(
-            cachDong1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 20, Short.MAX_VALUE)
-        );
+                cachDong1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 20, Short.MAX_VALUE));
         cachDong1Layout.setVerticalGroup(
-            cachDong1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 50, Short.MAX_VALUE)
-        );
+                cachDong1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 50, Short.MAX_VALUE));
 
         pTK.add(cachDong1, java.awt.BorderLayout.LINE_END);
 
@@ -230,13 +226,11 @@ public class Login extends javax.swing.JFrame {
         javax.swing.GroupLayout cachDong3Layout = new javax.swing.GroupLayout(cachDong3);
         cachDong3.setLayout(cachDong3Layout);
         cachDong3Layout.setHorizontalGroup(
-            cachDong3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 20, Short.MAX_VALUE)
-        );
+                cachDong3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 20, Short.MAX_VALUE));
         cachDong3Layout.setVerticalGroup(
-            cachDong3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 50, Short.MAX_VALUE)
-        );
+                cachDong3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 50, Short.MAX_VALUE));
 
         pTK.add(cachDong3, java.awt.BorderLayout.LINE_START);
 
@@ -261,13 +255,11 @@ public class Login extends javax.swing.JFrame {
         javax.swing.GroupLayout cachDong2Layout = new javax.swing.GroupLayout(cachDong2);
         cachDong2.setLayout(cachDong2Layout);
         cachDong2Layout.setHorizontalGroup(
-            cachDong2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 20, Short.MAX_VALUE)
-        );
+                cachDong2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 20, Short.MAX_VALUE));
         cachDong2Layout.setVerticalGroup(
-            cachDong2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
+                cachDong2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 0, Short.MAX_VALUE));
 
         pMK.add(cachDong2, java.awt.BorderLayout.LINE_END);
 
@@ -277,13 +269,11 @@ public class Login extends javax.swing.JFrame {
         javax.swing.GroupLayout cachDong4Layout = new javax.swing.GroupLayout(cachDong4);
         cachDong4.setLayout(cachDong4Layout);
         cachDong4Layout.setHorizontalGroup(
-            cachDong4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
+                cachDong4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 0, Short.MAX_VALUE));
         cachDong4Layout.setVerticalGroup(
-            cachDong4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
+                cachDong4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 0, Short.MAX_VALUE));
 
         pMK.add(cachDong4, java.awt.BorderLayout.LINE_START);
 
@@ -326,13 +316,11 @@ public class Login extends javax.swing.JFrame {
         javax.swing.GroupLayout pButtonDownLayout = new javax.swing.GroupLayout(pButtonDown);
         pButtonDown.setLayout(pButtonDownLayout);
         pButtonDownLayout.setHorizontalGroup(
-            pButtonDownLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
+                pButtonDownLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 400, Short.MAX_VALUE));
         pButtonDownLayout.setVerticalGroup(
-            pButtonDownLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
+                pButtonDownLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 100, Short.MAX_VALUE));
 
         pButton.add(pButtonDown, java.awt.BorderLayout.SOUTH);
 
@@ -343,13 +331,13 @@ public class Login extends javax.swing.JFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                Short.MAX_VALUE));
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Panel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 630, Short.MAX_VALUE)
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(Panel, javax.swing.GroupLayout.Alignment.TRAILING,
+                                javax.swing.GroupLayout.DEFAULT_SIZE, 630, Short.MAX_VALUE));
 
         pack();
         setLocationRelativeTo(null);
@@ -434,40 +422,38 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JTextField txtTK;
     // End of variables declaration//GEN-END:variables
 
+    private static class BackgroundPanel extends javax.swing.JPanel {
+        private java.awt.Image bg;
 
-private static class BackgroundPanel extends javax.swing.JPanel {
-    private java.awt.Image bg;
+        public BackgroundPanel(String resourcePath) {
+            setOpaque(true);
+            setLayout(new java.awt.BorderLayout()); // có thể add child đè lên
+            java.net.URL url = getClass().getResource(resourcePath);
+            if (url == null)
+                throw new IllegalArgumentException("Không tìm thấy ảnh: " + resourcePath);
+            bg = new javax.swing.ImageIcon(url).getImage();
+        }
 
-    public BackgroundPanel(String resourcePath) {
-        setOpaque(true);
-        setLayout(new java.awt.BorderLayout()); // có thể add child đè lên
-        java.net.URL url = getClass().getResource(resourcePath);
-        if (url == null)
-            throw new IllegalArgumentException("Không tìm thấy ảnh: " + resourcePath);
-        bg = new javax.swing.ImageIcon(url).getImage();
-    }
+        @Override
+        protected void paintComponent(java.awt.Graphics g) {
+            super.paintComponent(g);
+            if (bg == null)
+                return;
 
-    @Override
-    protected void paintComponent(java.awt.Graphics g) {
-        super.paintComponent(g);
-        if (bg == null)
-            return;
+            java.awt.Graphics2D g2 = (java.awt.Graphics2D) g.create();
+            g2.setRenderingHint(java.awt.RenderingHints.KEY_INTERPOLATION,
+                    java.awt.RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
-        java.awt.Graphics2D g2 = (java.awt.Graphics2D) g.create();
-        g2.setRenderingHint(java.awt.RenderingHints.KEY_INTERPOLATION,
-                java.awt.RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            int W = getWidth(), H = getHeight();
+            int w = bg.getWidth(null), h = bg.getHeight(null);
 
-        int W = getWidth(), H = getHeight();
-        int w = bg.getWidth(null), h = bg.getHeight(null);
+            // COVER: phóng to để phủ kín, cắt phần thừa
+            double s = Math.max((double) W / w, (double) H / h);
+            int sw = (int) (w * s), sh = (int) (h * s);
+            int x = (W - sw) / 2, y = (H - sh) / 2;
 
-        // COVER: phóng to để phủ kín, cắt phần thừa
-        double s = Math.max((double) W / w, (double) H / h);
-        int sw = (int) (w * s), sh = (int) (h * s);
-        int x = (W - sw) / 2, y = (H - sh) / 2;
-
-        g2.drawImage(bg, x, y, sw, sh, null);
-        g2.dispose();
+            g2.drawImage(bg, x, y, sw, sh, null);
+            g2.dispose();
+        }
     }
 }
-}
-

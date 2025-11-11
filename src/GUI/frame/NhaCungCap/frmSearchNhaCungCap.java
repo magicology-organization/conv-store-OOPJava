@@ -8,8 +8,6 @@ import javax.swing.table.DefaultTableModel;
 
 import DAO.PhieuNhap.NhaCungCapDAO;
 import Entity.PhieuNhap.NhaCungCap;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableCellRenderer;

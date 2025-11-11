@@ -33,19 +33,7 @@ public class frmHoaDon extends javax.swing.JPanel {
     public frmHoaDon() {
         initComponents();
         configureTable();
-        // Thêm sự kiện cuộn bảng
-        scrollTableCenter.getVerticalScrollBar().addAdjustmentListener(e -> {
-            JScrollBar vertical = scrollTableCenter.getVerticalScrollBar();
-            int max = vertical.getMaximum();
-            int current = vertical.getValue();
-            int visible = vertical.getVisibleAmount();
-
-            // Kiểm tra nếu người dùng đã cuộn đến cuối bảng
-            if (current + visible >= max) {
-                startIndex += 10; // Tăng chỉ mục bắt đầu để tải dữ liệu tiếp theo
-                loadDataTable(); // Tải thêm dữ liệu
-            }
-        });
+        loadDataTable();
     }
 
     private void configureTable() {
@@ -306,6 +294,48 @@ public class frmHoaDon extends javax.swing.JPanel {
 
     private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnTimKiemActionPerformed
         // TODO add your handling code here:
+        String keyword = txtTimKiem.getText().trim();
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+
+        HoaDonDAO dao = new HoaDonDAO();
+        List<Object[]> list;
+
+        // Nếu không nhập gì → load toàn bộ
+        if (keyword.isEmpty()) {
+            list = dao.findAllWithDetails();
+        } else {
+            // Lọc danh sách theo mã chứa từ khóa
+            list = dao.findAllWithDetails()
+                    .stream()
+                    .filter(r -> r[0] != null && r[0].toString().toLowerCase().contains(keyword.toLowerCase()))
+                    .toList();
+        }
+
+        int stt = 1;
+        for (Object[] row : list) {
+            String ngayMua = "";
+            if (row[3] != null) {
+                LocalDateTime ldt = (LocalDateTime) row[3];
+                ngayMua = dateFormat.format(java.sql.Timestamp.valueOf(ldt));
+            }
+            String tongTienStr = currencyFormat.format(row[6]);
+
+            model.addRow(new Object[] {
+                    stt++, // STT
+                    row[0], // Mã HD
+                    row[1], // Tên KH
+                    row[2], // SĐT
+                    row[4], // Tên NV
+                    ngayMua, // Ngày mua
+                    row[7], // Kiểu thanh toán
+                    tongTienStr // Tổng tiền
+            });
+        }
+
+        if (list.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Không tìm thấy hóa đơn có mã: " + keyword);
+        }
     }// GEN-LAST:event_btnTimKiemActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
