@@ -99,6 +99,7 @@ public class HoaDonDAO {
         return list;
     }
 
+
     public Optional<HoaDon> findById(String maHD) {
         String sql = "SELECT maHD, maNV, maKH, thoiGian, kieuThanhToan FROM HoaDon WHERE maHD = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -111,6 +112,68 @@ public class HoaDonDAO {
             e.printStackTrace();
         }
         return Optional.empty();
+    }
+
+    public List<Object[]> search(String maHD, String tenKH, String sdt,
+            java.util.Date tuNgay, java.util.Date denNgay) {
+        List<Object[]> list = new ArrayList<>();
+
+        StringBuilder sql = new StringBuilder("""
+                    SELECT  h.maHD,
+                            kh.tenKH,
+                            kh.SDT AS soDienThoai,
+                            nv.tenNV,
+                            h.thoiGian,
+                            h.kieuThanhToan,
+                            ISNULL(SUM(ct.soLuong * ct.donGia), 0) AS tongTien
+                    FROM HoaDon h
+                    JOIN KhachHang kh ON kh.maKH = h.maKH
+                    JOIN NhanVien nv ON nv.maNV = h.maNV
+                    LEFT JOIN CTHoaDon ct ON ct.maHD = h.maHD
+                    WHERE h.maHD LIKE ?
+                      AND kh.tenKH LIKE ?
+                      AND kh.SDT LIKE ?
+                """);
+
+        if (tuNgay != null)
+            sql.append(" AND CAST(h.thoiGian AS DATE) >= ? ");
+        if (denNgay != null)
+            sql.append(" AND CAST(h.thoiGian AS DATE) <= ? ");
+
+        sql.append("""
+                    GROUP BY h.maHD, kh.tenKH, kh.SDT, nv.tenNV, h.thoiGian, h.kieuThanhToan
+                    ORDER BY h.maHD ASC
+                """);
+
+        try (PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+            int i = 1;
+            ps.setString(i++, "%" + maHD + "%");
+            ps.setString(i++, "%" + tenKH + "%");
+            ps.setString(i++, "%" + sdt + "%");
+
+            if (tuNgay != null)
+                ps.setDate(i++, new java.sql.Date(tuNgay.getTime()));
+            if (denNgay != null)
+                ps.setDate(i++, new java.sql.Date(denNgay.getTime()));
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(new Object[] {
+                            rs.getString("maHD"), // 0
+                            rs.getString("tenKH"), // 1
+                            rs.getString("soDienThoai"), // 2
+                            rs.getTimestamp("thoiGian").toLocalDateTime(), // 3
+                            rs.getString("tenNV"), // 4
+                            rs.getBigDecimal("tongTien"), // 5
+                            rs.getString("kieuThanhToan") // 6
+                    });
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Lỗi truy vấn tìm kiếm hóa đơn", e);
+        }
+
+        return list;
     }
 
     public boolean insert(HoaDon hd) {
@@ -159,6 +222,48 @@ public class HoaDonDAO {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public Optional<HoaDon> thongTinIn(String maHD) {
+        String sql = """
+                    SELECT h.maHD, h.thoiGian, h.kieuThanhToan,
+                           nv.maNV, nv.tenNV,
+                           kh.maKH, kh.tenKH, kh.SDT
+                    FROM HoaDon h
+                    LEFT JOIN NhanVien nv ON nv.maNV = h.maNV
+                    LEFT JOIN KhachHang kh ON kh.maKH = h.maKH
+                    WHERE h.maHD = ?
+                """;
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, maHD);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    HoaDon hd = new HoaDon();
+                    hd.setMaHD(rs.getString("maHD"));
+                    hd.setThoiGian(rs.getTimestamp("thoiGian").toLocalDateTime());
+                    hd.setKieuThanhToan(rs.getString("kieuThanhToan"));
+
+                    // Nhân viên
+                    NhanVien nv = new NhanVien();
+                    nv.setMaNV(rs.getString("maNV"));
+                    nv.setTenNV(rs.getString("tenNV"));
+                    hd.setNhanVien(nv);
+
+                    // Khách hàng
+                    KhachHang kh = new KhachHang();
+                    kh.setMaKH(rs.getString("maKH"));
+                    kh.setTenKH(rs.getString("tenKH"));
+                    kh.setSdt(rs.getString("SDT"));
+                    hd.setKhachHang(kh);
+
+                    return Optional.of(hd);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
     }
 
     /* ===================== Helpers ===================== */

@@ -229,6 +229,7 @@
                             </Component>
                             <Component class="javax.swing.JTextField" name="txtMaSP">
                               <Properties>
+                                <Property name="editable" type="boolean" value="false"/>
                                 <Property name="horizontalAlignment" type="int" value="2"/>
                                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                                   <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
@@ -286,6 +287,7 @@
                             </Component>
                             <Component class="javax.swing.JTextField" name="txtTenSP">
                               <Properties>
+                                <Property name="editable" type="boolean" value="false"/>
                                 <Property name="horizontalAlignment" type="int" value="2"/>
                                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                                   <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
@@ -306,7 +308,7 @@
                             </Component>
                           </SubComponents>
                         </Container>
-                        <Container class="javax.swing.JPanel" name="pThanhPhan">
+                        <Container class="javax.swing.JPanel" name="pMoTa">
                           <Properties>
                             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                               <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -343,7 +345,7 @@
                                 </Property>
                               </Properties>
                             </Component>
-                            <Container class="javax.swing.JScrollPane" name="jspThanhPhan">
+                            <Container class="javax.swing.JScrollPane" name="jspMoTa">
                               <Properties>
                                 <Property name="horizontalScrollBarPolicy" type="int" value="31"/>
                                 <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -361,6 +363,7 @@
                               <SubComponents>
                                 <Component class="javax.swing.JTextArea" name="txtMoTa">
                                   <Properties>
+                                    <Property name="editable" type="boolean" value="false"/>
                                     <Property name="columns" type="int" value="20"/>
                                     <Property name="rows" type="int" value="5"/>
                                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -420,6 +423,7 @@
                             </Component>
                             <Component class="javax.swing.JTextField" name="txtDonGia">
                               <Properties>
+                                <Property name="editable" type="boolean" value="false"/>
                                 <Property name="horizontalAlignment" type="int" value="2"/>
                                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                                   <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">

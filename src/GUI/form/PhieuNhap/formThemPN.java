@@ -5,6 +5,9 @@
 package GUI.form.PhieuNhap;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -52,10 +55,9 @@ public class formThemPN extends javax.swing.JPanel {
             javax.swing.JOptionPane.showMessageDialog(this, "Không thể tạo mã phiếu nhập tự động!");
         }
     }
-
-    // ====== UI setup ======
+    // UI setup 
     private void configureTables() {
-        // ====== Bảng Sản phẩm ======
+        // Bảng Sản phẩm 
         tableSP.setDefaultEditor(Object.class, null); // không cho sửa
         for (int i = 0; i < tableSP.getColumnCount(); i++) {
             javax.swing.table.DefaultTableCellRenderer renderer = new javax.swing.table.DefaultTableCellRenderer();
@@ -63,7 +65,7 @@ public class formThemPN extends javax.swing.JPanel {
             tableSP.getColumnModel().getColumn(i).setCellRenderer(renderer);
         }
 
-        // ====== Bảng Chi tiết ======
+        // Bảng Chi tiết 
         tableChiTiet.setDefaultEditor(Object.class, null); // không cho sửa
         for (int i = 0; i < tableChiTiet.getColumnCount(); i++) {
             javax.swing.table.DefaultTableCellRenderer renderer = new javax.swing.table.DefaultTableCellRenderer();
@@ -71,11 +73,11 @@ public class formThemPN extends javax.swing.JPanel {
             tableChiTiet.getColumnModel().getColumn(i).setCellRenderer(renderer);
         }
 
-        // ====== Chọn 1 dòng mỗi lần ======
+        // Chọn 1 dòng mỗi lần
         tableSP.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tableChiTiet.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
-        // ====== Cho phép chọn dòng ======
+        // Cho phép chọn dòng 
         tableSP.setRowSelectionAllowed(true);
         tableSP.setColumnSelectionAllowed(false);
         tableChiTiet.setRowSelectionAllowed(true);
@@ -130,7 +132,7 @@ public class formThemPN extends javax.swing.JPanel {
         }
     }
 
-    // ====== Event wiring ======
+    // Event wiring
     private void initEvents() {
         // Enter trong ô mã NV -> tra nhân viên
         txtTenNV.addActionListener(e -> lookupNhanVienByMa());
@@ -177,6 +179,7 @@ public class formThemPN extends javax.swing.JPanel {
                     javax.swing.SwingUtilities.invokeLater(() -> {
                         tableChiTiet.repaint();
                         tableChiTiet.getParent().repaint();
+                        chonSanPham();
                     });
                 }
             }
@@ -199,7 +202,6 @@ public class formThemPN extends javax.swing.JPanel {
         });
     }
 
-    // ====== Helpers ======
     private java.math.BigDecimal parseMoney(String s) {
         if (s == null)
             return java.math.BigDecimal.ZERO;
@@ -221,7 +223,7 @@ public class formThemPN extends javax.swing.JPanel {
         }
     }
 
-    // ==================== Tra cứu nhân viên ====================
+    // Tra cứu nhân viên
     private void lookupNhanVienByMa() {
         String maNV = txtTenNV.getText().trim();
         if (maNV.isEmpty()) {
@@ -291,9 +293,8 @@ public class formThemPN extends javax.swing.JPanel {
 
     private void loadNhaCungCap() {
         try {
-            // ĐÚNG package:
             DAO.PhieuNhap.NhaCungCapDAO dao = new DAO.PhieuNhap.NhaCungCapDAO();
-            java.util.List<Entity.Phieu.NhaCungCap> list = dao.findAll();
+            java.util.List<Entity.PhieuNhap.NhaCungCap> list = dao.findAll();
 
             javax.swing.DefaultComboBoxModel model = new javax.swing.DefaultComboBoxModel();
             for (var ncc : list) {
@@ -328,7 +329,6 @@ public class formThemPN extends javax.swing.JPanel {
 
             int stt = 1;
             for (Object[] r : list) {
-                // r[9] = Timestamp HSD (có thể null)
                 String hsdStr = "";
                 Object hsdObj = r[9];
                 if (hsdObj instanceof java.sql.Timestamp) {
@@ -356,21 +356,80 @@ public class formThemPN extends javax.swing.JPanel {
     }
 
     private void chonSanPham() {
-        int r = tableSP.getSelectedRow();
-        if (r < 0)
-            return;
+        int rSP = tableSP.getSelectedRow();
+        int rCT = tableChiTiet.getSelectedRow();
 
-        String ma = String.valueOf(tableSP.getValueAt(r, 1)); // Mã SP
-        String ten = String.valueOf(tableSP.getValueAt(r, 2)); // Tên SP
-        String moTa = String.valueOf(tableSP.getValueAt(r, 3)); // Thành phần/Mô tả
-        String giaNhap = String.valueOf(tableSP.getValueAt(r, 4)); // ⚠️ GIÁ NHẬP (cột 4)
+        // Nếu chọn ở bảng Sản phẩm
+        if (rSP >= 0) {
+            String ma = String.valueOf(tableSP.getValueAt(rSP, 1)); // Mã SP
+            String ten = String.valueOf(tableSP.getValueAt(rSP, 2)); // Tên SP
+            String moTa = String.valueOf(tableSP.getValueAt(rSP, 3)); // Mô tả
+            String giaBan = String.valueOf(tableSP.getValueAt(rSP, 5)); // Giá bán
 
-        txtMaSP.setText(ma);
-        txtTenSP.setText(ten);
-        txtMoTa.setText(moTa);
-        txtDonGia.setText(parseMoney(giaNhap).toPlainString());
-        txtSoLuong.requestFocus();
-        txtSoLuong.selectAll();
+            txtMaSP.setText(ma);
+            txtTenSP.setText(ten);
+            txtMoTa.setText(moTa);
+            txtDonGia.setText(parseMoney(giaBan).toPlainString());
+            txtSoLuong.setText("1");
+            txtSoLuong.requestFocus();
+            txtSoLuong.selectAll();
+
+            // Cập nhật ảnh
+            try {
+                DAO.SanPham.SanPhamDAO dao = new DAO.SanPham.SanPhamDAO();
+                Entity.SanPham.SanPham sp = dao.findById(ma).orElse(null);
+                if (sp != null && sp.getAnhSP() != null) {
+                    byte[] anh = sp.getAnhSP();
+                    ImageIcon icon = new ImageIcon(anh);
+                    Image img = icon.getImage().getScaledInstance(250, 250, Image.SCALE_SMOOTH);
+                    lblAnh.setIcon(new ImageIcon(img));
+                } else {
+                    lblAnh.setIcon(new FlatSVGIcon("./icon/image.svg"));
+                }
+            } catch (Exception ex) {
+                lblAnh.setIcon(new FlatSVGIcon("./icon/image.svg"));
+            }
+        }
+
+        // Nếu chọn ở bảng Chi tiết
+        else if (rCT >= 0) {
+            String ma = String.valueOf(tableChiTiet.getValueAt(rCT, 1)); // Mã SP
+            String ten = String.valueOf(tableChiTiet.getValueAt(rCT, 2)); // Tên SP
+            String soLuong = String.valueOf(tableChiTiet.getValueAt(rCT, 3)); // SL
+            String donGia = String.valueOf(tableChiTiet.getValueAt(rCT, 4)); // Đơn giá
+
+            txtMaSP.setText(ma);
+            txtTenSP.setText(ten);
+            txtSoLuong.setText(soLuong);
+            txtDonGia.setText(parseMoney(donGia).toPlainString());
+
+            // Lấy mô tả & ảnh từ DAO
+            try {
+                DAO.SanPham.SanPhamDAO dao = new DAO.SanPham.SanPhamDAO();
+                Entity.SanPham.SanPham sp = dao.findById(ma).orElse(null);
+
+                if (sp != null) {
+                    txtMoTa.setText(sp.getMoTaSP() != null ? sp.getMoTaSP() : "");
+                    if (sp.getAnhSP() != null) {
+                        byte[] anh = sp.getAnhSP();
+                        ImageIcon icon = new ImageIcon(anh);
+                        Image img = icon.getImage().getScaledInstance(250, 250, Image.SCALE_SMOOTH);
+                        lblAnh.setIcon(new ImageIcon(img));
+                    } else {
+                        lblAnh.setIcon(new FlatSVGIcon("./icon/image.svg"));
+                    }
+                } else {
+                    txtMoTa.setText("");
+                    lblAnh.setIcon(new FlatSVGIcon("./icon/image.svg"));
+                }
+            } catch (Exception ex) {
+                lblAnh.setIcon(new FlatSVGIcon("./icon/image.svg"));
+            }
+        }
+
+        // Cập nhật lại panel
+        pThongTin.revalidate();
+        pThongTin.repaint();
     }
 
     private void themCTPhieu() {
@@ -443,11 +502,9 @@ public class formThemPN extends javax.swing.JPanel {
             int sl = parseInt(String.valueOf(m.getValueAt(i, 3))); // cột Số lượng
             java.math.BigDecimal donGia = parseMoney(String.valueOf(m.getValueAt(i, 4))); // cột Đơn giá
 
-            // Thành tiền = đơn giá × số lượng
             java.math.BigDecimal line = donGia.multiply(java.math.BigDecimal.valueOf(sl));
             tong = tong.add(line);
 
-            // Cập nhật lại cột "Thành tiền" realtime
             m.setValueAt(currencyFormat.format(line), i, 5);
         }
 
@@ -457,7 +514,7 @@ public class formThemPN extends javax.swing.JPanel {
 
     // Lập phiếu nhập
     private void taoPhieu() {
-        String maPN = txtMaPN.getText().trim(); // txtMaPN đang dùng như "Mã phiếu"
+        String maPN = txtMaPN.getText().trim();
         if (maPN.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Chưa có Mã phiếu nhập!");
             return;
@@ -481,22 +538,22 @@ public class formThemPN extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn nhà cung cấp!");
             return;
         }
+        Entity.NhanVien.NhanVien nv = new Entity.NhanVien.NhanVien();
+        nv.setMaNV(maNV);
 
-        // Lạo entity & set dữ liệu phiếu nhập
-        Entity.Phieu.PhieuNhap pn = new Entity.Phieu.PhieuNhap();
+        Entity.PhieuNhap.NhaCungCap ncc = new Entity.PhieuNhap.NhaCungCap();
+        ncc.setMaNCC(maNCC);
+
+        Entity.PhieuNhap.PhieuNhap pn = new Entity.PhieuNhap.PhieuNhap();
         pn.setMaPN(maPN);
-        pn.setMaNV(maNV);
-        pn.setMaNCC(maNCC);
+        pn.setNhanVien(nv);
+        pn.setNCC(ncc);
         pn.setThoiGian(java.time.LocalDateTime.now());
-
-        // Lưu phiếu nhập
         DAO.PhieuNhap.PhieuNhapDAO pnDao = new DAO.PhieuNhap.PhieuNhapDAO();
         if (!pnDao.insert(pn)) {
             JOptionPane.showMessageDialog(this, "Lưu phiếu nhập thất bại (trùng mã?)");
             return;
         }
-
-        // Lưu chi tiết phiếu nhập & TĂNG tồn kho
         javax.swing.table.DefaultTableModel m = (javax.swing.table.DefaultTableModel) tableChiTiet.getModel();
         DAO.PhieuNhap.CTPhieuNhapDAO ctDao = new DAO.PhieuNhap.CTPhieuNhapDAO();
         DAO.SanPham.SanPhamDAO spDao = new DAO.SanPham.SanPhamDAO();
@@ -506,19 +563,24 @@ public class formThemPN extends javax.swing.JPanel {
             int soLuong = parseInt(String.valueOf(m.getValueAt(i, 3)));
             java.math.BigDecimal donGia = parseMoney(String.valueOf(m.getValueAt(i, 4)));
 
-            Entity.Phieu.CTPhieuNhap ct = new Entity.Phieu.CTPhieuNhap();
-            ct.setMaPN(maPN);
-            ct.setMaSP(maSP);
+            // Tạo entity con
+            Entity.PhieuNhap.CTPhieuNhap ct = new Entity.PhieuNhap.CTPhieuNhap();
+
+            Entity.PhieuNhap.PhieuNhap pnRef = new Entity.PhieuNhap.PhieuNhap(maPN);
+            Entity.SanPham.SanPham sp = new Entity.SanPham.SanPham(maSP);
+
+            ct.setPhieuNhap(pnRef);
+            ct.setSanPham(sp);
             ct.setSoLuong(soLuong);
             ct.setDonGia(donGia);
 
+            // Lưu chi tiết phiếu nhập
             if (!ctDao.insert(ct)) {
                 JOptionPane.showMessageDialog(this, "Lưu chi tiết thất bại tại SP: " + maSP);
                 return;
             }
 
-            // TĂNG tồn kho
-            boolean ok = spDao.capNhatTonKhoSauNhap(maSP, soLuong); // đảm bảo có hàm này
+            boolean ok = spDao.capNhatTonKhoSauNhap(maSP, soLuong);
             if (!ok) {
                 JOptionPane.showMessageDialog(this,
                         "Không thể cập nhật tồn kho (tăng) cho sản phẩm: " + maSP);
@@ -526,8 +588,8 @@ public class formThemPN extends javax.swing.JPanel {
         }
 
         JOptionPane.showMessageDialog(this, "Đã lập phiếu nhập thành công!");
+        inPhieuNhapPDF(maPN);
 
-        // Quay về danh sách phiếu nhập
         try {
             GUI.Main mainFrame = (GUI.Main) javax.swing.SwingUtilities.getWindowAncestor(this);
             GUI.frame.PhieuNhap.frmPhieuNhap frm = new GUI.frame.PhieuNhap.frmPhieuNhap();
@@ -535,6 +597,32 @@ public class formThemPN extends javax.swing.JPanel {
         } catch (Exception ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Không thể quay lại danh sách phiếu nhập!");
+        }
+    }
+
+    private void inPhieuNhapPDF(String maPN) {
+        try {
+            DAO.PhieuNhap.PhieuNhapDAO pnDao = new DAO.PhieuNhap.PhieuNhapDAO();
+            DAO.PhieuNhap.CTPhieuNhapDAO ctDao = new DAO.PhieuNhap.CTPhieuNhapDAO();
+
+            Entity.PhieuNhap.PhieuNhap pn = pnDao.thongTinIn(maPN).orElse(null);
+            if (pn == null) {
+                JOptionPane.showMessageDialog(this, "Không tìm thấy phiếu nhập!");
+                return;
+            }
+
+            java.util.List<Entity.PhieuNhap.CTPhieuNhap> listCTPN = ctDao.thongTinChiTietIn(maPN);
+            if (listCTPN == null || listCTPN.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Không có sản phẩm trong phiếu nhập!");
+                return;
+            }
+
+            Utils.InPDF pdf = new Utils.InPDF();
+            pdf.printPhieuNhap(pn, listCTPN);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi khi in phiếu nhập!\n" + e.getMessage());
         }
     }
 
@@ -546,7 +634,8 @@ public class formThemPN extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         Panel = new javax.swing.JPanel();
@@ -796,7 +885,8 @@ public class formThemPN extends javax.swing.JPanel {
         pTimKiem.setMinimumSize(new java.awt.Dimension(350, 50));
         pTimKiem.setPreferredSize(new java.awt.Dimension(330, 50));
 
-        cboDanhMuc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboDanhMuc.setModel(
+                new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cboDanhMuc.setMinimumSize(new java.awt.Dimension(80, 30));
         cboDanhMuc.setPreferredSize(new java.awt.Dimension(80, 30));
         pTimKiem.add(cboDanhMuc);
@@ -876,19 +966,18 @@ public class formThemPN extends javax.swing.JPanel {
         jspTableSP.setPreferredSize(new java.awt.Dimension(600, 200));
 
         tableSP.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+                new Object[][] {
 
-            },
-            new String [] {
-                "STT", "Mã SP", "Tên SP", "Mô tả", "Giá nhập", "Giá bán", "HSD", "ĐVT", "Xuất xứ", "Tồn kho"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false
+                },
+                new String[] {
+                        "STT", "Mã SP", "Tên SP", "Mô tả", "Giá nhập", "Giá bán", "HSD", "ĐVT", "Xuất xứ", "Tồn kho"
+                }) {
+            boolean[] canEdit = new boolean[] {
+                    false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return canEdit[columnIndex];
             }
         });
         tableSP.setMinimumSize(null);
@@ -962,19 +1051,18 @@ public class formThemPN extends javax.swing.JPanel {
         jspTableCT.setPreferredSize(new java.awt.Dimension(600, 150));
 
         tableChiTiet.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+                new Object[][] {
 
-            },
-            new String [] {
-                "STT", "Mã SP", "Tên SP", "Số lượng", "Giá nhập", "Thành tiền"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                },
+                new String[] {
+                        "STT", "Mã SP", "Tên SP", "Số lượng", "Giá nhập", "Thành tiền"
+                }) {
+            boolean[] canEdit = new boolean[] {
+                    false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return canEdit[columnIndex];
             }
         });
         tableChiTiet.setMinimumSize(new java.awt.Dimension(600, 150));
@@ -1094,7 +1182,8 @@ public class formThemPN extends javax.swing.JPanel {
         lblNhaCungCap.setPreferredSize(new java.awt.Dimension(120, 30));
         pNhaCungCap.add(lblNhaCungCap);
 
-        cboNhaCungCap.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboNhaCungCap.setModel(
+                new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cboNhaCungCap.setPreferredSize(new java.awt.Dimension(200, 30));
         pNhaCungCap.add(cboNhaCungCap);
 
@@ -1241,7 +1330,7 @@ public class formThemPN extends javax.swing.JPanel {
         add(Panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAddNCCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddNCCActionPerformed
+    private void btnAddNCCActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnAddNCCActionPerformed
         // TODO add your handling code here:
         // Lấy frame cha hiện tại
         javax.swing.JFrame parentFrame = (javax.swing.JFrame) javax.swing.SwingUtilities.getWindowAncestor(this);
@@ -1254,7 +1343,7 @@ public class formThemPN extends javax.swing.JPanel {
 
         // Hiển thị form thêm sản phẩm
         dialog.setVisible(true);
-    }//GEN-LAST:event_btnAddNCCActionPerformed
+    }// GEN-LAST:event_btnAddNCCActionPerformed
 
     private void btnThemSPActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnThemSPActionPerformed
         // TODO add your handling code here:
@@ -1286,7 +1375,7 @@ public class formThemPN extends javax.swing.JPanel {
 
         try {
             GUI.Main parentFrame = (GUI.Main) javax.swing.SwingUtilities.getWindowAncestor(this);
-            GUI.frame.HoaDon.frmHoaDon frm = new GUI.frame.HoaDon.frmHoaDon(); // ✅ QUAY VỀ frmHoaDon
+            GUI.frame.HoaDon.frmHoaDon frm = new GUI.frame.HoaDon.frmHoaDon(); // QUAY VỀ frmHoaDon
             parentFrame.replaceMainPanel(frm);
         } catch (Exception ex) {
             ex.printStackTrace();

@@ -7,12 +7,9 @@ package GUI.frame.NhaCungCap;
 import javax.swing.table.DefaultTableModel;
 
 import DAO.PhieuNhap.NhaCungCapDAO;
-import Entity.Phieu.NhaCungCap;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
+import Entity.PhieuNhap.NhaCungCap;
 import java.util.List;
 import javax.swing.JLabel;
-import javax.swing.JScrollBar;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
@@ -20,10 +17,6 @@ import javax.swing.table.DefaultTableCellRenderer;
  * @author ADMIN
  */
 public class frmSearchNhaCungCap extends javax.swing.JPanel {
-    private int startIndex = 0;
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-    private final DecimalFormat currencyFormat = new DecimalFormat("#,### VND");
-
     /**
      * Creates new form frmSearchNhaCungCap
      */
@@ -31,13 +24,6 @@ public class frmSearchNhaCungCap extends javax.swing.JPanel {
         initComponents();
         configureTable();
         loadDataTable();
-        // Thêm sự kiện cuộn bảng
-        scrollTableCenter.getVerticalScrollBar().addAdjustmentListener(e -> {
-            JScrollBar vertical = scrollTableCenter.getVerticalScrollBar();
-            int max = vertical.getMaximum();
-            int current = vertical.getValue();
-            int visible = vertical.getVisibleAmount();
-        });
     }
 
     private void configureTable() {
@@ -416,11 +402,11 @@ public class frmSearchNhaCungCap extends javax.swing.JPanel {
         }
 
         // Lấy mã nhà cung cấp từ bảng
-        String maNCC = table.getValueAt(row, 1).toString(); // cột thứ 1 là "Mã nhà cung cấp"
+        String maNCC = table.getValueAt(row, 1).toString();
 
         // Lấy dữ liệu từ DAO
         DAO.PhieuNhap.NhaCungCapDAO dao = new DAO.PhieuNhap.NhaCungCapDAO();
-        Entity.Phieu.NhaCungCap ncc = dao.findById(maNCC).orElse(null);
+        Entity.PhieuNhap.NhaCungCap ncc = dao.findById(maNCC).orElse(null);
 
         if (ncc == null) {
             javax.swing.JOptionPane.showMessageDialog(this,

@@ -5,6 +5,9 @@
 package GUI.form.HoaDon;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -165,6 +168,7 @@ public class formThemHD extends javax.swing.JPanel {
                     javax.swing.SwingUtilities.invokeLater(() -> {
                         tableChiTiet.repaint();
                         tableChiTiet.getParent().repaint();
+                        chonSanPham();
                     });
                 }
             }
@@ -353,21 +357,80 @@ public class formThemHD extends javax.swing.JPanel {
 
     // Chọn sản phẩm từ bảng
     private void chonSanPham() {
-        int r = tableSP.getSelectedRow();
-        if (r < 0)
-            return;
+        int rSP = tableSP.getSelectedRow();
+        int rCT = tableChiTiet.getSelectedRow();
 
-        String ma = String.valueOf(tableSP.getValueAt(r, 1)); // Mã SP
-        String ten = String.valueOf(tableSP.getValueAt(r, 2)); // Tên SP
-        String thanhPhan = String.valueOf(tableSP.getValueAt(r, 3)); // Thành phần
-        String giaBan = String.valueOf(tableSP.getValueAt(r, 5)); // Giá bán
+        // --- Nếu chọn ở bảng Sản phẩm ---
+        if (rSP >= 0) {
+            String ma = String.valueOf(tableSP.getValueAt(rSP, 1)); // Mã SP
+            String ten = String.valueOf(tableSP.getValueAt(rSP, 2)); // Tên SP
+            String moTa = String.valueOf(tableSP.getValueAt(rSP, 3)); // Mô tả
+            String giaBan = String.valueOf(tableSP.getValueAt(rSP, 5)); // Giá bán
 
-        txtMaSP.setText(ma);
-        txtTenSP.setText(ten);
-        txtMoTa.setText(thanhPhan);
-        txtDonGia.setText(parseMoney(giaBan).toPlainString());
-        txtSoLuong.requestFocus();
-        txtSoLuong.selectAll();
+            txtMaSP.setText(ma);
+            txtTenSP.setText(ten);
+            txtMoTa.setText(moTa);
+            txtDonGia.setText(parseMoney(giaBan).toPlainString());
+            txtSoLuong.setText("1");
+            txtSoLuong.requestFocus();
+            txtSoLuong.selectAll();
+
+            // --- Cập nhật ảnh ---
+            try {
+                DAO.SanPham.SanPhamDAO dao = new DAO.SanPham.SanPhamDAO();
+                Entity.SanPham.SanPham sp = dao.findById(ma).orElse(null);
+                if (sp != null && sp.getAnhSP() != null) {
+                    byte[] anh = sp.getAnhSP();
+                    ImageIcon icon = new ImageIcon(anh);
+                    Image img = icon.getImage().getScaledInstance(250, 250, Image.SCALE_SMOOTH);
+                    lblAnh.setIcon(new ImageIcon(img));
+                } else {
+                    lblAnh.setIcon(new FlatSVGIcon("./icon/image.svg"));
+                }
+            } catch (Exception ex) {
+                lblAnh.setIcon(new FlatSVGIcon("./icon/image.svg"));
+            }
+        }
+
+        // --- Nếu chọn ở bảng Chi tiết ---
+        else if (rCT >= 0) {
+            String ma = String.valueOf(tableChiTiet.getValueAt(rCT, 1)); // Mã SP
+            String ten = String.valueOf(tableChiTiet.getValueAt(rCT, 2)); // Tên SP
+            String soLuong = String.valueOf(tableChiTiet.getValueAt(rCT, 3)); // SL
+            String donGia = String.valueOf(tableChiTiet.getValueAt(rCT, 4)); // Đơn giá
+
+            txtMaSP.setText(ma);
+            txtTenSP.setText(ten);
+            txtSoLuong.setText(soLuong);
+            txtDonGia.setText(parseMoney(donGia).toPlainString());
+
+            // --- Lấy mô tả & ảnh từ DAO ---
+            try {
+                DAO.SanPham.SanPhamDAO dao = new DAO.SanPham.SanPhamDAO();
+                Entity.SanPham.SanPham sp = dao.findById(ma).orElse(null);
+
+                if (sp != null) {
+                    txtMoTa.setText(sp.getMoTaSP() != null ? sp.getMoTaSP() : "");
+                    if (sp.getAnhSP() != null) {
+                        byte[] anh = sp.getAnhSP();
+                        ImageIcon icon = new ImageIcon(anh);
+                        Image img = icon.getImage().getScaledInstance(250, 250, Image.SCALE_SMOOTH);
+                        lblAnh.setIcon(new ImageIcon(img));
+                    } else {
+                        lblAnh.setIcon(new FlatSVGIcon("./icon/image.svg"));
+                    }
+                } else {
+                    txtMoTa.setText("");
+                    lblAnh.setIcon(new FlatSVGIcon("./icon/image.svg"));
+                }
+            } catch (Exception ex) {
+                lblAnh.setIcon(new FlatSVGIcon("./icon/image.svg"));
+            }
+        }
+
+        // --- Cập nhật lại panel ---
+        pThongTin.revalidate();
+        pThongTin.repaint();
     }
 
     // Thêm chi tiết hóa đơn
@@ -475,7 +538,7 @@ public class formThemHD extends javax.swing.JPanel {
         txtTienThua.setText(currencyFormat.format(thua));
     }
 
-    //Thanh toán
+    // Thanh toán
     private void thanhToan() {
         String maHD = txtMaHD.getText().trim();
         if (maHD.isEmpty()) {
@@ -571,7 +634,7 @@ public class formThemHD extends javax.swing.JPanel {
         }
 
         JOptionPane.showMessageDialog(this, "Đã lưu hóa đơn thành công!");
-
+        inHoaDonPDF(maHD);
         try {
             GUI.Main mainFrame = (GUI.Main) javax.swing.SwingUtilities.getWindowAncestor(this);
             GUI.frame.HoaDon.frmHoaDon frm = new GUI.frame.HoaDon.frmHoaDon();
@@ -608,12 +671,47 @@ public class formThemHD extends javax.swing.JPanel {
         }
     }
 
+    private void inHoaDonPDF(String maHD) {
+        try {
+            if (maHD == null || maHD.isBlank()) {
+                JOptionPane.showMessageDialog(this, "Không có mã hóa đơn để in!");
+                return;
+            }
+
+            // Khởi tạo DAO 
+            DAO.HoaDon.HoaDonDAO hdDao = new DAO.HoaDon.HoaDonDAO();
+            DAO.HoaDon.CTHoaDonDAO ctDao = new DAO.HoaDon.CTHoaDonDAO();
+
+            // Lấy thông tin hóa đơn 
+            Entity.HoaDon.HoaDon hd = hdDao.thongTinIn(maHD).orElse(null);
+            if (hd == null) {
+                JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin hóa đơn!");
+                return;
+            }
+
+            // Lấy chi tiết hóa đơn
+            java.util.List<Entity.HoaDon.CTHoaDon> listCTHD = ctDao.thongTinChiTietIn(maHD);
+            if (listCTHD == null || listCTHD.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Không có sản phẩm trong hóa đơn!");
+                return;
+            }
+
+            // In PDF 
+            Utils.InPDF pdf = new Utils.InPDF();
+            pdf.printHoaDon(hd, listCTHD);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi khi in hóa đơn!\n" + e.getMessage());
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
     // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -633,9 +731,9 @@ public class formThemHD extends javax.swing.JPanel {
         pTenSP = new javax.swing.JPanel();
         lblTenSP = new javax.swing.JLabel();
         txtTenSP = new javax.swing.JTextField();
-        pThanhPhan = new javax.swing.JPanel();
+        pMoTa = new javax.swing.JPanel();
         lblMoTa = new javax.swing.JLabel();
-        jspThanhPhan = new javax.swing.JScrollPane();
+        jspMoTa = new javax.swing.JScrollPane();
         txtMoTa = new javax.swing.JTextArea();
         pDonGia = new javax.swing.JPanel();
         lblDonGia = new javax.swing.JLabel();
@@ -770,6 +868,7 @@ public class formThemHD extends javax.swing.JPanel {
         lblMaSP.setPreferredSize(new java.awt.Dimension(100, 20));
         pMaSP.add(lblMaSP);
 
+        txtMaSP.setEditable(false);
         txtMaSP.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         txtMaSP.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
         txtMaSP.setMinimumSize(new java.awt.Dimension(180, 25));
@@ -793,6 +892,7 @@ public class formThemHD extends javax.swing.JPanel {
         lblTenSP.setPreferredSize(new java.awt.Dimension(100, 20));
         pTenSP.add(lblTenSP);
 
+        txtTenSP.setEditable(false);
         txtTenSP.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         txtTenSP.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
         txtTenSP.setMinimumSize(new java.awt.Dimension(180, 25));
@@ -803,10 +903,10 @@ public class formThemHD extends javax.swing.JPanel {
 
         pChiTietSP.add(pTenSP);
 
-        pThanhPhan.setBackground(new java.awt.Color(255, 255, 255));
-        pThanhPhan.setMinimumSize(new java.awt.Dimension(300, 100));
-        pThanhPhan.setPreferredSize(new java.awt.Dimension(300, 100));
-        pThanhPhan.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+        pMoTa.setBackground(new java.awt.Color(255, 255, 255));
+        pMoTa.setMinimumSize(new java.awt.Dimension(300, 100));
+        pMoTa.setPreferredSize(new java.awt.Dimension(300, 100));
+        pMoTa.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
         lblMoTa.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblMoTa.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -816,21 +916,22 @@ public class formThemHD extends javax.swing.JPanel {
         lblMoTa.setMinimumSize(new java.awt.Dimension(100, 20));
         lblMoTa.setName(""); // NOI18N
         lblMoTa.setPreferredSize(new java.awt.Dimension(100, 20));
-        pThanhPhan.add(lblMoTa);
+        pMoTa.add(lblMoTa);
 
-        jspThanhPhan.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        jspThanhPhan.setMinimumSize(new java.awt.Dimension(180, 80));
-        jspThanhPhan.setPreferredSize(new java.awt.Dimension(180, 80));
+        jspMoTa.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jspMoTa.setMinimumSize(new java.awt.Dimension(180, 80));
+        jspMoTa.setPreferredSize(new java.awt.Dimension(180, 80));
 
+        txtMoTa.setEditable(false);
         txtMoTa.setColumns(20);
         txtMoTa.setRows(5);
         txtMoTa.setMinimumSize(new java.awt.Dimension(180, 80));
         txtMoTa.setPreferredSize(new java.awt.Dimension(180, 80));
-        jspThanhPhan.setViewportView(txtMoTa);
+        jspMoTa.setViewportView(txtMoTa);
 
-        pThanhPhan.add(jspThanhPhan);
+        pMoTa.add(jspMoTa);
 
-        pChiTietSP.add(pThanhPhan);
+        pChiTietSP.add(pMoTa);
 
         pDonGia.setBackground(new java.awt.Color(255, 255, 255));
         pDonGia.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -848,6 +949,7 @@ public class formThemHD extends javax.swing.JPanel {
         lblDonGia.setPreferredSize(new java.awt.Dimension(100, 30));
         pDonGia.add(lblDonGia);
 
+        txtDonGia.setEditable(false);
         txtDonGia.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         txtDonGia.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
         txtDonGia.setMinimumSize(new java.awt.Dimension(110, 40));
@@ -1531,9 +1633,9 @@ public class formThemHD extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> cboKieuThanhToan;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JScrollPane jspMoTa;
     private javax.swing.JScrollPane jspTableCT;
     private javax.swing.JScrollPane jspTableSP;
-    private javax.swing.JScrollPane jspThanhPhan;
     private javax.swing.JLabel lblAnh;
     private javax.swing.JLabel lblDonGia;
     private javax.swing.JLabel lblKieuThanhToan;
@@ -1568,11 +1670,11 @@ public class formThemHD extends javax.swing.JPanel {
     private javax.swing.JPanel pKieuThanhToan;
     private javax.swing.JPanel pMa;
     private javax.swing.JPanel pMaSP;
+    private javax.swing.JPanel pMoTa;
     private javax.swing.JPanel pNhanVien;
     private javax.swing.JPanel pSDT;
     private javax.swing.JPanel pTenKH;
     private javax.swing.JPanel pTenSP;
-    private javax.swing.JPanel pThanhPhan;
     private javax.swing.JPanel pThemSP;
     private javax.swing.JPanel pThoiGian;
     private javax.swing.JPanel pThongTin;

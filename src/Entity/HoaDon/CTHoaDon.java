@@ -21,7 +21,6 @@ public class CTHoaDon {
         this.donGia = donGia != null ? donGia : BigDecimal.ZERO;
     }
 
-    // Constructor tiện dụng khi chỉ có mã (phục vụ DAO hoặc test)
     public CTHoaDon(String maHD, String maSP) {
         this.hoaDon = new HoaDon(maHD);
         this.sanPham = new SanPham(maSP);

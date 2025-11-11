@@ -9,12 +9,12 @@ package GUI.form.NhaCungCap;
  * @author ADMIN
  */
 public class formSuaNCC extends javax.swing.JDialog {
-    private Entity.Phieu.NhaCungCap nccSua;
+    private Entity.PhieuNhap.NhaCungCap nccSua;
 
     /**
      * Creates new form formSuaNCC
      */
-    public formSuaNCC(java.awt.Frame parent, boolean modal, Entity.Phieu.NhaCungCap ncc) {
+    public formSuaNCC(java.awt.Frame parent, boolean modal, Entity.PhieuNhap.NhaCungCap ncc) {
         super(parent, modal);
         initComponents();
         this.nccSua = ncc;

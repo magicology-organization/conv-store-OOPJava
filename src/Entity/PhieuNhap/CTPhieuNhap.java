@@ -1,38 +1,39 @@
-package Entity.Phieu;
+package Entity.PhieuNhap;
 
+import Entity.SanPham.SanPham;
 import java.math.BigDecimal;
 import java.util.Objects;
 
 public class CTPhieuNhap {
-    private String maPN; // PK part 1
-    private String maSP; // PK part 2
+    private PhieuNhap phieuNhap; // PK part 1
+    private SanPham sanPham; // PK part 2
     private int soLuong; // int NOT NULL
     private BigDecimal donGia; // DECIMAL(18,2) NOT NULL
 
     public CTPhieuNhap() {
     }
 
-    public CTPhieuNhap(String maPN, String maSP, int soLuong, BigDecimal donGia) {
-        this.maPN = maPN;
-        this.maSP = maSP;
+    public CTPhieuNhap(PhieuNhap phieuNhap, SanPham sanPham, int soLuong, BigDecimal donGia) {
+        this.phieuNhap = phieuNhap;
+        this.sanPham = sanPham;
         this.soLuong = soLuong;
         this.donGia = donGia;
     }
 
-    public String getMaPN() {
-        return maPN;
+    public PhieuNhap getPhieuNhap() {
+        return phieuNhap;
     }
 
-    public void setMaPN(String maPN) {
-        this.maPN = maPN;
+    public void setPhieuNhap(PhieuNhap phieuNhap) {
+        this.phieuNhap = phieuNhap;
     }
 
-    public String getMaSP() {
-        return maSP;
+    public SanPham getSanPham() {
+        return sanPham;
     }
 
-    public void setMaSP(String maSP) {
-        this.maSP = maSP;
+    public void setSanPham(SanPham sanPham) {
+        this.sanPham = sanPham;
     }
 
     public int getSoLuong() {
@@ -63,18 +64,18 @@ public class CTPhieuNhap {
         if (!(o instanceof CTPhieuNhap))
             return false;
         CTPhieuNhap that = (CTPhieuNhap) o;
-        return Objects.equals(maPN, that.maPN) &&
-                Objects.equals(maSP, that.maSP);
+        return Objects.equals(phieuNhap, that.phieuNhap) &&
+                Objects.equals(sanPham, that.sanPham);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(maPN, maSP);
+        return Objects.hash(phieuNhap, sanPham);
     }
 
     @Override
     public String toString() {
-        return "CTPhieuNhap{maPN='" + maPN + "', maSP='" + maSP +
+        return "CTPhieuNhap{phieuNhap='" + phieuNhap + "', sanPham='" + sanPham +
                 "', soLuong=" + soLuong + ", donGia=" + donGia + "}";
     }
 }
