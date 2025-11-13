@@ -19,11 +19,9 @@ import GUI.frame.SanPham.frmSanPham;
 import GUI.frame.SanPham.frmSearchSanPham;
 import GUI.frame.TaiKhoan.frmSearchTaiKhoan;
 import GUI.frame.TaiKhoan.frmTaiKhoan;
+import GUI.frame.ThongKe.frmThongKe;
 import Swing.RoundedMenuItem;
 import Swing.RoundedPopupMenu;
-import com.formdev.flatlaf.FlatLaf;
-import com.formdev.flatlaf.FlatLightLaf;
-import javax.swing.UIManager;
 import Utils.SmoothImageLabel;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Color;
@@ -34,8 +32,10 @@ import java.util.Arrays;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -153,6 +153,8 @@ public class Main extends javax.swing.JFrame {
 
         btnSanPham.addActionListener(e -> popupMenuSP.show(btnSanPham, btnSanPham.getWidth(), 2));
         setFontForMenuItems(new RoundedMenuItem[] { itemSP1, itemSP2 });
+
+        ;
 
         // -------------SỰ KIỆN------------//
         // Sự kiện nhà cung cấp
@@ -373,6 +375,7 @@ public class Main extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
+    // <editor-fold defaultstate="collapsed" desc="Generated
     // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -499,6 +502,11 @@ public class Main extends javax.swing.JFrame {
         btnThongKe.setMaximumSize(new java.awt.Dimension(208, 40));
         btnThongKe.setMinimumSize(new java.awt.Dimension(208, 40));
         btnThongKe.setPreferredSize(new java.awt.Dimension(208, 40));
+        btnThongKe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThongKeActionPerformed(evt);
+            }
+        });
         Menu.add(btnThongKe);
 
         btnPhieuNhap.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -640,6 +648,21 @@ public class Main extends javax.swing.JFrame {
 
         setBounds(0, 0, 1214, 608);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnThongKeActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnThongKeActionPerformed
+        // TODO add your handling code here:
+        try {
+            // Tạo panel thống kê
+            frmThongKe thongKePanel = new frmThongKe();
+            // Thay thế mainPanel bằng panel thống kê
+            replaceMainPanel(thongKePanel);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this,
+                    "Không thể mở form thống kê: " + ex.getMessage(),
+                    "Lỗi",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }// GEN-LAST:event_btnThongKeActionPerformed
 
     private void btnDangXuatActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnDangXuatActionPerformed
         this.dispose();

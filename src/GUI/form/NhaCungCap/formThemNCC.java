@@ -9,7 +9,7 @@ package GUI.form.NhaCungCap;
  * @author ADMIN
  */
 public class formThemNCC extends javax.swing.JDialog {
-
+    private boolean isSaved = false;
     /**
      * Creates new form formThemNCC
      */
@@ -20,6 +20,10 @@ public class formThemNCC extends javax.swing.JDialog {
         txtMa.setText(dao.taoMaNCC());
         txtMa.setEditable(false);
         txtHoTen.requestFocus();
+    }
+    
+    public boolean isSaved() {
+        return isSaved;
     }
 
     /**
@@ -221,6 +225,7 @@ public class formThemNCC extends javax.swing.JDialog {
             boolean success = dao.insert(ncc);
 
             if (success) {
+                isSaved = true;
                 javax.swing.JOptionPane.showMessageDialog(this,
                         "Thêm nhà cung cấp thành công!",
                         "Thành công", javax.swing.JOptionPane.INFORMATION_MESSAGE);

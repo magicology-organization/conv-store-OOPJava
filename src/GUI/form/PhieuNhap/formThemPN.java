@@ -55,9 +55,10 @@ public class formThemPN extends javax.swing.JPanel {
             javax.swing.JOptionPane.showMessageDialog(this, "Không thể tạo mã phiếu nhập tự động!");
         }
     }
-    // UI setup 
+
+    // UI setup
     private void configureTables() {
-        // Bảng Sản phẩm 
+        // Bảng Sản phẩm
         tableSP.setDefaultEditor(Object.class, null); // không cho sửa
         for (int i = 0; i < tableSP.getColumnCount(); i++) {
             javax.swing.table.DefaultTableCellRenderer renderer = new javax.swing.table.DefaultTableCellRenderer();
@@ -65,7 +66,7 @@ public class formThemPN extends javax.swing.JPanel {
             tableSP.getColumnModel().getColumn(i).setCellRenderer(renderer);
         }
 
-        // Bảng Chi tiết 
+        // Bảng Chi tiết
         tableChiTiet.setDefaultEditor(Object.class, null); // không cho sửa
         for (int i = 0; i < tableChiTiet.getColumnCount(); i++) {
             javax.swing.table.DefaultTableCellRenderer renderer = new javax.swing.table.DefaultTableCellRenderer();
@@ -77,7 +78,7 @@ public class formThemPN extends javax.swing.JPanel {
         tableSP.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tableChiTiet.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
-        // Cho phép chọn dòng 
+        // Cho phép chọn dòng
         tableSP.setRowSelectionAllowed(true);
         tableSP.setColumnSelectionAllowed(false);
         tableChiTiet.setRowSelectionAllowed(true);
@@ -279,7 +280,7 @@ public class formThemPN extends javax.swing.JPanel {
             java.util.List<Entity.SanPham.DanhMuc> list = dmDao.findAll();
 
             cboDanhMuc.removeAllItems();
-            cboDanhMuc.addItem("Tất cả"); // ✅ đầu tiên là “Tất cả”
+            cboDanhMuc.addItem("Tất cả");
 
             for (Entity.SanPham.DanhMuc dm : list) {
                 cboDanhMuc.addItem(dm.getTenDM());
@@ -512,13 +513,19 @@ public class formThemPN extends javax.swing.JPanel {
         txtTong.setText(currencyFormat.format(tong));
     }
 
-    // Lập phiếu nhập
     private void taoPhieu() {
         String maPN = txtMaPN.getText().trim();
         if (maPN.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Chưa có Mã phiếu nhập!");
             return;
         }
+
+        // Kiểm tra regex cho mã phiếu nhập
+        if (!maPN.matches("^PN-\\d{3,10}$")) {
+            JOptionPane.showMessageDialog(this, "Mã phiếu nhập không hợp lệ! Ví dụ hợp lệ: PN-001, PN-12345");
+            return;
+        }
+
         if (tableChiTiet.getRowCount() == 0) {
             JOptionPane.showMessageDialog(this, "Chưa có sản phẩm!");
             return;
@@ -538,6 +545,7 @@ public class formThemPN extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn nhà cung cấp!");
             return;
         }
+
         Entity.NhanVien.NhanVien nv = new Entity.NhanVien.NhanVien();
         nv.setMaNV(maNV);
 
@@ -549,11 +557,13 @@ public class formThemPN extends javax.swing.JPanel {
         pn.setNhanVien(nv);
         pn.setNCC(ncc);
         pn.setThoiGian(java.time.LocalDateTime.now());
+
         DAO.PhieuNhap.PhieuNhapDAO pnDao = new DAO.PhieuNhap.PhieuNhapDAO();
         if (!pnDao.insert(pn)) {
             JOptionPane.showMessageDialog(this, "Lưu phiếu nhập thất bại (trùng mã?)");
             return;
         }
+
         javax.swing.table.DefaultTableModel m = (javax.swing.table.DefaultTableModel) tableChiTiet.getModel();
         DAO.PhieuNhap.CTPhieuNhapDAO ctDao = new DAO.PhieuNhap.CTPhieuNhapDAO();
         DAO.SanPham.SanPhamDAO spDao = new DAO.SanPham.SanPhamDAO();
@@ -563,7 +573,6 @@ public class formThemPN extends javax.swing.JPanel {
             int soLuong = parseInt(String.valueOf(m.getValueAt(i, 3)));
             java.math.BigDecimal donGia = parseMoney(String.valueOf(m.getValueAt(i, 4)));
 
-            // Tạo entity con
             Entity.PhieuNhap.CTPhieuNhap ct = new Entity.PhieuNhap.CTPhieuNhap();
 
             Entity.PhieuNhap.PhieuNhap pnRef = new Entity.PhieuNhap.PhieuNhap(maPN);
@@ -574,7 +583,6 @@ public class formThemPN extends javax.swing.JPanel {
             ct.setSoLuong(soLuong);
             ct.setDonGia(donGia);
 
-            // Lưu chi tiết phiếu nhập
             if (!ctDao.insert(ct)) {
                 JOptionPane.showMessageDialog(this, "Lưu chi tiết thất bại tại SP: " + maSP);
                 return;
@@ -1343,6 +1351,9 @@ public class formThemPN extends javax.swing.JPanel {
 
         // Hiển thị form thêm sản phẩm
         dialog.setVisible(true);
+        if (dialog.isSaved()) {
+            loadNhaCungCap();
+        }
     }// GEN-LAST:event_btnAddNCCActionPerformed
 
     private void btnThemSPActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnThemSPActionPerformed
@@ -1368,19 +1379,19 @@ public class formThemPN extends javax.swing.JPanel {
     private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnHuyActionPerformed
         // TODO add your handling code here:
         int confirm = javax.swing.JOptionPane.showConfirmDialog(
-                this, "Hủy và quay lại danh sách hóa đơn?", "Xác nhận",
+                this, "Hủy và quay lại danh sách phiếu nhập?", "Xác nhận",
                 javax.swing.JOptionPane.YES_NO_OPTION);
         if (confirm != javax.swing.JOptionPane.YES_OPTION)
             return;
 
         try {
             GUI.Main parentFrame = (GUI.Main) javax.swing.SwingUtilities.getWindowAncestor(this);
-            GUI.frame.HoaDon.frmHoaDon frm = new GUI.frame.HoaDon.frmHoaDon(); // QUAY VỀ frmHoaDon
+            GUI.frame.PhieuNhap.frmPhieuNhap frm = new GUI.frame.PhieuNhap.frmPhieuNhap(); // QUAY VỀ frmPhieuNhap
             parentFrame.replaceMainPanel(frm);
         } catch (Exception ex) {
             ex.printStackTrace();
             javax.swing.JOptionPane.showMessageDialog(
-                    this, "Không thể quay lại danh sách hóa đơn: " + ex.getMessage(),
+                    this, "Không thể quay lại danh sách phiếu nhập: " + ex.getMessage(),
                     "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }// GEN-LAST:event_btnHuyActionPerformed
@@ -1404,10 +1415,6 @@ public class formThemPN extends javax.swing.JPanel {
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
     }// GEN-LAST:event_btnThemActionPerformed
-
-    private void btnAddKHActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnAddKHActionPerformed
-        // TODO add your handling code here:
-    }// GEN-LAST:event_btnAddKHActionPerformed
 
     private void txtSoLuongActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtSoLuongActionPerformed
         // TODO add your handling code here:

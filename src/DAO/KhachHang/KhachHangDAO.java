@@ -57,8 +57,23 @@ public class KhachHangDAO {
         }
         return out;
     }
+    public String taoMaKH() {
+        final String prefix = "KH-";
+        final String sql = "SELECT ISNULL(MAX(CAST(SUBSTRING(maKH, 4, 10) AS INT)), 0) AS maxNo " +
+                           "FROM KhachHang WHERE maKH LIKE 'KH-%'";
 
+        int next = 1;
+        try (PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                next = rs.getInt("maxNo") + 1;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Lỗi tạo mã khách hàng", e);
+        }
 
+        return prefix + String.format("%05d", next);
+    }
 
 
     public List<KhachHang> search(String keyword) {

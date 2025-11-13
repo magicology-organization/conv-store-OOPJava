@@ -99,7 +99,6 @@ public class HoaDonDAO {
         return list;
     }
 
-
     public Optional<HoaDon> findById(String maHD) {
         String sql = "SELECT maHD, maNV, maKH, thoiGian, kieuThanhToan FROM HoaDon WHERE maHD = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -113,6 +112,46 @@ public class HoaDonDAO {
         }
         return Optional.empty();
     }
+
+    public List<Object[]> findByMaKH(String maKH) {
+        List<Object[]> list = new ArrayList<>();
+
+        String sql = """
+                    SELECT
+                        hd.maHD,
+                        kh.tenKH,
+                        hd.thoiGian,
+                        ISNULL(SUM(ct.soLuong * ct.donGia), 0) AS tongHoaDon,
+                        hd.kieuThanhToan
+                    FROM HoaDon hd
+                    JOIN KhachHang kh ON kh.maKH = hd.maKH
+                    LEFT JOIN CTHoaDon ct ON ct.maHD = hd.maHD
+                    WHERE hd.maKH = ?
+                    GROUP BY hd.maHD, kh.tenKH, hd.thoiGian, hd.kieuThanhToan
+                    ORDER BY hd.maHD ASC
+                """;
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, maKH);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String maHD = rs.getString("maHD");
+                String tenKH = rs.getString("tenKH");
+                java.sql.Timestamp tg = rs.getTimestamp("thoiGian");
+                java.time.LocalDateTime thoiGian = tg != null ? tg.toLocalDateTime() : null;
+                double tong = rs.getDouble("tongHoaDon");
+                String kieuThanhToan = rs.getString("kieuThanhToan"); // Lấy kiểu thanh toán
+
+                list.add(new Object[] { maHD, tenKH, thoiGian, tong, kieuThanhToan });
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
 
     public List<Object[]> search(String maHD, String tenKH, String sdt,
             java.util.Date tuNgay, java.util.Date denNgay) {
