@@ -307,7 +307,7 @@ public class frmNhaCungCap extends javax.swing.JPanel {
         }
 
         // Lấy mã NCC từ cột đầu (giả sử cột 0 là Mã NCC)
-        String maNCC = table.getValueAt(row, 0).toString();
+        String maNCC = table.getValueAt(row, 1).toString();
 
         // Xác nhận người dùng
         int confirm = javax.swing.JOptionPane.showConfirmDialog(this,

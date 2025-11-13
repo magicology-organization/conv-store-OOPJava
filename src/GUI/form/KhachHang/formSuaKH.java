@@ -27,6 +27,7 @@ public class formSuaKH extends javax.swing.JDialog {
         groupGenderButtons();
         txtMaKH.setEditable(false);
         loadData();
+        txtHoTen.requestFocus();
 }
     private void groupGenderButtons() {
         grpGioiTinh = new ButtonGroup();
