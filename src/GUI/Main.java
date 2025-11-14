@@ -636,7 +636,7 @@ public class Main extends javax.swing.JFrame {
         pCenter.setMinimumSize(new java.awt.Dimension(0, 0));
         pCenter.setLayout(new java.awt.BorderLayout());
 
-        anhCenter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/src/Icon/mainBackground.png"))); // NOI18N
+        anhCenter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/mainBackground.png"))); // NOI18N
         anhCenter.setMaximumSize(new java.awt.Dimension(1400, 1400));
         anhCenter.setMinimumSize(new java.awt.Dimension(1400, 1400));
         anhCenter.setPreferredSize(new java.awt.Dimension(1400, 1400));

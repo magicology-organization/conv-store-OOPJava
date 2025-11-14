@@ -19,6 +19,8 @@ public class formThemKH extends javax.swing.JDialog {
 
     /**
      * Creates new form formThemKH
+     * @param parent
+     * @param modal
      */
     public formThemKH(java.awt.Frame parent, boolean modal) {
         super(parent, modal);

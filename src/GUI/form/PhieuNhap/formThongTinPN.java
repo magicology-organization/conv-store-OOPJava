@@ -4,9 +4,13 @@
  */
 package GUI.form.PhieuNhap;
 
+import Entity.NhanVien.NhanVien;
 import Entity.PhieuNhap.CTPhieuNhap;
+import Entity.PhieuNhap.NhaCungCap;
 import Entity.PhieuNhap.PhieuNhap;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -14,14 +18,22 @@ import java.util.List;
  * @author ADMIN
  */
 public class formThongTinPN extends javax.swing.JDialog {
+    private final DAO.PhieuNhap.NhaCungCapDAO nccDao = new DAO.PhieuNhap.NhaCungCapDAO();
+    private final DAO.NhanVien.NhanVienDAO nvDao = new DAO.NhanVien.NhanVienDAO();
+    private final DAO.PhieuNhap.CTPhieuNhapDAO ctDao = new DAO.PhieuNhap.CTPhieuNhapDAO();
+    private final DAO.SanPham.SanPhamDAO spDao = new DAO.SanPham.SanPhamDAO();
 
     /**
      * Creates new form formThongTinPN
+     * 
+     * @param parent
+     * @param modal
+     * @param pn
      */
-    public formThongTinPN(java.awt.Frame parent, boolean modal, String maPN) {
+    public formThongTinPN(java.awt.Frame parent, boolean modal, PhieuNhap pn) {
         initComponents();
         configureTable();
-        loadThongTinPhieuNhap(maPN);
+        setThongTinPN(pn);
         addTableMouseListener();
     }
 
@@ -50,74 +62,61 @@ public class formThongTinPN extends javax.swing.JDialog {
         table.setShowVerticalLines(false);
     }
 
-    private void loadThongTinPhieuNhap(String maPN) {
+    private void setThongTinPN(PhieuNhap pn) {
+        if (pn == null) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Không tìm thấy thông tin phiếu nhập!",
+                    "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         try {
-            DAO.PhieuNhap.PhieuNhapDAO pnDao = new DAO.PhieuNhap.PhieuNhapDAO();
-            DAO.PhieuNhap.CTPhieuNhapDAO ctDao = new DAO.PhieuNhap.CTPhieuNhapDAO();
-            DAO.SanPham.SanPhamDAO spDao = new DAO.SanPham.SanPhamDAO();
+            // Lấy đầy đủ thông tin NCC và NV
+            NhaCungCap ncc = nccDao.findById(pn.getNCC() != null ? pn.getNCC().getMaNCC() : "").orElse(null);
+            NhanVien nv = nvDao.findById(pn.getNhanVien() != null ? pn.getNhanVien().getMaNV() : "").orElse(null);
+            pn.setNCC(ncc);
+            pn.setNhanVien(nv);
 
-            // --- Lấy danh sách phiếu nhập có chi tiết ---
-            var list = pnDao.findAllWithDetails();
-            Object[] pnInfo = list.stream()
-                    .filter(o -> o[0].equals(maPN))
-                    .findFirst()
-                    .orElse(null);
+            // ===== Gán thông tin cơ bản =====
+            txtMaPN.setText(pn.getMaPN());
+            txtTenNCC.setText(pn.getNCC() != null ? pn.getNCC().getTenNCC() : "");
+            txtSDTNCC.setText(pn.getNCC() != null ? pn.getNCC().getSdt() : "");
+            txtTenNV.setText(pn.getNhanVien() != null ? pn.getNhanVien().getTenNV() : "");
 
-            if (pnInfo == null) {
-                javax.swing.JOptionPane.showMessageDialog(this,
-                        "Không tìm thấy thông tin phiếu nhập!",
-                        "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            /*
-             * Cấu trúc trả về từ findAllWithDetails():
-             * [0] = maPN
-             * [1] = tenNCC
-             * [2] = SDT (NCC)
-             * [3] = tenNV
-             * [4] = thoiGian (LocalDateTime)
-             * [5] = tongHoaDon (BigDecimal)
-             */
-
-            // --- Gán thông tin cơ bản ---
-            txtMaPN.setText(String.valueOf(pnInfo[0])); // Mã phiếu nhập
-            txtTenNCC.setText(String.valueOf(pnInfo[1])); // Tên nhà cung cấp
-            txtSDTNCC.setText(String.valueOf(pnInfo[2])); // SĐT nhà cung cấp
-            txtTenNV.setText(String.valueOf(pnInfo[3])); // Tên nhân viên nhập
-
-            // --- Ngày nhập (LocalDateTime -> dd/MM/yyyy HH:mm) ---
-            java.time.LocalDateTime ngayNhap = (java.time.LocalDateTime) pnInfo[4];
+            // ===== Ngày nhập =====
+            java.time.LocalDateTime ngayNhap = pn.getThoiGian();
             java.time.format.DateTimeFormatter fmt = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
             txtNgayNhap.setText(ngayNhap != null ? ngayNhap.format(fmt) : "");
 
-            // --- Tổng tiền ---
-            java.math.BigDecimal tongTien = (java.math.BigDecimal) pnInfo[5];
-            txtTong.setText(String.format("%,.0f", tongTien));
+            // ===== Tổng tiền =====
+            List<CTPhieuNhap> cts = ctDao.findAllByMaPN(pn.getMaPN());
+            pn.setChiTietPhieuNhap(cts);
+            BigDecimal tongTien = pn.getTongTien();
+            txtTong.setText(tongTien != null ? String.format("%,.0f", tongTien) : "");
 
-            // --- Nạp chi tiết phiếu nhập ---
-            java.util.List<Entity.PhieuNhap.CTPhieuNhap> cts = ctDao.findAllByMaPN(maPN);
+            // ===== Nạp chi tiết phiếu nhập =====
             javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) table.getModel();
             model.setRowCount(0);
 
             int stt = 1;
-            for (Entity.PhieuNhap.CTPhieuNhap ct : cts) {
-                String maSP = ct.getSanPham().getMaSP();
-                Entity.SanPham.SanPham sp = spDao.findById(maSP).orElse(null);
+            for (CTPhieuNhap ct : cts) {
+                var sp = spDao.findById(ct.getSanPham().getMaSP()).orElse(null);
                 String tenSP = sp != null ? sp.getTenSP() : "";
                 int soLuong = ct.getSoLuong();
                 java.math.BigDecimal donGia = ct.getDonGia();
-                java.math.BigDecimal thanhTien = donGia.multiply(new java.math.BigDecimal(soLuong));
+                java.math.BigDecimal thanhTien = donGia.multiply(java.math.BigDecimal.valueOf(soLuong));
 
                 model.addRow(new Object[] {
-                        stt++, maSP, tenSP,
+                        stt++,
+                        ct.getSanPham().getMaSP(),
+                        tenSP,
                         soLuong,
                         String.format("%,.0f", donGia),
                         String.format("%,.0f", thanhTien)
                 });
             }
 
-            // --- Reset ảnh về mặc định ---
+            // ===== Reset ảnh sản phẩm về icon mặc định =====
             lblAnhSP.setIcon(new com.formdev.flatlaf.extras.FlatSVGIcon("./icon/image.svg"));
 
         } catch (Exception e) {
@@ -164,7 +163,8 @@ public class formThongTinPN extends javax.swing.JDialog {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         pNorth = new javax.swing.JPanel();
@@ -353,19 +353,19 @@ public class formThongTinPN extends javax.swing.JDialog {
         javax.swing.GroupLayout pAnhLayout = new javax.swing.GroupLayout(pAnh);
         pAnh.setLayout(pAnhLayout);
         pAnhLayout.setHorizontalGroup(
-            pAnhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pAnhLayout.createSequentialGroup()
-                .addContainerGap(32, Short.MAX_VALUE)
-                .addComponent(anhSP, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
-        );
+                pAnhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pAnhLayout.createSequentialGroup()
+                                .addContainerGap(32, Short.MAX_VALUE)
+                                .addComponent(anhSP, javax.swing.GroupLayout.PREFERRED_SIZE, 350,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)));
         pAnhLayout.setVerticalGroup(
-            pAnhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pAnhLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(anhSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(136, 136, 136))
-        );
+                pAnhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pAnhLayout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(anhSP, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(136, 136, 136)));
 
         pCenter.add(pAnh, java.awt.BorderLayout.WEST);
 
@@ -388,26 +388,26 @@ public class formThongTinPN extends javax.swing.JDialog {
         spTableSP.setPreferredSize(new java.awt.Dimension(452, 300));
 
         table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+                new Object[][] {
 
-            },
-            new String [] {
-                "STT", "Mã sản phẩm", "Tên sản phẩm", "Số lượng", "Giá nhập", "Thành tiền"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+                },
+                new String[] {
+                        "STT", "Mã sản phẩm", "Tên sản phẩm", "Số lượng", "Giá nhập", "Thành tiền"
+                }) {
+            Class[] types = new Class[] {
+                    java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                    java.lang.String.class, java.lang.Integer.class
             };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+            boolean[] canEdit = new boolean[] {
+                    false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+                return types[columnIndex];
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return canEdit[columnIndex];
             }
         });
         table.setFocusable(false);
@@ -498,6 +498,7 @@ public class formThongTinPN extends javax.swing.JDialog {
 
     private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnHuyActionPerformed
         // TODO add your handling code here:
+        dispose();
     }// GEN-LAST:event_btnHuyActionPerformed
 
     private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnPrintActionPerformed
@@ -514,7 +515,7 @@ public class formThongTinPN extends javax.swing.JDialog {
             DAO.PhieuNhap.PhieuNhapDAO pnDao = new DAO.PhieuNhap.PhieuNhapDAO();
             DAO.PhieuNhap.CTPhieuNhapDAO ctDao = new DAO.PhieuNhap.CTPhieuNhapDAO();
 
-            // Lấy thông tin phiếu nhập 
+            // Lấy thông tin phiếu nhập
             PhieuNhap pn = pnDao.thongTinIn(maPN).orElse(null);
             if (pn == null) {
                 javax.swing.JOptionPane.showMessageDialog(this, "Không tìm thấy phiếu nhập!", "Lỗi",
@@ -522,7 +523,7 @@ public class formThongTinPN extends javax.swing.JDialog {
                 return;
             }
 
-            // Lấy chi tiết phiếu nhập 
+            // Lấy chi tiết phiếu nhập
             List<CTPhieuNhap> listCTPN = ctDao.thongTinChiTietIn(maPN);
             if (listCTPN == null || listCTPN.isEmpty()) {
                 javax.swing.JOptionPane.showMessageDialog(this, "Không có sản phẩm trong phiếu nhập!", "Thông báo",
@@ -530,7 +531,7 @@ public class formThongTinPN extends javax.swing.JDialog {
                 return;
             }
 
-            // In PDF 
+            // In PDF
             Utils.InPDF pdf = new Utils.InPDF();
             pdf.printPhieuNhap(pn, listCTPN);
 

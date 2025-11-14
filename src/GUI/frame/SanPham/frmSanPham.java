@@ -4,11 +4,14 @@
  */
 package GUI.frame.SanPham;
 
+import DAO.HoaDon.HoaDonDAO;
 import DAO.SanPham.SanPhamDAO;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -31,7 +34,7 @@ public class frmSanPham extends javax.swing.JPanel {
 
     private void configureTable() {
         // Ngăn không cho phép người dùng chỉnh sửa bảng
-        table.setDefaultEditor(Object.class, null); 
+        table.setDefaultEditor(Object.class, null);
 
         // Căn giữa cho tất cả các cell trong bảng
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -79,7 +82,8 @@ public class frmSanPham extends javax.swing.JPanel {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         Panel = new javax.swing.JPanel();
@@ -155,19 +159,19 @@ public class frmSanPham extends javax.swing.JPanel {
         scrollTableCenter.setPreferredSize(new java.awt.Dimension(1200, 500));
 
         table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+                new Object[][] {
 
-            },
-            new String [] {
-                "STT", "Mã sản phẩm", "Tên sản phẩm", "Mô tả", "Danh mục", "Xuất xứ", "ĐVT", "Giá nhập", "Đơn giá", "Tồn kho"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false
+                },
+                new String[] {
+                        "STT", "Mã sản phẩm", "Tên sản phẩm", "Mô tả", "Danh mục", "Xuất xứ", "ĐVT", "Giá nhập",
+                        "Đơn giá", "Tồn kho"
+                }) {
+            boolean[] canEdit = new boolean[] {
+                    false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return canEdit[columnIndex];
             }
         });
         table.setMinimumSize(null);
@@ -249,47 +253,80 @@ public class frmSanPham extends javax.swing.JPanel {
         add(Panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
+    private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnTimKiemActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnTimKiemActionPerformed
+        String keyword = txtTimKiem.getText().trim().toLowerCase();
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
 
-    private void btnChiTietActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChiTietActionPerformed
+        SanPhamDAO dao = new SanPhamDAO(); // ✅ dùng DAO sản phẩm
+        List<Object[]> list = dao.findAllWithDetails();
+
+        // Nếu có từ khóa thì lọc theo mã hoặc tên sản phẩm
+        if (!keyword.isEmpty()) {
+            list = list.stream()
+                    .filter(r -> (r[0] != null && r[0].toString().toLowerCase().contains(keyword))
+                            || (r[1] != null && r[1].toString().toLowerCase().contains(keyword)))
+                    .toList();
+        }
+
+        int stt = 1;
+        for (Object[] row : list) {
+            String giaNhap = currencyFormat.format(row[6]);
+            String giaBan = currencyFormat.format(row[7]);
+
+            model.addRow(new Object[] {
+                    stt++,
+                    row[0],
+                    row[1],
+                    row[2],
+                    row[3],
+                    row[4],
+                    row[5],
+                    giaNhap,
+                    giaBan,
+                    row[8]
+            });
+        }
+
+        if (list.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Không tìm thấy sản phẩm phù hợp với: " + keyword);
+        }
+    }// GEN-LAST:event_btnTimKiemActionPerformed
+
+    private void btnChiTietActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnChiTietActionPerformed
         // TODO add your handling code here:
         int row = table.getSelectedRow();
         if (row < 0) {
             javax.swing.JOptionPane.showMessageDialog(this,
-                "Vui lòng chọn một nhà cung cấp để xem chi tiết!",
-                "Thông báo", javax.swing.JOptionPane.WARNING_MESSAGE);
+                    "Vui lòng chọn một sản phẩm để xem chi tiết!",
+                    "Thông báo", javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        // Lấy mã nhà cung cấp từ bảng
-        String maNCC = table.getValueAt(row, 1).toString();
+        // Lấy mã sản phẩm từ cột của bảng
+        String maSP = table.getValueAt(row, 1).toString();
 
         // Lấy dữ liệu từ DAO
-        DAO.PhieuNhap.NhaCungCapDAO dao = new DAO.PhieuNhap.NhaCungCapDAO();
-        Entity.PhieuNhap.NhaCungCap ncc = dao.findById(maNCC).orElse(null);
+        DAO.SanPham.SanPhamDAO dao = new DAO.SanPham.SanPhamDAO();
+        Entity.SanPham.SanPham sp = dao.findById(maSP).orElse(null);
 
-        if (ncc == null) {
+        if (sp == null) {
             javax.swing.JOptionPane.showMessageDialog(this,
-                "Không tìm thấy thông tin nhà cung cấp!",
-                "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
+                    "Không tìm thấy thông tin sản phẩm!",
+                    "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         // Mở form chi tiết
         javax.swing.JFrame parent = (javax.swing.JFrame) javax.swing.SwingUtilities.getWindowAncestor(this);
-        GUI.form.NhaCungCap.formThongTinNCC dialog = new GUI.form.NhaCungCap.formThongTinNCC(parent, true);
+        GUI.form.SanPham.formThongTinSP dialog = new GUI.form.SanPham.formThongTinSP(parent, true, sp);
 
-        // Gán dữ liệu vào form
-        dialog.setTitle("Thông tin nhà cung cấp - " + ncc.getTenNCC());
         dialog.setLocationRelativeTo(this);
-
         // Điền dữ liệu vào form
-        dialog.setThongTinNCC(ncc);
-
+        dialog.setThongTinSP(sp);
         dialog.setVisible(true);
-    }//GEN-LAST:event_btnChiTietActionPerformed
+    }// GEN-LAST:event_btnChiTietActionPerformed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
@@ -297,7 +334,7 @@ public class frmSanPham extends javax.swing.JPanel {
         GUI.form.SanPham.formThemSP dialog = new GUI.form.SanPham.formThemSP(parentFrame, true);
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-        loadDataTable(); 
+        loadDataTable();
     }// GEN-LAST:event_btnThemActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnXoaActionPerformed
@@ -346,16 +383,18 @@ public class frmSanPham extends javax.swing.JPanel {
         int row = table.getSelectedRow();
         if (row < 0) {
             javax.swing.JOptionPane.showMessageDialog(this,
-                    "Vui lòng chọn một sản phẩm để sửa!",
+                    "Vui lòng chọn một sản phẩm để xem chi tiết!",
                     "Thông báo", javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        // Cột 1 là mã sản phẩm (sau STT)
+        // Lấy mã sản phẩm từ cột của bảng
         String maSP = table.getValueAt(row, 1).toString();
 
-        SanPhamDAO dao = new SanPhamDAO();
+        // Lấy dữ liệu từ DAO
+        DAO.SanPham.SanPhamDAO dao = new DAO.SanPham.SanPhamDAO();
         Entity.SanPham.SanPham sp = dao.findById(maSP).orElse(null);
+
         if (sp == null) {
             javax.swing.JOptionPane.showMessageDialog(this,
                     "Không tìm thấy thông tin sản phẩm!",
@@ -363,11 +402,15 @@ public class frmSanPham extends javax.swing.JPanel {
             return;
         }
 
-        javax.swing.JFrame parentFrame = (javax.swing.JFrame) javax.swing.SwingUtilities.getWindowAncestor(this);
-        GUI.form.SanPham.formSuaSP dialog = new GUI.form.SanPham.formSuaSP(parentFrame, true, maSP);
+        // Mở form chi tiết
+        javax.swing.JFrame parent = (javax.swing.JFrame) javax.swing.SwingUtilities.getWindowAncestor(this);
+        GUI.form.SanPham.formSuaSP dialog = new GUI.form.SanPham.formSuaSP(parent, true, sp);
+
         dialog.setLocationRelativeTo(this);
+        // Điền dữ liệu vào form
+        dialog.setThongTinSP(sp);
         dialog.setVisible(true);
-        loadDataTable(); 
+        loadDataTable();
     }// GEN-LAST:event_btnSuaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

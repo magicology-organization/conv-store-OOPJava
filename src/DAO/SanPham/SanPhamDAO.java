@@ -232,6 +232,83 @@ public class SanPhamDAO {
         }
     }
 
+    public List<Object[]> search(String maSP, String tenSP, String danhMuc, String xuatXu) {
+        List<Object[]> list = new ArrayList<>();
+
+        // --- Câu SQL động ---
+        StringBuilder sql = new StringBuilder("""
+                    SELECT sp.maSP,
+                           sp.tenSP,
+                           sp.moTaSP,
+                           dm.tenDM AS danhMuc,
+                           xx.tenXX AS xuatXu,
+                           dvt.tenDVT AS donViTinh,
+                           sp.giaNhap,
+                           sp.donGia,
+                           sp.soLuong,
+                           sp.HSD AS hsd
+                    FROM SanPham sp
+                    JOIN DanhMuc dm ON dm.maDM = sp.maDM
+                    JOIN XuatXu xx ON xx.maXX = sp.maXX
+                    JOIN DonViTinh dvt ON dvt.maDVT = sp.maDVT
+                    WHERE 1=1
+                """);
+
+        List<Object> params = new ArrayList<>();
+
+        // --- Thêm điều kiện động ---
+        if (maSP != null && !maSP.trim().isEmpty()) {
+            sql.append(" AND sp.maSP LIKE ?");
+            params.add("%" + maSP.trim() + "%");
+        }
+        if (tenSP != null && !tenSP.trim().isEmpty()) {
+            sql.append(" AND sp.tenSP LIKE ?");
+            params.add("%" + tenSP.trim() + "%");
+        }
+        if (danhMuc != null && !danhMuc.equalsIgnoreCase("Tất cả") && !danhMuc.isEmpty()) {
+            sql.append(" AND dm.tenDM = ?");
+            params.add(danhMuc);
+        }
+        if (xuatXu != null && !xuatXu.equalsIgnoreCase("Tất cả") && !xuatXu.isEmpty()) {
+            sql.append(" AND xx.tenXX = ?");
+            params.add(xuatXu);
+        }
+
+        sql.append(" ORDER BY sp.maSP ASC");
+
+        try (PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+
+            // --- Gán tham số ---
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Object[] row = {
+                            rs.getString("maSP"),
+                            rs.getString("tenSP"),
+                            rs.getString("moTaSP"),
+                            rs.getString("danhMuc"),
+                            rs.getString("xuatXu"),
+                            rs.getString("donViTinh"),
+                            rs.getBigDecimal("giaNhap"),
+                            rs.getBigDecimal("donGia"),
+                            rs.getInt("soLuong"),
+                            rs.getTimestamp("hsd")
+                    };
+                    list.add(row);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Lỗi tìm kiếm sản phẩm!", e);
+        }
+
+        return list;
+    }
+
     public List<SanPham> searchByName(String keyword) {
         String kw = keyword == null ? "" : keyword.trim();
         String sql = "SELECT maSP, tenSP, anhSP, moTaSP, maDM, maDVT, maXX, soLuong, giaNhap, donGia, HSD FROM SanPham WHERE tenSP LIKE ? ORDER BY tenSP, maSP";

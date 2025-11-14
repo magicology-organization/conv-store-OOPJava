@@ -9,25 +9,30 @@ package GUI.form.NhaCungCap;
  * @author ADMIN
  */
 public class formSuaNCC extends javax.swing.JDialog {
-    private Entity.PhieuNhap.NhaCungCap nccSua;
+    private final Entity.PhieuNhap.NhaCungCap nccSua;
 
     /**
      * Creates new form formSuaNCC
+     * @param parent
+     * @param modal
+     * @param ncc
      */
     public formSuaNCC(java.awt.Frame parent, boolean modal, Entity.PhieuNhap.NhaCungCap ncc) {
         super(parent, modal);
         initComponents();
         this.nccSua = ncc;
         txtHoTen.requestFocus();
-        // Điền dữ liệu cũ vào form
+        setThongTinNCC(ncc);
+
+    }
+    private void setThongTinNCC(Entity.PhieuNhap.NhaCungCap ncc) {
         if (ncc != null) {
             txtMa.setText(ncc.getMaNCC());
             txtHoTen.setText(ncc.getTenNCC());
             txtSDT.setText(ncc.getSdt());
             txtDiaChi.setText(ncc.getDiaChiNCC());
-        }
+        }        
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

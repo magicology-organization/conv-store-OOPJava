@@ -5,6 +5,7 @@
 package GUI.frame.KhachHang;
 
 import DAO.KhachHang.KhachHangDAO;
+import Entity.KhachHang.KhachHang;
 import GUI.form.KhachHang.formSuaKH;
 import GUI.form.KhachHang.formThemKH;
 import java.util.List;
@@ -305,26 +306,76 @@ public class frmKhachHang extends javax.swing.JPanel {
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
-        int selectedRow = table.getSelectedRow();
-        if (selectedRow != -1) {
-            // Lấy mã khách hàng từ cột đầu tiên trong JTable
-            String maKH = table.getValueAt(selectedRow, 1).toString();
-
-            // Mở form sửa, truyền mã khách hàng vào
-            javax.swing.JFrame parentFrame = (javax.swing.JFrame) javax.swing.SwingUtilities.getWindowAncestor(this);
-            formSuaKH dialog = new formSuaKH(parentFrame, true, maKH);
-            dialog.setLocationRelativeTo(this);
-            dialog.setVisible(true);
-
-            // Sau khi form sửa đóng, refresh lại bảng
-            loadDataTable();
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(this, "Vui lòng chọn khách hàng để sửa!");
+        int row = table.getSelectedRow();
+        if (row < 0) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Vui lòng chọn một khách hàng để xem chi tiết!",
+                    "Thông báo", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
         }
+
+        // Lấy mã nhà cung cấp từ bảng
+        String maKH = table.getValueAt(row, 1).toString();
+
+        // Lấy dữ liệu từ DAO
+        DAO.KhachHang.KhachHangDAO dao = new DAO.KhachHang.KhachHangDAO();
+        Entity.KhachHang.KhachHang kh = dao.findById(maKH);
+
+        if (kh == null) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Không tìm thấy thông tin khách hàng!",
+                    "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Mở form chi tiết
+        javax.swing.JFrame parent = (javax.swing.JFrame) javax.swing.SwingUtilities.getWindowAncestor(this);
+        GUI.form.KhachHang.formSuaKH dialog = new GUI.form.KhachHang.formSuaKH(parent, true, kh);
+
+        // Gán dữ liệu vào form
+        dialog.setTitle("Thông tin khách hàng - " + kh.getTenKH());
+        dialog.setLocationRelativeTo(this);
+
+        dialog.setVisible(true);
+        loadDataTable();
     }// GEN-LAST:event_btnSuaActionPerformed
 
     private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnTimKiemActionPerformed
         // TODO add your handling code here:
+        String keyword = txtTimKiem.getText().trim().toLowerCase();
+
+        // Lấy model của table
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0); // xóa dữ liệu cũ
+
+        // Khởi tạo DAO KhachHang
+        KhachHangDAO dao = new KhachHangDAO();
+        List<KhachHang> list = dao.findAll(); // lấy tất cả khách hàng
+
+        // Lọc theo từ khóa nếu có
+        if (!keyword.isEmpty()) {
+            list = list.stream()
+                    .filter(kh -> (kh.getMaKH() != null && kh.getMaKH().toLowerCase().contains(keyword))
+                            || (kh.getTenKH() != null && kh.getTenKH().toLowerCase().contains(keyword)))
+                    .toList();
+        }
+
+        // Thêm dữ liệu vào table
+        int stt = 1;
+        for (KhachHang kh : list) {
+            model.addRow(new Object[] {
+                    stt++,
+                    kh.getMaKH(),
+                    kh.getTenKH(),
+                    kh.getGioiTinh(),
+                    kh.getSdt()
+            });
+        }
+
+        // Thông báo nếu không tìm thấy
+        if (list.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Không tìm thấy khách hàng phù hợp với: " + keyword);
+        }
     }// GEN-LAST:event_btnTimKiemActionPerformed
 
     private void btnChiTietActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnChiTietActionPerformed
@@ -353,14 +404,12 @@ public class frmKhachHang extends javax.swing.JPanel {
 
         // Mở form chi tiết
         javax.swing.JFrame parent = (javax.swing.JFrame) javax.swing.SwingUtilities.getWindowAncestor(this);
-        GUI.form.KhachHang.formThongTinKH dialog = new GUI.form.KhachHang.formThongTinKH(parent, true);
+        GUI.form.KhachHang.formThongTinKH dialog = new GUI.form.KhachHang.formThongTinKH(parent, false, kh);
 
         // Gán dữ liệu vào form
         dialog.setTitle("Thông tin khách hàng - " + kh.getTenKH());
         dialog.setLocationRelativeTo(this);
 
-        // Điền dữ liệu vào form
-        dialog.setThongTinKH(kh);
 
         dialog.setVisible(true);
     }// GEN-LAST:event_btnChiTietActionPerformed

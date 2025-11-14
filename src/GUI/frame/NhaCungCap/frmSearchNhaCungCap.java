@@ -417,15 +417,12 @@ public class frmSearchNhaCungCap extends javax.swing.JPanel {
 
         // Mở form chi tiết
         javax.swing.JFrame parent = (javax.swing.JFrame) javax.swing.SwingUtilities.getWindowAncestor(this);
-        GUI.form.NhaCungCap.formThongTinNCC dialog = new GUI.form.NhaCungCap.formThongTinNCC(parent, true);
+        GUI.form.NhaCungCap.formThongTinNCC dialog = new GUI.form.NhaCungCap.formThongTinNCC(parent, true, ncc);
 
         // Gán dữ liệu vào form
         dialog.setTitle("Thông tin nhà cung cấp - " + ncc.getTenNCC());
         dialog.setLocationRelativeTo(this);
-
-        // Điền dữ liệu vào form
-        dialog.setThongTinNCC(ncc);
-
+        
         dialog.setVisible(true);
     }// GEN-LAST:event_btnChiTietActionPerformed
 

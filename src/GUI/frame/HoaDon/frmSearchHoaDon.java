@@ -427,7 +427,7 @@ public class frmSearchHoaDon extends javax.swing.JPanel {
 
         // Mở form chi tiết hóa đơn
         javax.swing.JFrame parentFrame = (javax.swing.JFrame) javax.swing.SwingUtilities.getWindowAncestor(this);
-        GUI.form.HoaDon.formThongTinHD frm = new GUI.form.HoaDon.formThongTinHD(parentFrame, true, maHD);
+        GUI.form.HoaDon.formThongTinHD frm = new GUI.form.HoaDon.formThongTinHD(parentFrame, true, hd);
         frm.setLocationRelativeTo(this);
         frm.setVisible(true);
     }// GEN-LAST:event_btnChiTietActionPerformed

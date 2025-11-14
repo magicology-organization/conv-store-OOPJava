@@ -460,7 +460,7 @@ public class frmSearchPhieuNhap extends javax.swing.JPanel {
 
         // Mở form chi tiết hóa đơn
         javax.swing.JFrame parentFrame = (javax.swing.JFrame) javax.swing.SwingUtilities.getWindowAncestor(this);
-        GUI.form.PhieuNhap.formThongTinPN frm = new GUI.form.PhieuNhap.formThongTinPN(parentFrame, true, maPN);
+        GUI.form.PhieuNhap.formThongTinPN frm = new GUI.form.PhieuNhap.formThongTinPN(parentFrame, true, pn);
         frm.setLocationRelativeTo(this);
         frm.setVisible(true);
     }// GEN-LAST:event_btnChiTietActionPerformed

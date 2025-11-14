@@ -12,6 +12,8 @@ public class formThemNCC extends javax.swing.JDialog {
     private boolean isSaved = false;
     /**
      * Creates new form formThemNCC
+     * @param parent
+     * @param modal
      */
     public formThemNCC(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
