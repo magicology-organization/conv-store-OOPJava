@@ -9,7 +9,10 @@ package Entity.PhieuNhap;
  * @author ADMIN
  */
 import Entity.NhanVien.NhanVien;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 public class PhieuNhap {
@@ -17,6 +20,7 @@ public class PhieuNhap {
     private NhanVien nhanVien; // nvarchar(10) NOT NULL (FK -> NhanVien)
     private NhaCungCap ncc; // nvarchar(10) NOT NULL (FK -> NhaCungCap)
     private LocalDateTime thoiGian; // datetime NOT NULL
+    private List<CTPhieuNhap> chiTietPhieuNhap;
 
     public PhieuNhap(String maPN) {
         this.maPN = maPN;
@@ -63,7 +67,21 @@ public class PhieuNhap {
     public void setThoiGian(LocalDateTime thoiGian) {
         this.thoiGian = thoiGian;
     }
+    public List<CTPhieuNhap> getChiTietPhieuNhap() {
+        return chiTietPhieuNhap;
+    }
 
+    public void setChiTietPhieuNhap(List<CTPhieuNhap> chiTietPhieuNhap) {
+        this.chiTietPhieuNhap = chiTietPhieuNhap;
+    }
+
+    // --- getTongTien gọn gàng ---
+    public BigDecimal getTongTien() {
+        return chiTietPhieuNhap == null ? BigDecimal.ZERO
+            : chiTietPhieuNhap.stream()
+                .map(ct -> ct.getDonGia().multiply(BigDecimal.valueOf(ct.getSoLuong())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o)

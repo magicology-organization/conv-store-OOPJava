@@ -1,9 +1,11 @@
 package Entity.HoaDon;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import Entity.KhachHang.KhachHang;
 import Entity.NhanVien.NhanVien;
+import java.util.List;
 
 public class HoaDon {
     private String maHD; // PK
@@ -11,6 +13,7 @@ public class HoaDon {
     private KhachHang khachHang; // FK -> KhachHang
     private LocalDateTime thoiGian; // thời điểm mua
     private String kieuThanhToan; // "Tiền mặt" | "Chuyển khoản" | ...
+    private List<CTHoaDon> chiTietHoaDon;
 
     public HoaDon() {
     }
@@ -69,6 +72,22 @@ public class HoaDon {
 
     public void setKieuThanhToan(String kieuThanhToan) {
         this.kieuThanhToan = kieuThanhToan;
+    }
+
+    public void setChiTietHoaDon(List<CTHoaDon> chiTietHoaDon) {
+        this.chiTietHoaDon = chiTietHoaDon;
+    }
+
+    public List<CTHoaDon> getChiTietHoaDon() {
+        return chiTietHoaDon;
+    }
+
+    // --- getTongTien gọn với Stream ---
+    public BigDecimal getTongTien() {
+        return chiTietHoaDon == null ? BigDecimal.ZERO
+                : chiTietHoaDon.stream()
+                        .map(ct -> ct.getDonGia().multiply(BigDecimal.valueOf(ct.getSoLuong())))
+                        .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     // --- equals & hashCode ---

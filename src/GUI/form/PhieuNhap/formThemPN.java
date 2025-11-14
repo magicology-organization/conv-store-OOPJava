@@ -48,8 +48,7 @@ public class formThemPN extends javax.swing.JPanel {
         loadSanPham(null);
         try {
             DAO.PhieuNhap.PhieuNhapDAO dao = new DAO.PhieuNhap.PhieuNhapDAO();
-            txtMaPN.setText(dao.taoMaPhieuNhap()); // ⚠️ txtMaHD đang dùng chung UI, giữ nguyên field nhưng giá trị là
-                                                   // mã PN
+            txtMaPN.setText(dao.taoMaPhieuNhap()); 
         } catch (Exception e) {
             e.printStackTrace();
             javax.swing.JOptionPane.showMessageDialog(this, "Không thể tạo mã phiếu nhập tự động!");

@@ -4,7 +4,9 @@
  */
 package GUI.form.NhaCungCap;
 
+import Entity.PhieuNhap.NhaCungCap;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
@@ -15,13 +17,18 @@ public class formThongTinNCC extends javax.swing.JDialog {
 
     /**
      * Creates new form formThongTinNCC
+     * @param parent
+     * @param modal
+     * @param ncc
      */
-    public formThongTinNCC(java.awt.Frame parent, boolean modal) {
+    public formThongTinNCC(java.awt.Frame parent, boolean modal, NhaCungCap ncc) {
         super(parent, modal);
         initComponents();
         configureTable();
         disableTextFieldFocus();
+        setThongTinNCC(ncc);
     }
+
     private void configureTable() {
         // Căn giữa cho tất cả các cell trong bảng
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -37,7 +44,8 @@ public class formThongTinNCC extends javax.swing.JDialog {
         table.setRowSelectionAllowed(true);
         table.setColumnSelectionAllowed(false);
     }
-    public void setThongTinNCC(Entity.PhieuNhap.NhaCungCap ncc) {
+
+    private void setThongTinNCC(Entity.PhieuNhap.NhaCungCap ncc) {
         if (ncc == null)
             return;
         txtMa.setText(ncc.getMaNCC());
@@ -96,7 +104,8 @@ public class formThongTinNCC extends javax.swing.JDialog {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         roundPanel = new Swing.RoundPanel();
@@ -219,19 +228,18 @@ public class formThongTinNCC extends javax.swing.JDialog {
         scrollTableCenter.setPreferredSize(new java.awt.Dimension(550, 280));
 
         table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+                new Object[][] {
 
-            },
-            new String [] {
-                "STT", "Mã phiếu nhập", "Tên nhân viên", "Ngày nhập", "Tổng hóa đơn"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                },
+                new String[] {
+                        "STT", "Mã phiếu nhập", "Tên nhân viên", "Ngày nhập", "Tổng hóa đơn"
+                }) {
+            boolean[] canEdit = new boolean[] {
+                    false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return canEdit[columnIndex];
             }
         });
         table.setName(""); // NOI18N
@@ -282,9 +290,49 @@ public class formThongTinNCC extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnChiTietActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChiTietActionPerformed
+    private void btnChiTietActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnChiTietActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnChiTietActionPerformed
+        int row = table.getSelectedRow();
+        System.out.println("Selected row: " + row);
+        if (row < 0) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn một phiếu nhập để xem chi tiết!", "Thông báo",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String maPN = table.getValueAt(row, 1).toString().trim();
+        System.out.println("Selected maPN: " + maPN);
+
+        if (maPN.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Không thể xác định mã phiếu nhập!",
+                    "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Kiểm tra hóa đơn có tồn tại không
+        DAO.PhieuNhap.PhieuNhapDAO pnDao = new DAO.PhieuNhap.PhieuNhapDAO();
+        Entity.PhieuNhap.PhieuNhap pn = pnDao.findById(maPN).orElse(null);
+        if (pn == null) {
+            JOptionPane.showMessageDialog(this,
+                    "Không tìm thấy phiếu nhập có mã: " + maPN,
+                    "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Mở form chi tiết hóa đơn
+        java.awt.Window parentWindow = javax.swing.SwingUtilities.getWindowAncestor(this);
+        java.awt.Frame frameParent = parentWindow instanceof java.awt.Frame ? (java.awt.Frame) parentWindow : null;
+
+        // Tạo dialog modal, liên kết với parent đúng
+        GUI.form.PhieuNhap.formThongTinPN frm = new GUI.form.PhieuNhap.formThongTinPN(frameParent, false, pn);
+        frm.setLocationRelativeTo(parentWindow);
+
+        // (Tùy chọn) luôn ở trên để chắc chắn
+        frm.setAlwaysOnTop(true);
+
+        frm.setVisible(true);
+    }// GEN-LAST:event_btnChiTietActionPerformed
 
     private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnHuyActionPerformed
         // TODO add your handling code here:
@@ -295,50 +343,50 @@ public class formThongTinNCC extends javax.swing.JDialog {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        // <editor-fold defaultstate="collapsed" desc=" Look and feel setting code
-        // (optional) ">
-        /*
-         * If Nimbus (introduced in Java SE 6) is not available, stay with the default
-         * look and feel.
-         * For details see
-         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(formThongTinNCC.class.getName()).log(java.util.logging.Level.SEVERE,
-                    null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(formThongTinNCC.class.getName()).log(java.util.logging.Level.SEVERE,
-                    null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(formThongTinNCC.class.getName()).log(java.util.logging.Level.SEVERE,
-                    null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(formThongTinNCC.class.getName()).log(java.util.logging.Level.SEVERE,
-                    null, ex);
-        }
-        // </editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                formThongTinNCC dialog = new formThongTinNCC(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
+//        /* Set the Nimbus look and feel */
+//        // <editor-fold defaultstate="collapsed" desc=" Look and feel setting code
+//        // (optional) ">
+//        /*
+//         * If Nimbus (introduced in Java SE 6) is not available, stay with the default
+//         * look and feel.
+//         * For details see
+//         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(formThongTinNCC.class.getName()).log(java.util.logging.Level.SEVERE,
+//                    null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(formThongTinNCC.class.getName()).log(java.util.logging.Level.SEVERE,
+//                    null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(formThongTinNCC.class.getName()).log(java.util.logging.Level.SEVERE,
+//                    null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(formThongTinNCC.class.getName()).log(java.util.logging.Level.SEVERE,
+//                    null, ex);
+//        }
+//        // </editor-fold>
+//
+//        /* Create and display the dialog */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                formThongTinNCC dialog = new formThongTinNCC(new javax.swing.JFrame(), true);
+//                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+//                    @Override
+//                    public void windowClosing(java.awt.event.WindowEvent e) {
+//                        System.exit(0);
+//                    }
+//                });
+//                dialog.setVisible(true);
+//            }
+//        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

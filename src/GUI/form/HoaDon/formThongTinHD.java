@@ -6,8 +6,12 @@ package GUI.form.HoaDon;
 
 import Entity.HoaDon.CTHoaDon;
 import Entity.HoaDon.HoaDon;
+import Entity.KhachHang.KhachHang;
+import Entity.NhanVien.NhanVien;
 import Utils.InPDF;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -15,15 +19,22 @@ import java.util.List;
  * @author ADMIN
  */
 public class formThongTinHD extends javax.swing.JDialog {
+    DAO.HoaDon.CTHoaDonDAO ctDao = new DAO.HoaDon.CTHoaDonDAO();
+    DAO.SanPham.SanPhamDAO spDao = new DAO.SanPham.SanPhamDAO();
+    DAO.NhanVien.NhanVienDAO nvDao = new DAO.NhanVien.NhanVienDAO();
+    DAO.KhachHang.KhachHangDAO khDao = new DAO.KhachHang.KhachHangDAO();
 
     /**
      * Creates new form formThongTinHD
+     * @param parent
+     * @param modal
+     * @param hd
      */
-    public formThongTinHD(java.awt.Frame parent, boolean modal, String maHD) {
+    public formThongTinHD(java.awt.Frame parent, boolean modal, HoaDon hd) {
         super(parent, modal);
         initComponents();
         configureTable();
-        loadThongTinHoaDon(maHD);
+        setThongTinHD(hd);
         addTableMouseListener();
     }
 
@@ -52,77 +63,69 @@ public class formThongTinHD extends javax.swing.JDialog {
         table.setShowVerticalLines(false);
     }
 
-    private void loadThongTinHoaDon(String maHD) {
+    private void setThongTinHD(HoaDon hd) {
+        if (hd == null) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Không tìm thấy thông tin hóa đơn!",
+                    "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         try {
-            DAO.HoaDon.HoaDonDAO hdDao = new DAO.HoaDon.HoaDonDAO();
-            DAO.HoaDon.CTHoaDonDAO ctDao = new DAO.HoaDon.CTHoaDonDAO();
-            DAO.SanPham.SanPhamDAO spDao = new DAO.SanPham.SanPhamDAO();
-
-            // --- Lấy thông tin hóa đơn ---
-            var list = hdDao.findAllWithDetails();
-            Object[] hdInfo = list.stream()
-                    .filter(o -> o[0].equals(maHD))
-                    .findFirst()
-                    .orElse(null);
-
-            if (hdInfo == null) {
-                javax.swing.JOptionPane.showMessageDialog(this,
-                        "Không tìm thấy thông tin hóa đơn!",
-                        "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
-                return;
+            // ===== Lấy đầy đủ thông tin nhân viên =====
+            if (hd.getNhanVien() != null) {
+                NhanVien nv = nvDao.findById(hd.getNhanVien().getMaNV()).orElse(null);
+                hd.setNhanVien(nv);
             }
 
-            /*
-             * Cấu trúc trả về từ findAllWithDetails():
-             * [0] = maHD
-             * [1] = tenKH
-             * [2] = SDT
-             * [3] = thoiGian
-             * [4] = tenNV
-             * [5] = tongHoaDon
-             * [6] = tongTien
-             * [7] = kieuThanhToan
-             */
+            // ===== Lấy đầy đủ thông tin khách hàng =====
+            KhachHang kh = null;
+            if (hd.getKhachHang() != null && hd.getKhachHang().getMaKH() != null) {
+                kh = khDao.findById(hd.getKhachHang().getMaKH());
+                hd.setKhachHang(kh);
+            }
 
-            // --- Gán thông tin cơ bản ---
-            txtMaHD.setText(String.valueOf(hdInfo[0])); // Mã hóa đơn
-            txtTenKH.setText(String.valueOf(hdInfo[1])); // Tên khách hàng
-            txtSDT.setText(String.valueOf(hdInfo[2])); // Số điện thoại KH
-            txtTenNV.setText(String.valueOf(hdInfo[4])); // Tên nhân viên
-            txtKieuThanhToan.setText(String.valueOf(hdInfo[7])); // Kiểu thanh toán
+            // ===== Gán thông tin cơ bản =====
+            txtMaHD.setText(hd.getMaHD());
+            txtTenKH.setText(kh != null ? kh.getTenKH() : "");
+            txtSDT.setText(kh != null ? kh.getSdt() : "");
+            txtTenNV.setText(hd.getNhanVien() != null ? hd.getNhanVien().getTenNV() : "");
+            txtKieuThanhToan.setText(hd.getKieuThanhToan() != null ? hd.getKieuThanhToan() : "");
 
-            // --- Ngày bán (LocalDateTime -> dd/MM/yyyy HH:mm) ---
-            java.time.LocalDateTime ngayBan = (java.time.LocalDateTime) hdInfo[3];
+            // ===== Ngày bán =====
+            java.time.LocalDateTime ngayBan = hd.getThoiGian();
             java.time.format.DateTimeFormatter fmt = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
             txtNgayMua.setText(ngayBan != null ? ngayBan.format(fmt) : "");
 
-            // --- Tổng tiền ---
-            java.math.BigDecimal tongTien = (java.math.BigDecimal) hdInfo[6];
-            txtTong.setText(String.format("%,.0f", tongTien));
+            // ===== Tổng tiền =====
+            List<CTHoaDon> cts = ctDao.findAllByMaHD(hd.getMaHD());
+            hd.setChiTietHoaDon(cts);
+            BigDecimal tongTien = hd.getTongTien();
+            txtTong.setText(tongTien != null ? String.format("%,.0f", tongTien) : "");
 
-            // --- Nạp chi tiết hóa đơn ---
-            java.util.List<Entity.HoaDon.CTHoaDon> cts = ctDao.findAllByMaHD(maHD);
+            // ===== Nạp chi tiết hóa đơn =====
             javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) table.getModel();
             model.setRowCount(0);
 
             int stt = 1;
-            for (Entity.HoaDon.CTHoaDon ct : cts) {
-                String maSP = ct.getSanPham().getMaSP();
-                Entity.SanPham.SanPham sp = spDao.findById(maSP).orElse(null);
+            for (CTHoaDon ct : cts) {
+                var sp = spDao.findById(ct.getSanPham().getMaSP()).orElse(null);
                 String tenSP = sp != null ? sp.getTenSP() : "";
                 int soLuong = ct.getSoLuong();
-                java.math.BigDecimal donGia = ct.getDonGia();
-                java.math.BigDecimal thanhTien = donGia.multiply(new java.math.BigDecimal(soLuong));
+                BigDecimal donGia = ct.getDonGia();
+                BigDecimal thanhTien = donGia.multiply(BigDecimal.valueOf(soLuong));
 
                 model.addRow(new Object[] {
-                        stt++, maSP, tenSP,
+                        stt++,
+                        ct.getSanPham().getMaSP(),
+                        tenSP,
                         soLuong,
                         String.format("%,.0f", donGia),
                         String.format("%,.0f", thanhTien)
                 });
             }
 
-            // --- Reset ảnh sản phẩm ---
+            // ===== Reset ảnh sản phẩm =====
             lblAnhSP.setIcon(new com.formdev.flatlaf.extras.FlatSVGIcon("./icon/image.svg"));
 
         } catch (Exception e) {
@@ -175,7 +178,8 @@ public class formThongTinHD extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         pNorth = new javax.swing.JPanel();
@@ -369,19 +373,19 @@ public class formThongTinHD extends javax.swing.JDialog {
         javax.swing.GroupLayout pAnhLayout = new javax.swing.GroupLayout(pAnh);
         pAnh.setLayout(pAnhLayout);
         pAnhLayout.setHorizontalGroup(
-            pAnhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pAnhLayout.createSequentialGroup()
-                .addContainerGap(32, Short.MAX_VALUE)
-                .addComponent(anhSP, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
-        );
+                pAnhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pAnhLayout.createSequentialGroup()
+                                .addContainerGap(32, Short.MAX_VALUE)
+                                .addComponent(anhSP, javax.swing.GroupLayout.PREFERRED_SIZE, 350,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)));
         pAnhLayout.setVerticalGroup(
-            pAnhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pAnhLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(anhSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(136, 136, 136))
-        );
+                pAnhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pAnhLayout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(anhSP, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(136, 136, 136)));
 
         pCenter.add(pAnh, java.awt.BorderLayout.WEST);
 
@@ -404,26 +408,26 @@ public class formThongTinHD extends javax.swing.JDialog {
         spTableSP.setPreferredSize(new java.awt.Dimension(452, 300));
 
         table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+                new Object[][] {
 
-            },
-            new String [] {
-                "STT", "Mã sản phẩm", "Tên sản phẩm", "Số lượng", "Đơn giá", "Thành tiền"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+                },
+                new String[] {
+                        "STT", "Mã sản phẩm", "Tên sản phẩm", "Số lượng", "Đơn giá", "Thành tiền"
+                }) {
+            Class[] types = new Class[] {
+                    java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                    java.lang.String.class, java.lang.Integer.class
             };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+            boolean[] canEdit = new boolean[] {
+                    false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+                return types[columnIndex];
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return canEdit[columnIndex];
             }
         });
         table.setFocusable(false);
@@ -465,13 +469,11 @@ public class formThongTinHD extends javax.swing.JDialog {
         javax.swing.GroupLayout pCachDongLayout = new javax.swing.GroupLayout(pCachDong);
         pCachDong.setLayout(pCachDongLayout);
         pCachDongLayout.setHorizontalGroup(
-            pCachDongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
+                pCachDongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 100, Short.MAX_VALUE));
         pCachDongLayout.setVerticalGroup(
-            pCachDongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 40, Short.MAX_VALUE)
-        );
+                pCachDongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 40, Short.MAX_VALUE));
 
         pKieuThanhToan.add(pCachDong, java.awt.BorderLayout.LINE_END);
 
@@ -561,11 +563,11 @@ public class formThongTinHD extends javax.swing.JDialog {
                 return;
             }
 
-            // Khởi tạo DAO 
+            // Khởi tạo DAO
             DAO.HoaDon.HoaDonDAO hdDao = new DAO.HoaDon.HoaDonDAO();
             DAO.HoaDon.CTHoaDonDAO ctDao = new DAO.HoaDon.CTHoaDonDAO();
 
-            // Lấy thông tin hóa đơn đầy đủ 
+            // Lấy thông tin hóa đơn đầy đủ
             HoaDon hd = hdDao.thongTinIn(maHD).orElse(null);
             if (hd == null) {
                 javax.swing.JOptionPane.showMessageDialog(this, "Không tìm thấy hóa đơn!", "Lỗi",
@@ -580,7 +582,7 @@ public class formThongTinHD extends javax.swing.JDialog {
                         javax.swing.JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            // Gọi in PDF 
+            // Gọi in PDF
             InPDF pdf = new InPDF();
             pdf.printHoaDon(hd, listCTHD);
 

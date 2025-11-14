@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollBar;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -23,7 +22,6 @@ import javax.swing.table.DefaultTableModel;
  * @author ADMIN
  */
 public class frmHoaDon extends javax.swing.JPanel {
-    private int startIndex = 0;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     private final DecimalFormat currencyFormat = new DecimalFormat("#,### VND");
 
@@ -287,7 +285,7 @@ public class frmHoaDon extends javax.swing.JPanel {
 
         // Mở form chi tiết hóa đơn
         javax.swing.JFrame parentFrame = (javax.swing.JFrame) javax.swing.SwingUtilities.getWindowAncestor(this);
-        GUI.form.HoaDon.formThongTinHD frm = new GUI.form.HoaDon.formThongTinHD(parentFrame, true, maHD);
+        GUI.form.HoaDon.formThongTinHD frm = new GUI.form.HoaDon.formThongTinHD(parentFrame, true, hd);
         frm.setLocationRelativeTo(this);
         frm.setVisible(true);
     }// GEN-LAST:event_btnChiTietActionPerformed

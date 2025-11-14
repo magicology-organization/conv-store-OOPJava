@@ -69,7 +69,8 @@ public class frmNhaCungCap extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         Panel = new javax.swing.JPanel();
@@ -144,19 +145,18 @@ public class frmNhaCungCap extends javax.swing.JPanel {
         scrollTableCenter.setMinimumSize(null);
 
         table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+                new Object[][] {
 
-            },
-            new String [] {
-                "STT", "Mã nhà cung cấp", "Tên nhà cung cấp", "SĐT", "Địa chỉ"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, true
+                },
+                new String[] {
+                        "STT", "Mã nhà cung cấp", "Tên nhà cung cấp", "SĐT", "Địa chỉ"
+                }) {
+            boolean[] canEdit = new boolean[] {
+                    false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return canEdit[columnIndex];
             }
         });
         table.setEditingColumn(0);
@@ -238,7 +238,7 @@ public class frmNhaCungCap extends javax.swing.JPanel {
         add(Panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnChiTietActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChiTietActionPerformed
+    private void btnChiTietActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnChiTietActionPerformed
         // TODO add your handling code here:
         int row = table.getSelectedRow();
         if (row < 0) {
@@ -252,8 +252,8 @@ public class frmNhaCungCap extends javax.swing.JPanel {
         String maNCC = table.getValueAt(row, 1).toString();
 
         // Lấy dữ liệu từ DAO
-        DAO.PhieuNhap.NhaCungCapDAO dao = new DAO.PhieuNhap.NhaCungCapDAO();
-        Entity.PhieuNhap.NhaCungCap ncc = dao.findById(maNCC).orElse(null);
+        NhaCungCapDAO dao = new NhaCungCapDAO();
+        NhaCungCap ncc = dao.findById(maNCC).orElse(null);
 
         if (ncc == null) {
             javax.swing.JOptionPane.showMessageDialog(this,
@@ -262,23 +262,23 @@ public class frmNhaCungCap extends javax.swing.JPanel {
             return;
         }
 
-        // Mở form chi tiết
-        javax.swing.JFrame parent = (javax.swing.JFrame) javax.swing.SwingUtilities.getWindowAncestor(this);
-        GUI.form.NhaCungCap.formThongTinNCC dialog = new GUI.form.NhaCungCap.formThongTinNCC(parent, true);
+        // Lấy parent window (có thể là JFrame hoặc JDialog)
+        java.awt.Window parentWindow = javax.swing.SwingUtilities.getWindowAncestor(this);
 
-        // Gán dữ liệu vào form
+        // Tạo dialog modal, liên kết với parent đúng
+        GUI.form.NhaCungCap.formThongTinNCC dialog = new GUI.form.NhaCungCap.formThongTinNCC(
+                parentWindow instanceof java.awt.Frame ? (java.awt.Frame) parentWindow : null,
+                false, ncc);
+
         dialog.setTitle("Thông tin nhà cung cấp - " + ncc.getTenNCC());
-        dialog.setLocationRelativeTo(this);
-
-        // Điền dữ liệu vào form
-        dialog.setThongTinNCC(ncc);
+        dialog.setLocationRelativeTo(parentWindow);
 
         dialog.setVisible(true);
-    }//GEN-LAST:event_btnChiTietActionPerformed
+    }// GEN-LAST:event_btnChiTietActionPerformed
 
-    private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
+    private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnTimKiemActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnTimKiemActionPerformed
+    }// GEN-LAST:event_btnTimKiemActionPerformed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:

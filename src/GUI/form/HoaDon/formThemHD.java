@@ -614,14 +614,14 @@ public class formThemHD extends javax.swing.JPanel {
         // ==================== KIỂM TRA REGEX ====================
         if (!maHD.matches("^HD-\\d{3,10}$")) {
             JOptionPane.showMessageDialog(this,
-                    "Mã hóa đơn không hợp lệ!\nĐịnh dạng hợp lệ: HD + 3-10 chữ số (VD: HD-00123)");
+                    "Mã hóa đơn không hợp lệ!\nĐịnh dạng hợp lệ: HD- + 3-10 chữ số (VD: HD-00123)");
             txtMaHD.requestFocus();
             return;
         }
 
-        if (!sdt.matches("^(0|\\+84)\\d{9,10}$")) {
+        if (!sdt.matches("\\\\d{9,10}")) {
             JOptionPane.showMessageDialog(this,
-                    "Số điện thoại không hợp lệ!\nVD: 0901234567 hoặc +84901234567");
+                    "SĐT phải có 9–10 chữ số.");
             txtSdt.requestFocus();
             return;
         }
