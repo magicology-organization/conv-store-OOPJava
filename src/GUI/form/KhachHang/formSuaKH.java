@@ -27,13 +27,12 @@ public class formSuaKH extends javax.swing.JDialog {
     public formSuaKH(java.awt.Frame parent, boolean modal, KhachHang kh) {
         super(parent, modal);
         initComponents();
-        groupGenderButtons();
-        txtMaKH.setEditable(false);
+        groupGioiTinh();
         setThongTinKH(kh);
         txtHoTen.requestFocus();
     }
 
-    private void groupGenderButtons() {
+    private void groupGioiTinh() {
         grpGioiTinh = new ButtonGroup();
         grpGioiTinh.add(rbtnNam);
         grpGioiTinh.add(rbtnNu);
@@ -45,15 +44,13 @@ public class formSuaKH extends javax.swing.JDialog {
             txtMaKH.setText(kh.getMaKH());
             txtHoTen.setText(kh.getTenKH());
             txtSDT.setText(kh.getSdt());
-            // Chọn giới tính
-            if ("Nam".equalsIgnoreCase(kh.getGioiTinh())) {
+            String gioiTinh = kh.getGioiTinh();
+            if ("Nam".equalsIgnoreCase(gioiTinh)) {
                 rbtnNam.setSelected(true);
-            } else if ("Nữ".equalsIgnoreCase(kh.getGioiTinh())) {
-                rbtnNu.setSelected(true);
-            } else {
-                // Nếu cần, bỏ chọn cả 2 radio
-                rbtnNam.setSelected(false);
                 rbtnNu.setSelected(false);
+            } else { // Nếu không phải "Nam", mặc định chọn "Nữ"
+                rbtnNu.setSelected(true);
+                rbtnNam.setSelected(false);
             }
 
         }
@@ -66,7 +63,7 @@ public class formSuaKH extends javax.swing.JDialog {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         roundPanel = new Swing.RoundPanel();
@@ -79,7 +76,7 @@ public class formSuaKH extends javax.swing.JDialog {
         lblTen = new javax.swing.JLabel();
         txtHoTen = new javax.swing.JTextField();
         lblGioiTinh = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
+        pGioiTinh = new javax.swing.JPanel();
         rbtnNam = new javax.swing.JRadioButton();
         rbtnNu = new javax.swing.JRadioButton();
         lblSDT = new javax.swing.JLabel();
@@ -147,11 +144,6 @@ public class formSuaKH extends javax.swing.JDialog {
         pThongTin.add(lblTen);
 
         txtHoTen.setPreferredSize(new java.awt.Dimension(350, 22));
-        txtHoTen.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtHoTenActionPerformed(evt);
-            }
-        });
         pThongTin.add(txtHoTen);
 
         lblGioiTinh.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -159,21 +151,16 @@ public class formSuaKH extends javax.swing.JDialog {
         lblGioiTinh.setText("Giới tính:");
         pThongTin.add(lblGioiTinh);
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.LINE_AXIS));
+        pGioiTinh.setBackground(new java.awt.Color(255, 255, 255));
+        pGioiTinh.setLayout(new javax.swing.BoxLayout(pGioiTinh, javax.swing.BoxLayout.LINE_AXIS));
 
         rbtnNam.setText("Nam");
-        rbtnNam.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbtnNamActionPerformed(evt);
-            }
-        });
-        jPanel2.add(rbtnNam);
+        pGioiTinh.add(rbtnNam);
 
         rbtnNu.setText("Nữ");
-        jPanel2.add(rbtnNu);
+        pGioiTinh.add(rbtnNu);
 
-        pThongTin.add(jPanel2);
+        pThongTin.add(pGioiTinh);
 
         lblSDT.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblSDT.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -223,13 +210,6 @@ public class formSuaKH extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtHoTenActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtHoTenActionPerformed
-        // TODO add your handling code here:
-    }// GEN-LAST:event_txtHoTenActionPerformed
-
-    private void rbtnNamActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_rbtnNamActionPerformed
-        // TODO add your handling code here:
-    }// GEN-LAST:event_rbtnNamActionPerformed
 
     private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnHuyActionPerformed
         // TODO add your handling code here:
@@ -336,12 +316,12 @@ public class formSuaKH extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnHuy;
     private javax.swing.JButton btnSua;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblGioiTinh;
     private javax.swing.JLabel lblMaKH;
     private javax.swing.JLabel lblSDT;
     private javax.swing.JLabel lblTen;
     private javax.swing.JPanel pCenter;
+    private javax.swing.JPanel pGioiTinh;
     private javax.swing.JPanel pNorth;
     private javax.swing.JPanel pSouth;
     private javax.swing.JPanel pThongTin;

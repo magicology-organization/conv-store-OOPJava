@@ -67,7 +67,7 @@ public final class formSuaSP extends javax.swing.JDialog {
         }
     }
 
-    public void setThongTinSP(Entity.SanPham.SanPham sp) {
+    private void setThongTinSP(Entity.SanPham.SanPham sp) {
         if (sp != null) {
             txtMaSP.setText(sp.getMaSP());
             txtTenSP.setText(sp.getTenSP());
@@ -97,7 +97,7 @@ public final class formSuaSP extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         roundPanel = new Swing.RoundPanel();
@@ -182,7 +182,6 @@ public final class formSuaSP extends javax.swing.JDialog {
         lblSP.setPreferredSize(new java.awt.Dimension(300, 20));
         pThongTin.add(lblSP);
 
-        txtMaSP.setEditable(false);
         txtMaSP.setMaximumSize(new java.awt.Dimension(300, 20));
         txtMaSP.setMinimumSize(new java.awt.Dimension(300, 20));
         txtMaSP.setPreferredSize(new java.awt.Dimension(300, 20));
@@ -238,7 +237,7 @@ public final class formSuaSP extends javax.swing.JDialog {
         pThongTin.add(lblHSD);
 
         DateHSD.setBackground(new java.awt.Color(255, 255, 255));
-        DateHSD.setDateFormatString("dd, MM,yyyy");
+        DateHSD.setDateFormatString("dd/MM/yyyy");
         DateHSD.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         DateHSD.setMinimumSize(new java.awt.Dimension(140, 30));
         DateHSD.setPreferredSize(new java.awt.Dimension(140, 30));
@@ -267,7 +266,6 @@ public final class formSuaSP extends javax.swing.JDialog {
         lblDanhMuc.setPreferredSize(new java.awt.Dimension(170, 38));
         pThongTin.add(lblDanhMuc);
 
-        cboDanhMuc.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         cboDanhMuc.setPreferredSize(new java.awt.Dimension(250, 22));
         pThongTin.add(cboDanhMuc);
 
@@ -279,7 +277,6 @@ public final class formSuaSP extends javax.swing.JDialog {
         lblDonViTinh.setPreferredSize(new java.awt.Dimension(170, 38));
         pThongTin.add(lblDonViTinh);
 
-        cboDVT.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         cboDVT.setPreferredSize(new java.awt.Dimension(250, 22));
         pThongTin.add(cboDVT);
 
@@ -291,7 +288,6 @@ public final class formSuaSP extends javax.swing.JDialog {
         lblXuatXu.setPreferredSize(new java.awt.Dimension(170, 38));
         pThongTin.add(lblXuatXu);
 
-        cboXuatXu.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         cboXuatXu.setPreferredSize(new java.awt.Dimension(250, 22));
         pThongTin.add(cboXuatXu);
 
@@ -378,19 +374,19 @@ public final class formSuaSP extends javax.swing.JDialog {
         javax.swing.GroupLayout btnAnhLayout = new javax.swing.GroupLayout(btnAnh);
         btnAnh.setLayout(btnAnhLayout);
         btnAnhLayout.setHorizontalGroup(
-                btnAnhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(btnAnhLayout.createSequentialGroup()
-                                .addGap(83, 83, 83)
-                                .addComponent(btnThemAnh, javax.swing.GroupLayout.PREFERRED_SIZE, 97,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(80, Short.MAX_VALUE)));
+            btnAnhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnAnhLayout.createSequentialGroup()
+                .addGap(83, 83, 83)
+                .addComponent(btnThemAnh, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(80, Short.MAX_VALUE))
+        );
         btnAnhLayout.setVerticalGroup(
-                btnAnhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(btnAnhLayout.createSequentialGroup()
-                                .addGap(14, 14, 14)
-                                .addComponent(btnThemAnh, javax.swing.GroupLayout.PREFERRED_SIZE, 22,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+            btnAnhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnAnhLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(btnThemAnh, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         pWest.add(btnAnh, java.awt.BorderLayout.SOUTH);
 
@@ -403,36 +399,36 @@ public final class formSuaSP extends javax.swing.JDialog {
         javax.swing.GroupLayout pEastLayout = new javax.swing.GroupLayout(pEast);
         pEast.setLayout(pEastLayout);
         pEastLayout.setHorizontalGroup(
-                pEastLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 20, Short.MAX_VALUE));
+            pEastLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 20, Short.MAX_VALUE)
+        );
         pEastLayout.setVerticalGroup(
-                pEastLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 350, Short.MAX_VALUE));
+            pEastLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 350, Short.MAX_VALUE)
+        );
 
         roundPanel.add(pEast, java.awt.BorderLayout.EAST);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 700, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addComponent(roundPanel, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE))));
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 700, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(roundPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
         layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 450, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addComponent(roundPanel, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE))));
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 450, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(roundPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

@@ -26,13 +26,12 @@ public class formThongTinKH extends javax.swing.JDialog {
     public formThongTinKH(java.awt.Frame parent, boolean modal, KhachHang kh) {
         super(parent, modal);
         initComponents();
-        groupGenderButtons();
+        groupGioiTinh();
         configureTable();
-        disableTextFieldFocus();
         setThongTinKH(kh);
     }
 
-    private void groupGenderButtons() {
+    private void groupGioiTinh() {
         grpGioiTinh = new ButtonGroup();
         grpGioiTinh.add(rbtnNam);
         grpGioiTinh.add(rbtnNu);
@@ -60,29 +59,16 @@ public class formThongTinKH extends javax.swing.JDialog {
         txtMaKH.setText(kh.getMaKH());
         txtHoTen.setText(kh.getTenKH());
         txtSDT.setText(kh.getSdt());
-        // Bổ sung giới tính
-        String gioiTinh = kh.getGioiTinh(); // giả sử "Nam" hoặc "Nữ"
+        String gioiTinh = kh.getGioiTinh();
         if ("Nam".equalsIgnoreCase(gioiTinh)) {
             rbtnNam.setSelected(true);
-        } else if ("Nữ".equalsIgnoreCase(gioiTinh)) {
+            rbtnNu.setSelected(false);
+        } else { // Nếu không phải "Nam", mặc định chọn "Nữ"
             rbtnNu.setSelected(true);
-        } else {
-            grpGioiTinh.clearSelection(); // Nếu không xác định
+            rbtnNam.setSelected(false);
         }
 
         loadHoaDonTheoKH(kh.getMaKH());
-    }
-
-    private void disableTextFieldFocus() {
-        txtMaKH.setEditable(false);
-        txtMaKH.setFocusable(false);
-
-        txtHoTen.setEditable(false);
-        txtHoTen.setFocusable(false);
-
-        txtSDT.setEditable(false);
-        txtSDT.setFocusable(false);
-
     }
 
     private void loadHoaDonTheoKH(String maKH) {
@@ -135,7 +121,7 @@ public class formThongTinKH extends javax.swing.JDialog {
         lblTen = new javax.swing.JLabel();
         txtHoTen = new javax.swing.JTextField();
         lblGioiTinh = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
+        pGioiTinh = new javax.swing.JPanel();
         rbtnNam = new javax.swing.JRadioButton();
         rbtnNu = new javax.swing.JRadioButton();
         lblSDT = new javax.swing.JLabel();
@@ -196,11 +182,7 @@ public class formThongTinKH extends javax.swing.JDialog {
 
         txtMaKH.setEditable(false);
         txtMaKH.setPreferredSize(new java.awt.Dimension(350, 22));
-        txtMaKH.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtMaKHActionPerformed(evt);
-            }
-        });
+        txtMaKH.setRequestFocusEnabled(false);
         pThongTin.add(txtMaKH);
 
         lblTen.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -212,11 +194,6 @@ public class formThongTinKH extends javax.swing.JDialog {
 
         txtHoTen.setEditable(false);
         txtHoTen.setPreferredSize(new java.awt.Dimension(350, 22));
-        txtHoTen.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtHoTenActionPerformed(evt);
-            }
-        });
         pThongTin.add(txtHoTen);
 
         lblGioiTinh.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -224,21 +201,18 @@ public class formThongTinKH extends javax.swing.JDialog {
         lblGioiTinh.setText("Giới tính:");
         pThongTin.add(lblGioiTinh);
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.LINE_AXIS));
+        pGioiTinh.setBackground(new java.awt.Color(255, 255, 255));
+        pGioiTinh.setLayout(new javax.swing.BoxLayout(pGioiTinh, javax.swing.BoxLayout.LINE_AXIS));
 
         rbtnNam.setText("Nam");
-        rbtnNam.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbtnNamActionPerformed(evt);
-            }
-        });
-        jPanel2.add(rbtnNam);
+        rbtnNam.setEnabled(false);
+        pGioiTinh.add(rbtnNam);
 
         rbtnNu.setText("Nữ");
-        jPanel2.add(rbtnNu);
+        rbtnNu.setEnabled(false);
+        pGioiTinh.add(rbtnNu);
 
-        pThongTin.add(jPanel2);
+        pThongTin.add(pGioiTinh);
 
         lblSDT.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblSDT.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -338,18 +312,6 @@ public class formThongTinKH extends javax.swing.JDialog {
         dispose();
     }// GEN-LAST:event_btnHuyActionPerformed
 
-    private void txtMaKHActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtMaKHActionPerformed
-        // TODO add your handling code here:
-    }// GEN-LAST:event_txtMaKHActionPerformed
-
-    private void txtHoTenActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtHoTenActionPerformed
-        // TODO add your handling code here:
-    }// GEN-LAST:event_txtHoTenActionPerformed
-
-    private void rbtnNamActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_rbtnNamActionPerformed
-        // TODO add your handling code here:
-    }// GEN-LAST:event_rbtnNamActionPerformed
-
     private void btnChiTietActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnChiTietActionPerformed
         // TODO add your handling code here:
                 int row = table.getSelectedRow();
@@ -440,13 +402,13 @@ public class formThongTinKH extends javax.swing.JDialog {
     private javax.swing.JButton btnChiTiet;
     private javax.swing.JButton btnHuy;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblGioiTinh;
     private javax.swing.JLabel lblMaKH;
     private javax.swing.JLabel lblSDT;
     private javax.swing.JLabel lblTen;
     private javax.swing.JLabel lblThemKH;
     private javax.swing.JPanel pCenter;
+    private javax.swing.JPanel pGioiTinh;
     private javax.swing.JPanel pNorth;
     private javax.swing.JPanel pSouth;
     private javax.swing.JPanel pThongTin;

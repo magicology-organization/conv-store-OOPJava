@@ -4,20 +4,43 @@
  */
 package GUI.form.TaiKhoan;
 
+import DAO.NhanVien.NhanVienDAO;
+import Entity.NhanVien.NhanVien;
+import java.util.List;
+
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author ADMIN
  */
 public class formThemTK extends javax.swing.JDialog {
-
+    private boolean isSaved = false;
     /**
      * Creates new form formThemTK
+     * @param parent
+     * @param modal
      */
     public formThemTK(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        DAO.TaiKhoan.TaiKhoanDAO dao = new DAO.TaiKhoan.TaiKhoanDAO();
+        txtMaTK.setText(dao.taoMaTK());        
+        loadComboBoxData();
+        txtTK.requestFocus();
+        
     }
+    private void loadComboBoxData() {
+        List<NhanVien> nvDangLam = new NhanVienDAO().findAllDangLam();
+        cboNhanVien.removeAllItems();
 
+        for (NhanVien nv : nvDangLam) {
+            cboNhanVien.addItem(nv.getMaNV() + " - " + nv.getTenNV());
+        }
+    }
+    public boolean isSaved() {
+        return isSaved;
+    }    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -33,13 +56,13 @@ public class formThemTK extends javax.swing.JDialog {
         pCenter = new javax.swing.JPanel();
         pThongTin = new javax.swing.JPanel();
         lblMa = new javax.swing.JLabel();
-        txtMa = new javax.swing.JTextField();
+        txtMaTK = new javax.swing.JTextField();
         lblTK = new javax.swing.JLabel();
-        txtHoTen = new javax.swing.JTextField();
+        txtTK = new javax.swing.JTextField();
         lblMK = new javax.swing.JLabel();
-        txtPassword = new javax.swing.JTextField();
+        txtMK = new javax.swing.JTextField();
         lblNhapLaiMK = new javax.swing.JLabel();
-        txtRePassword = new javax.swing.JTextField();
+        txtNhapLaiMK = new javax.swing.JTextField();
         lblNV = new javax.swing.JLabel();
         cboNhanVien = new javax.swing.JComboBox<String>();
         pSouth = new javax.swing.JPanel();
@@ -89,9 +112,9 @@ public class formThemTK extends javax.swing.JDialog {
         lblMa.setAlignmentY(20.0F);
         pThongTin.add(lblMa);
 
-        txtMa.setEditable(false);
-        txtMa.setPreferredSize(new java.awt.Dimension(350, 22));
-        pThongTin.add(txtMa);
+        txtMaTK.setEditable(false);
+        txtMaTK.setPreferredSize(new java.awt.Dimension(350, 22));
+        pThongTin.add(txtMaTK);
 
         lblTK.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblTK.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -100,29 +123,29 @@ public class formThemTK extends javax.swing.JDialog {
         lblTK.setAlignmentY(20.0F);
         pThongTin.add(lblTK);
 
-        txtHoTen.setPreferredSize(new java.awt.Dimension(350, 22));
-        txtHoTen.addActionListener(new java.awt.event.ActionListener() {
+        txtTK.setPreferredSize(new java.awt.Dimension(350, 22));
+        txtTK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtHoTenActionPerformed(evt);
+                txtTKActionPerformed(evt);
             }
         });
-        pThongTin.add(txtHoTen);
+        pThongTin.add(txtTK);
 
         lblMK.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblMK.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblMK.setText("Mật khẩu:");
         pThongTin.add(lblMK);
 
-        txtPassword.setPreferredSize(new java.awt.Dimension(350, 22));
-        pThongTin.add(txtPassword);
+        txtMK.setPreferredSize(new java.awt.Dimension(350, 22));
+        pThongTin.add(txtMK);
 
         lblNhapLaiMK.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblNhapLaiMK.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblNhapLaiMK.setText("Nhập lại mật khẩu: ");
         pThongTin.add(lblNhapLaiMK);
 
-        txtRePassword.setPreferredSize(new java.awt.Dimension(350, 22));
-        pThongTin.add(txtRePassword);
+        txtNhapLaiMK.setPreferredSize(new java.awt.Dimension(350, 22));
+        pThongTin.add(txtNhapLaiMK);
 
         lblNV.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblNV.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -174,9 +197,9 @@ public class formThemTK extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtHoTenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHoTenActionPerformed
+    private void txtTKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTKActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtHoTenActionPerformed
+    }//GEN-LAST:event_txtTKActionPerformed
 
     private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyActionPerformed
         // TODO add your handling code here:
@@ -185,6 +208,85 @@ public class formThemTK extends javax.swing.JDialog {
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
+        try {
+            // Lấy dữ liệu từ form
+            String tenTK = txtTK.getText().trim();
+            String mkMoi = txtMK.getText().trim();
+            String nhapLaiMK = txtNhapLaiMK.getText().trim();
+            String nvSelected = (String) cboNhanVien.getSelectedItem();
+
+            // 1. Kiểm tra tên tài khoản
+            if (tenTK.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Vui lòng nhập tên tài khoản!");
+                return;
+            }
+
+            String regexTenTK = "^[a-zA-Z][a-zA-Z0-9_.]{2,49}$"; // 3–50 ký tự
+            if (!tenTK.matches(regexTenTK)) {
+                JOptionPane.showMessageDialog(this,
+                        "Tên tài khoản không hợp lệ!\n"
+                                + "• Bắt đầu bằng chữ\n"
+                                + "• Dài 3–50 ký tự\n"
+                                + "• Chỉ chứa chữ, số, dấu _ hoặc .");
+                return;
+            }
+
+            // 2. Kiểm tra mật khẩu
+            if (mkMoi.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Vui lòng nhập mật khẩu!");
+                return;
+            }
+
+            String regexMK = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&]).{6,50}$"; // 6–50 ký tự
+            if (!mkMoi.matches(regexMK)) {
+                JOptionPane.showMessageDialog(this,
+                        "Mật khẩu không hợp lệ!\n"
+                                + "• Có ít nhất 1 chữ hoa\n"
+                                + "• Có ít nhất 1 chữ thường\n"
+                                + "• Có ít nhất 1 số\n"
+                                + "• Có ít nhất 1 ký tự đặc biệt (@$!%*?&)\n"
+                                + "• Độ dài từ 6 đến 50 ký tự");
+                return;
+            }
+
+            // 3. Kiểm tra nhập lại mật khẩu
+            if (!mkMoi.equals(nhapLaiMK)) {
+                JOptionPane.showMessageDialog(this, "Mật khẩu nhập lại không khớp!");
+                return;
+            }
+
+            // 4. Lấy đối tượng NhanVien từ combo box
+            Entity.NhanVien.NhanVien nv = null;
+            if (nvSelected != null && !nvSelected.isEmpty()) {
+                String maNV = nvSelected.split(" - ")[0].trim();
+                nv = new DAO.NhanVien.NhanVienDAO().findById(maNV).orElse(null);
+            }
+
+            if (nv == null) {
+                JOptionPane.showMessageDialog(this, "Vui lòng chọn nhân viên!");
+                return;
+            }
+
+            // 5. Tạo đối tượng TaiKhoan mới
+            Entity.TaiKhoan.TaiKhoan tk = new Entity.TaiKhoan.TaiKhoan();
+            DAO.TaiKhoan.TaiKhoanDAO tkDAO = new DAO.TaiKhoan.TaiKhoanDAO();
+            tk.setMaTK(tkDAO.taoMaTK()); // Tạo mã TK tự động
+            tk.setTenTK(tenTK);
+            tk.setMatKhauTK(mkMoi);
+            tk.setNhanVien(nv);
+
+            // 6. Thêm vào database
+            if (tkDAO.insert(tk)) {
+                JOptionPane.showMessageDialog(this, "Thêm tài khoản thành công!\nMã TK: " + tk.getMaTK());
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Có lỗi xảy ra khi thêm tài khoản!");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!");
+        }
     }//GEN-LAST:event_btnThemActionPerformed
 
     /**
@@ -244,9 +346,9 @@ public class formThemTK extends javax.swing.JDialog {
     private javax.swing.JPanel pThongTin;
     private Swing.RoundPanel roundPanel;
     private javax.swing.JLabel title;
-    private javax.swing.JTextField txtHoTen;
-    private javax.swing.JTextField txtMa;
-    private javax.swing.JTextField txtPassword;
-    private javax.swing.JTextField txtRePassword;
+    private javax.swing.JTextField txtMK;
+    private javax.swing.JTextField txtMaTK;
+    private javax.swing.JTextField txtNhapLaiMK;
+    private javax.swing.JTextField txtTK;
     // End of variables declaration//GEN-END:variables
 }

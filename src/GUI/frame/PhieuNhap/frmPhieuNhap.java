@@ -5,26 +5,33 @@
 package GUI.frame.PhieuNhap;
 
 import DAO.PhieuNhap.PhieuNhapDAO;
+import Entity.TaiKhoan.TaiKhoan;
 import GUI.Main;
 import GUI.form.PhieuNhap.formThemPN;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author ADMIN
  */
 public class frmPhieuNhap extends javax.swing.JPanel {
+    private final TaiKhoan taiKhoan;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     private final DecimalFormat currencyFormat = new DecimalFormat("#,### VND");
     /**
      * Creates new form frmPhieuNhap
+     * @param taiKhoan
      */
-    public frmPhieuNhap() {
+    public frmPhieuNhap(TaiKhoan taiKhoan) {
+        this.taiKhoan = taiKhoan;
         initComponents();
         configureTable();
         loadDataTable();
@@ -224,7 +231,7 @@ public class frmPhieuNhap extends javax.swing.JPanel {
         // TODO add your handling code here:
         try {
         // Tạo đối tượng frmPhieuNhapThem
-        formThemPN formThem = new formThemPN();
+        formThemPN formThem = new formThemPN(taiKhoan);
         // Lấy đối tượng Main (parent frame)
         Main parentFrame = (Main) SwingUtilities.getWindowAncestor(this);
         
@@ -277,6 +284,53 @@ public class frmPhieuNhap extends javax.swing.JPanel {
 
     private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
         // TODO add your handling code here:
+        String keyword = txtTimKiem.getText().trim();
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+
+        PhieuNhapDAO dao = new PhieuNhapDAO();
+        List<Object[]> list;
+
+        // Nếu không nhập gì → load tất cả phiếu nhập
+        if (keyword.isEmpty()) {
+            list = dao.findAllWithDetails();
+        } else {
+            // Lọc theo mã phiếu nhập
+            list = dao.findAllWithDetails()
+                    .stream()
+                    .filter(r -> r[0] != null && r[0].toString().toLowerCase().contains(keyword.toLowerCase()))
+                    .toList();
+        }
+
+        int stt = 1;
+        for (Object[] row : list) {
+
+            // ---- Lấy đúng cột ngày nhập ở index 4 ----
+            String ngayNhap = "";
+            if (row[4] != null) {
+                LocalDateTime ldt = (LocalDateTime) row[4];
+                ngayNhap = dateFormat.format(java.sql.Timestamp.valueOf(ldt));
+            }
+
+            // ---- Lấy đúng cột tổng hóa đơn ở index 5 ----
+            String tongTienStr = currencyFormat.format(row[5]);
+
+            // ---- Thêm vào bảng (KHÔNG đổi thứ tự cột) ----
+            model.addRow(new Object[] {
+                stt++,     // STT
+                row[0],    // Mã phiếu nhập
+                row[1],    // Tên nhà cung cấp
+                row[2],    // SĐT
+                row[3],    // Tên nhân viên
+                ngayNhap,  // Ngày nhập
+                tongTienStr // Tổng hóa đơn
+            });
+        }
+
+        if (list.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Không tìm thấy phiếu nhập có mã: " + keyword);
+        }
     }//GEN-LAST:event_btnTimKiemActionPerformed
 
 

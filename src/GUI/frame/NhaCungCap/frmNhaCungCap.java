@@ -8,6 +8,7 @@ import DAO.PhieuNhap.NhaCungCapDAO;
 import Entity.PhieuNhap.NhaCungCap;
 import java.util.List;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -278,6 +279,40 @@ public class frmNhaCungCap extends javax.swing.JPanel {
 
     private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnTimKiemActionPerformed
         // TODO add your handling code here:
+        String keyword = txtTimKiem.getText().trim().toLowerCase();
+
+        // Lấy model của table
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0); // Xóa dữ liệu cũ
+
+        // Lấy danh sách nhà cung cấp
+        NhaCungCapDAO dao = new NhaCungCapDAO();
+        List<NhaCungCap> list = dao.findAll();
+
+        // Nếu có từ khóa, lọc theo mã hoặc tên NCC
+        if (!keyword.isEmpty()) {
+            list = list.stream()
+                    .filter(ncc -> (ncc.getMaNCC() != null && ncc.getMaNCC().toLowerCase().contains(keyword))
+                            || (ncc.getTenNCC() != null && ncc.getTenNCC().toLowerCase().contains(keyword)))
+                    .toList();
+        }
+
+        // Thêm dữ liệu vào table
+        int stt = 1;
+        for (NhaCungCap ncc : list) {
+            model.addRow(new Object[] {
+                    stt++,
+                    ncc.getMaNCC(),
+                    ncc.getTenNCC(),
+                    ncc.getSdt(),
+                    ncc.getDiaChiNCC()
+            });
+        }
+
+        // Nếu không tìm thấy
+        if (list.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Không tìm thấy nhà cung cấp phù hợp với: " + keyword);
+        }
     }// GEN-LAST:event_btnTimKiemActionPerformed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnThemActionPerformed

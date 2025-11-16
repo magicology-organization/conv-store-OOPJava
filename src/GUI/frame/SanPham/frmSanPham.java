@@ -4,8 +4,9 @@
  */
 package GUI.frame.SanPham;
 
-import DAO.HoaDon.HoaDonDAO;
 import DAO.SanPham.SanPhamDAO;
+import Entity.SanPham.SanPham;
+
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -20,7 +21,7 @@ import javax.swing.table.DefaultTableModel;
  * @author ADMIN
  */
 public class frmSanPham extends javax.swing.JPanel {
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     private final DecimalFormat currencyFormat = new DecimalFormat("#,### VND");
 
     /**
@@ -30,6 +31,7 @@ public class frmSanPham extends javax.swing.JPanel {
         initComponents();
         configureTable();
         loadDataTable();
+        javax.swing.SwingUtilities.invokeLater(this::thongBaoHangHetHan);
     }
 
     private void configureTable() {
@@ -49,6 +51,27 @@ public class frmSanPham extends javax.swing.JPanel {
         table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
     }
 
+    private void thongBaoHangHetHan() {
+        // Lấy danh sách sản phẩm đã hết hạn
+        SanPhamDAO sanPhamDAO = new SanPhamDAO();
+        List<SanPham> dsHetHan = sanPhamDAO.kiemTraSanPhamHetHan(LocalDateTime.now());
+
+        if (dsHetHan.isEmpty()) {
+            return;
+        }
+        StringBuilder sb = new StringBuilder("Các sản phẩm đã hết hạn:\n");
+        for (SanPham sp : dsHetHan) {
+            sb.append("- ").append(sp.getTenSP())
+                    .append(" (HSD: ").append(sp.getHsd()).append(")\n");
+        }
+
+        // Hiển thị JOptionPane
+        JOptionPane.showMessageDialog(null,
+                sb.toString(),
+                "Cảnh báo Hết Hạn",
+                JOptionPane.WARNING_MESSAGE);
+    }
+
     private void loadDataTable() {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
@@ -59,18 +82,22 @@ public class frmSanPham extends javax.swing.JPanel {
         for (Object[] row : list) {
             String giaNhap = currencyFormat.format(row[6]); // giá nhập
             String giaBan = currencyFormat.format(row[7]); // đơn giá
+            java.sql.Timestamp ts = (java.sql.Timestamp) row[9];
+            String hsd = dateFormat.format(ts);
 
             model.addRow(new Object[] {
-                    stt++, // STT
-                    row[0], // Mã sản phẩm
-                    row[1], // Tên sản phẩm
-                    row[2], // Mô tả
-                    row[3], // Danh mục
-                    row[4], // Xuất xứ
-                    row[5], // Đơn vị tính
-                    giaNhap, // Giá nhập đã format
-                    giaBan, // Giá bán đã format
-                    row[8] // Tồn kho
+                stt++,         // STT
+                row[0],        // Mã sản phẩm
+                row[1],        // Tên sản phẩm
+                row[2],        // Mô tả
+                hsd,           // Hạn sử dụng                  
+                row[3],        // Danh mục
+                row[4],        // Xuất xứ
+                row[5],        // Đơn vị tính
+                giaNhap,       // Giá nhập
+                giaBan,        // Giá bán
+                row[8],        // Tồn kho
+          // Hạn sử dụng
             });
         }
     }
@@ -83,7 +110,8 @@ public class frmSanPham extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         Panel = new javax.swing.JPanel();
@@ -159,23 +187,21 @@ public class frmSanPham extends javax.swing.JPanel {
         scrollTableCenter.setPreferredSize(new java.awt.Dimension(1200, 500));
 
         table.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][] {
+            new Object [][] {
 
-                },
-                new String[] {
-                        "STT", "Mã sản phẩm", "Tên sản phẩm", "Mô tả", "Danh mục", "Xuất xứ", "ĐVT", "Giá nhập",
-                        "Đơn giá", "Tồn kho"
-                }) {
-            boolean[] canEdit = new boolean[] {
-                    false, false, false, false, false, false, false, false, false, false
+            },
+            new String [] {
+                "STT", "Mã sản phẩm", "Tên sản phẩm", "Mô tả", "Hạn sử dụng", "Danh mục", "Xuất xứ", "ĐVT", "Giá nhập", "Đơn giá", "Tồn kho"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
+                return canEdit [columnIndex];
             }
         });
-        table.setMinimumSize(null);
-        table.setPreferredSize(null);
         table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         table.setShowHorizontalLines(true);
         scrollTableCenter.setViewportView(table);
@@ -259,7 +285,7 @@ public class frmSanPham extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
 
-        SanPhamDAO dao = new SanPhamDAO(); // ✅ dùng DAO sản phẩm
+        SanPhamDAO dao = new SanPhamDAO();
         List<Object[]> list = dao.findAllWithDetails();
 
         // Nếu có từ khóa thì lọc theo mã hoặc tên sản phẩm
@@ -323,8 +349,7 @@ public class frmSanPham extends javax.swing.JPanel {
         GUI.form.SanPham.formThongTinSP dialog = new GUI.form.SanPham.formThongTinSP(parent, true, sp);
 
         dialog.setLocationRelativeTo(this);
-        // Điền dữ liệu vào form
-        dialog.setThongTinSP(sp);
+
         dialog.setVisible(true);
     }// GEN-LAST:event_btnChiTietActionPerformed
 
@@ -383,7 +408,7 @@ public class frmSanPham extends javax.swing.JPanel {
         int row = table.getSelectedRow();
         if (row < 0) {
             javax.swing.JOptionPane.showMessageDialog(this,
-                    "Vui lòng chọn một sản phẩm để xem chi tiết!",
+                    "Vui lòng chọn một sản phẩm để sửa!",
                     "Thông báo", javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -407,8 +432,7 @@ public class frmSanPham extends javax.swing.JPanel {
         GUI.form.SanPham.formSuaSP dialog = new GUI.form.SanPham.formSuaSP(parent, true, sp);
 
         dialog.setLocationRelativeTo(this);
-        // Điền dữ liệu vào form
-        dialog.setThongTinSP(sp);
+
         dialog.setVisible(true);
         loadDataTable();
     }// GEN-LAST:event_btnSuaActionPerformed

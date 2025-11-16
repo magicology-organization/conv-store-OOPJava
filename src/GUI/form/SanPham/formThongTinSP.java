@@ -36,36 +36,7 @@ public final class formThongTinSP extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         loadComboBoxData();
-        disableTextFieldFocus();
         setThongTinSP(sp);
-    }
-
-    private void disableTextFieldFocus() {
-        txtMaSP.setEditable(false);
-        txtMaSP.setFocusable(false);
-
-        txtTenSP.setEditable(false);
-        txtTenSP.setFocusable(false);
-
-        txtGiaNhap.setEditable(false);
-        txtGiaNhap.setFocusable(false);
-
-        txtGiaBan.setEditable(false);
-        txtGiaBan.setFocusable(false);
-
-        txtSoLuong.setEditable(false);
-        txtSoLuong.setFocusable(false);
-
-        txtMoTa.setEditable(false);
-        txtMoTa.setFocusable(false);
-
-        // Nếu muốn tắt JComboBox focus:
-        cboDanhMuc.setEnabled(false);
-        cboDVT.setEnabled(false);
-        cboXuatXu.setEnabled(false);
-
-        // Nếu muốn tắt JDateChooser focus:
-        DateHSD.setEnabled(false);
     }
 
     private void loadComboBoxData() {
@@ -85,7 +56,7 @@ public final class formThongTinSP extends javax.swing.JDialog {
         }
     }
 
-    public void setThongTinSP(Entity.SanPham.SanPham sp) {
+    private void setThongTinSP(Entity.SanPham.SanPham sp) {
         if (sp != null) {
             txtMaSP.setText(sp.getMaSP());
             txtTenSP.setText(sp.getTenSP());
@@ -226,11 +197,6 @@ public final class formThongTinSP extends javax.swing.JDialog {
         txtGiaNhap.setEditable(false);
         txtGiaNhap.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         txtGiaNhap.setPreferredSize(new java.awt.Dimension(250, 30));
-        txtGiaNhap.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtGiaNhapActionPerformed(evt);
-            }
-        });
         pThongTin.add(txtGiaNhap);
 
         lblGiaBan.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -255,7 +221,8 @@ public final class formThongTinSP extends javax.swing.JDialog {
         lblHSD.setPreferredSize(new java.awt.Dimension(170, 38));
         pThongTin.add(lblHSD);
 
-        DateHSD.setDateFormatString("d, MMM,y\n");
+        DateHSD.setDateFormatString("dd/MM/yyyy");
+        DateHSD.setEnabled(false);
         DateHSD.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         DateHSD.setMinimumSize(new java.awt.Dimension(140, 30));
         DateHSD.setPreferredSize(new java.awt.Dimension(140, 30));
@@ -285,7 +252,7 @@ public final class formThongTinSP extends javax.swing.JDialog {
         pThongTin.add(lblDanhMuc);
 
         cboDanhMuc.setBackground(new java.awt.Color(242, 242, 242));
-        cboDanhMuc.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        cboDanhMuc.setEnabled(false);
         cboDanhMuc.setPreferredSize(new java.awt.Dimension(250, 22));
         pThongTin.add(cboDanhMuc);
 
@@ -298,7 +265,7 @@ public final class formThongTinSP extends javax.swing.JDialog {
         pThongTin.add(lblDonViTinh);
 
         cboDVT.setBackground(new java.awt.Color(242, 242, 242));
-        cboDVT.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        cboDVT.setEnabled(false);
         cboDVT.setPreferredSize(new java.awt.Dimension(250, 22));
         pThongTin.add(cboDVT);
 
@@ -311,7 +278,7 @@ public final class formThongTinSP extends javax.swing.JDialog {
         pThongTin.add(lblXuatXu);
 
         cboXuatXu.setBackground(new java.awt.Color(242, 242, 242));
-        cboXuatXu.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        cboXuatXu.setEnabled(false);
         cboXuatXu.setPreferredSize(new java.awt.Dimension(250, 22));
         pThongTin.add(cboXuatXu);
 
@@ -407,22 +374,6 @@ public final class formThongTinSP extends javax.swing.JDialog {
         // TODO add your handling code here:
         dispose();
     }// GEN-LAST:event_btnHuyActionPerformed
-
-    private void txtGiaNhapActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtGiaNhapActionPerformed
-        // TODO add your handling code here:
-    }// GEN-LAST:event_txtGiaNhapActionPerformed
-
-    private void comboDanhMucActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_comboDanhMucActionPerformed
-        // TODO add your handling code here:
-    }// GEN-LAST:event_comboDanhMucActionPerformed
-
-    private void comboDVTActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_comboDVTActionPerformed
-        // TODO add your handling code here:
-    }// GEN-LAST:event_comboDVTActionPerformed
-
-    private void comboXuatXuActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_comboXuatXuActionPerformed
-        // TODO add your handling code here:
-    }// GEN-LAST:event_comboXuatXuActionPerformed
 
     /**
      * @param args the command line arguments

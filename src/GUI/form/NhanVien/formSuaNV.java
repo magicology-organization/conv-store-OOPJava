@@ -4,19 +4,108 @@
  */
 package GUI.form.NhanVien;
 
+import DAO.NhanVien.NhanVienDAO;
+import Entity.NhanVien.NhanVien;
+import java.time.ZoneId;
+import java.util.Date;
+import javax.swing.ButtonGroup;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author ADMIN
  */
 public class formSuaNV extends javax.swing.JDialog {
-
+    private ButtonGroup grpGioiTinh;
+    private ButtonGroup grpChucVu;
+    private ButtonGroup grpTrangThai;
     /**
      * Creates new form formSuaNV
+     * @param parent
+     * @param modal
+     * @param nv
      */
-    public formSuaNV(java.awt.Frame parent, boolean modal) {
+    public formSuaNV(java.awt.Frame parent, boolean modal, NhanVien nv) {
         super(parent, modal);
         initComponents();
+        groupGioiTinh();
+        groupChucVu();
+        groupTrangThai();
+        dateNgaySinh.setDateFormatString("dd/MM/yyyy");
+        dateNgayLam.setDateFormatString("dd/MM/yyyy");
+        setThongTinNV(nv);
+        txtTen.requestFocus();
+        txtMa.setFocusable(false);
     }
+
+    private void groupGioiTinh() {
+        grpGioiTinh = new ButtonGroup();
+        grpGioiTinh.add(rbtnNam);
+        grpGioiTinh.add(rbtnNu);
+    }
+
+    private void groupChucVu() {
+        grpChucVu = new ButtonGroup();
+        grpChucVu.add(rbtnQuanLy);
+        grpChucVu.add(rbtnNhanVien);
+    }
+
+    private void groupTrangThai() {
+        grpTrangThai = new ButtonGroup();
+        grpTrangThai.add(rbtnDangLam);
+        grpTrangThai.add(rbtnNghiViec);
+    }
+
+    private void setThongTinNV(NhanVien nv) {
+        if (nv == null)
+            return;
+
+        // Thông tin cơ bản
+        txtMa.setText(nv.getMaNV());
+        txtTen.setText(nv.getTenNV());
+        txtSDT.setText(nv.getSdt());
+        txtCCCD.setText(nv.getCccd());
+
+        // Ngày sinh và ngày vào làm
+        dateNgaySinh.setDate(nv.getNgaySinh() != null
+                ? Date.from(nv.getNgaySinh().atZone(ZoneId.systemDefault()).toInstant())
+                : null);
+
+        dateNgayLam.setDate(nv.getNgayVaoLam() != null
+                ? Date.from(nv.getNgayVaoLam().atZone(ZoneId.systemDefault()).toInstant())
+                : null);
+
+        // Giới tính (chỉ Nam hoặc Nữ)
+        String gioiTinh = nv.getGioiTinh();
+        if ("Nam".equalsIgnoreCase(gioiTinh)) {
+            rbtnNam.setSelected(true);
+            rbtnNu.setSelected(false);
+        } else { // mặc định là Nữ nếu không phải Nam
+            rbtnNu.setSelected(true);
+            rbtnNam.setSelected(false);
+        }
+
+        // Chức vụ
+        String chucVu = nv.getChucVu();
+        if ("Quản lý".equalsIgnoreCase(chucVu)) {
+            rbtnQuanLy.setSelected(true);
+            rbtnNhanVien.setSelected(false);
+        } else { // mặc định là Nhân viên
+            rbtnNhanVien.setSelected(true);
+            rbtnQuanLy.setSelected(false);
+        }
+
+        // Trạng thái
+        String trangThai = nv.getTrangThai();
+        if ("Đang làm".equalsIgnoreCase(trangThai)) {
+            rbtnDangLam.setSelected(true);
+            rbtnNghiViec.setSelected(false);
+        } else { // mặc định là Nghỉ việc
+            rbtnNghiViec.setSelected(true);
+            rbtnDangLam.setSelected(false);
+        }
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -52,6 +141,10 @@ public class formSuaNV extends javax.swing.JDialog {
         pChucVu = new javax.swing.JPanel();
         rbtnQuanLy = new javax.swing.JRadioButton();
         rbtnNhanVien = new javax.swing.JRadioButton();
+        lblTrangThai = new javax.swing.JLabel();
+        pTrangThai = new javax.swing.JPanel();
+        rbtnDangLam = new javax.swing.JRadioButton();
+        rbtnNghiViec = new javax.swing.JRadioButton();
         pSouth = new javax.swing.JPanel();
         btnHuy = new javax.swing.JButton();
         btnSua = new javax.swing.JButton();
@@ -102,6 +195,7 @@ public class formSuaNV extends javax.swing.JDialog {
         pThongTin.add(lblMa);
 
         txtMa.setEditable(false);
+        txtMa.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtMa.setPreferredSize(new java.awt.Dimension(350, 22));
         pThongTin.add(txtMa);
 
@@ -124,11 +218,6 @@ public class formSuaNV extends javax.swing.JDialog {
         pGioiTinh.setLayout(new javax.swing.BoxLayout(pGioiTinh, javax.swing.BoxLayout.LINE_AXIS));
 
         rbtnNam.setText("Nam");
-        rbtnNam.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbtnNamActionPerformed(evt);
-            }
-        });
         pGioiTinh.add(rbtnNam);
 
         rbtnNu.setText("Nữ");
@@ -142,6 +231,7 @@ public class formSuaNV extends javax.swing.JDialog {
         pThongTin.add(lblNgaySinh);
 
         dateNgaySinh.setBackground(new java.awt.Color(255, 255, 255));
+        dateNgaySinh.setDateFormatString("dd/MM/yyyy");
         pThongTin.add(dateNgaySinh);
 
         lblNgayLam.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -150,6 +240,7 @@ public class formSuaNV extends javax.swing.JDialog {
         pThongTin.add(lblNgayLam);
 
         dateNgayLam.setBackground(new java.awt.Color(255, 255, 255));
+        dateNgayLam.setDateFormatString("dd/MM/yyyy");
         pThongTin.add(dateNgayLam);
 
         lblSDT.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -158,11 +249,6 @@ public class formSuaNV extends javax.swing.JDialog {
         pThongTin.add(lblSDT);
 
         txtSDT.setPreferredSize(new java.awt.Dimension(185, 22));
-        txtSDT.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtSDTActionPerformed(evt);
-            }
-        });
         pThongTin.add(txtSDT);
 
         lblCC.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -184,10 +270,26 @@ public class formSuaNV extends javax.swing.JDialog {
         rbtnQuanLy.setText("Quản lý");
         pChucVu.add(rbtnQuanLy);
 
-        rbtnNhanVien.setText("Nhân viên");
+        rbtnNhanVien.setText("Nhân Viên");
         pChucVu.add(rbtnNhanVien);
 
         pThongTin.add(pChucVu);
+
+        lblTrangThai.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblTrangThai.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblTrangThai.setText("Trạng thái:");
+        pThongTin.add(lblTrangThai);
+
+        pTrangThai.setBackground(new java.awt.Color(255, 255, 255));
+        pTrangThai.setLayout(new javax.swing.BoxLayout(pTrangThai, javax.swing.BoxLayout.LINE_AXIS));
+
+        rbtnDangLam.setText("Đang làm");
+        pTrangThai.add(rbtnDangLam);
+
+        rbtnNghiViec.setText("Nghỉ việc");
+        pTrangThai.add(rbtnNghiViec);
+
+        pThongTin.add(pTrangThai);
 
         pCenter.add(pThongTin, java.awt.BorderLayout.CENTER);
 
@@ -257,56 +359,122 @@ public class formSuaNV extends javax.swing.JDialog {
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
+        try {
+            // Kiểm tra các trường bắt buộc
+            if (txtTen.getText().trim().isEmpty() ||
+                txtSDT.getText().trim().isEmpty() ||
+                txtCCCD.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin nhân viên.");
+                return;
+            }
+
+            // Lấy thông tin từ form
+            String maNV = txtMa.getText().trim();
+            String tenNV = txtTen.getText().trim();
+            if (tenNV.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Tên nhân viên không được để trống!");
+                return;
+            }
+            String sdt = txtSDT.getText().trim();
+            String cccd = txtCCCD.getText().trim();
+
+            // Giới tính, Chức vụ, Trạng thái
+            String gioiTinh = rbtnNam.isSelected() ? "Nam" : "Nữ";
+            String chucVu = rbtnQuanLy.isSelected() ? "Quản lý" : "Nhân viên";
+            String trangThai = rbtnDangLam.isSelected() ? "Đang làm" : "Nghỉ việc";
+
+            // Ngày sinh và ngày vào làm
+            java.util.Date ngaySinhDate = dateNgaySinh.getDate();
+            java.util.Date ngayVaoLamDate = dateNgayLam.getDate();
+
+            if (ngaySinhDate == null || ngayVaoLamDate == null) {
+                JOptionPane.showMessageDialog(this, "Vui lòng chọn ngày sinh và ngày vào làm.");
+                return;
+            }
+
+            java.time.LocalDateTime ngaySinh = ngaySinhDate.toInstant()
+                    .atZone(ZoneId.systemDefault()).toLocalDateTime();
+            java.time.LocalDateTime ngayVaoLam = ngayVaoLamDate.toInstant()
+                    .atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+            // Kiểm tra định dạng số điện thoại và CCCD
+            if (!sdt.matches("\\d{9,10}")) {
+                JOptionPane.showMessageDialog(this, "Số điện thoại phải là số, từ 9 đến 10 chữ số.");
+                return;
+            }
+            if (!cccd.matches("\\d{9,12}")) {
+                JOptionPane.showMessageDialog(this, "Căn cước phải là số, từ 9 đến 12 chữ số.");
+                return;
+            }
+
+            // Tạo đối tượng NhanVien
+            NhanVien nv = new NhanVien(
+                    maNV,
+                    tenNV,
+                    sdt,
+                    gioiTinh,
+                    ngaySinh,
+                    ngayVaoLam,
+                    chucVu,
+                    cccd,
+                    trangThai
+            );
+
+            // Cập nhật dữ liệu
+            NhanVienDAO dao = new NhanVienDAO();
+            if (dao.update(nv)) {
+                JOptionPane.showMessageDialog(this, "Cập nhật nhân viên thành công!");
+                dispose(); // Đóng form
+            } else {
+                JOptionPane.showMessageDialog(this, "Có lỗi xảy ra khi cập nhật nhân viên.");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Có lỗi xảy ra. Vui lòng kiểm tra lại dữ liệu.");
+        }
     }//GEN-LAST:event_btnSuaActionPerformed
-
-    private void rbtnNamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnNamActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbtnNamActionPerformed
-
-    private void txtSDTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSDTActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSDTActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(formSuaNV.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(formSuaNV.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(formSuaNV.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(formSuaNV.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                formSuaNV dialog = new formSuaNV(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(formSuaNV.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(formSuaNV.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(formSuaNV.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(formSuaNV.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the dialog */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                formSuaNV dialog = new formSuaNV(new javax.swing.JFrame(), true);
+//                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+//                    @Override
+//                    public void windowClosing(java.awt.event.WindowEvent e) {
+//                        System.exit(0);
+//                    }
+//                });
+//                dialog.setVisible(true);
+//            }
+//        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -322,6 +490,7 @@ public class formSuaNV extends javax.swing.JDialog {
     private javax.swing.JLabel lblNgaySinh;
     private javax.swing.JLabel lblSDT;
     private javax.swing.JLabel lblTen;
+    private javax.swing.JLabel lblTrangThai;
     private javax.swing.JPanel pCenter;
     private javax.swing.JPanel pChucVu;
     private javax.swing.JPanel pEast;
@@ -329,7 +498,10 @@ public class formSuaNV extends javax.swing.JDialog {
     private javax.swing.JPanel pNorth;
     private javax.swing.JPanel pSouth;
     private javax.swing.JPanel pThongTin;
+    private javax.swing.JPanel pTrangThai;
+    private javax.swing.JRadioButton rbtnDangLam;
     private javax.swing.JRadioButton rbtnNam;
+    private javax.swing.JRadioButton rbtnNghiViec;
     private javax.swing.JRadioButton rbtnNhanVien;
     private javax.swing.JRadioButton rbtnNu;
     private javax.swing.JRadioButton rbtnQuanLy;

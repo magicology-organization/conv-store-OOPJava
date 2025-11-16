@@ -8,20 +8,21 @@ package Entity.TaiKhoan;
  *
  * @author ADMIN
  */
+import Entity.NhanVien.NhanVien;
 import java.util.Objects;
 
 public class TaiKhoan {
     private String maTK;       // PK nvarchar(10)
     private String tenTK;      // nvarchar(100) NOT NULL
     private String matKhauTK;  // nvarchar(100) NOT NULL
-    private String maNV;       // nvarchar(10) NULL (FK -> NhanVien.maNV)
+    private NhanVien nhanVien;       // nvarchar(10) NULL (FK -> NhanVien.maNV)
 
     public TaiKhoan() {}
-    public TaiKhoan(String maTK, String tenTK, String matKhauTK, String maNV) {
+    public TaiKhoan(String maTK, String tenTK, String matKhauTK, NhanVien nhanVien) {
         this.maTK = maTK;
         this.tenTK = tenTK;
         this.matKhauTK = matKhauTK;
-        this.maNV = maNV;
+        this.nhanVien = nhanVien;
     }
 
     public String getMaTK() {
@@ -36,8 +37,8 @@ public class TaiKhoan {
         return matKhauTK;
     }
 
-    public String getMaNV() {
-        return maNV;
+    public NhanVien getNhanVien() {
+        return nhanVien;
     }
 
     public void setMaTK(String maTK) {
@@ -52,8 +53,8 @@ public class TaiKhoan {
         this.matKhauTK = matKhauTK;
     }
 
-    public void setMaNV(String maNV) {
-        this.maNV = maNV;
+    public void setNhanVien(NhanVien nhanVien) {
+        this.nhanVien = nhanVien;
     }
 
 

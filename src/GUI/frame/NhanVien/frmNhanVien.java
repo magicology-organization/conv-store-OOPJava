@@ -5,8 +5,12 @@
 package GUI.frame.NhanVien;
 
 import DAO.NhanVien.NhanVienDAO;
+import GUI.form.NhanVien.formThemNV;
 import java.util.List;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -146,7 +150,7 @@ public class frmNhanVien extends javax.swing.JPanel {
 
             },
             new String [] {
-                "STT", "Mã nhân viên", "Tên nhân viên", "Chức vụ", "SĐT", "Giới tính", "Trang thái"
+                "STT", "Mã nhân viên", "Tên nhân viên", "Chức vụ", "SĐT", "Giới tính", "Trạng thái"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -239,18 +243,124 @@ public class frmNhanVien extends javax.swing.JPanel {
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
+        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        formThemNV dialog = new formThemNV(parentFrame, true); // Mở formThemNV
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+
+        // Sau khi đóng formThemNV, gọi lại phương thức để làm mới bảng
+        loadDataTable();
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
         // TODO add your handling code here:
+        int selectedRow = table.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn tài khoản để xoá!");
+            return;
+        }
+
+        String maNV = table.getValueAt(selectedRow, 1).toString();
+
+        int confirm = JOptionPane.showConfirmDialog(
+                this,
+                "Bạn có chắc muốn xoá tài khoản: " + maNV + " ?",
+                "Xác nhận xoá",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE);
+
+        if (confirm != JOptionPane.YES_OPTION)
+            return;
+
+        try {
+            NhanVienDAO nvDAO = new NhanVienDAO();
+            boolean success = nvDAO.delete(maNV);
+
+            if (success) {
+                JOptionPane.showMessageDialog(this, "Đã xoá nhân viên thành công!");
+                loadDataTable();
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "Không thể xoá! Nhân viên không tồn tại hoặc đang được tham chiếu.");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Có lỗi khi xoá: " + ex.getMessage());
+        }
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
+        int row = table.getSelectedRow();
+        if (row < 0) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Vui lòng chọn một nhân viên để sửa!",
+                    "Thông báo", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String maNV = table.getValueAt(row, 1).toString();
+
+        DAO.NhanVien.NhanVienDAO dao = new DAO.NhanVien.NhanVienDAO();
+        Entity.NhanVien.NhanVien nv = dao.findById(maNV).orElse(null);
+
+        if (nv == null) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Không tìm thấy thông tin nhân viên!",
+                    "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Mở form chi tiết
+        javax.swing.JFrame parent = (javax.swing.JFrame) javax.swing.SwingUtilities.getWindowAncestor(this);
+        GUI.form.NhanVien.formSuaNV dialog = new GUI.form.NhanVien.formSuaNV(parent, true, nv);
+
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+        loadDataTable();
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
         // TODO add your handling code here:
+        String keyword = txtTimKiem.getText().trim().toLowerCase();
+
+        // Lấy model của bảng
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0); // Xóa dữ liệu cũ
+
+        NhanVienDAO dao = new NhanVienDAO();
+        List<Object[]> list = dao.findAllWithDetails(); // Lấy danh sách nhân viên (Object[])
+
+        // Lọc danh sách theo từ khóa
+        if (!keyword.isEmpty()) {
+            list = list.stream()
+                    .filter(r ->
+                            (r[0] != null && r[0].toString().toLowerCase().contains(keyword)) || // maNV
+                            (r[1] != null && r[1].toString().toLowerCase().contains(keyword))    // tenNV
+                    )
+                    .toList();
+        }
+
+        // Đổ dữ liệu vào table
+        int stt = 1;
+        for (Object[] r : list) {
+            model.addRow(new Object[]{
+                    stt++,      // STT
+                    r[0],       // Mã nhân viên
+                    r[1],       // Tên nhân viên
+                    r[2],       // Chức vụ
+                    r[3],       // SĐT
+                    r[4],       // Giới tính
+                    r[5]        // Trạng thái
+            });
+        }
+
+        // Thông báo nếu không tìm thấy
+        if (list.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Không tìm thấy nhân viên phù hợp với: " + keyword);
+        }
+
     }//GEN-LAST:event_btnTimKiemActionPerformed
 
     private void btnChiTietActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChiTietActionPerformed
@@ -258,37 +368,35 @@ public class frmNhanVien extends javax.swing.JPanel {
         int row = table.getSelectedRow();
         if (row < 0) {
             javax.swing.JOptionPane.showMessageDialog(this,
-                "Vui lòng chọn một nhà cung cấp để xem chi tiết!",
-                "Thông báo", javax.swing.JOptionPane.WARNING_MESSAGE);
+                    "Vui lòng chọn một nhân viên để xem chi tiết!",
+                    "Thông báo", javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         // Lấy mã nhà cung cấp từ bảng
-        String maNCC = table.getValueAt(row, 1).toString();
+        String maNV = table.getValueAt(row, 1).toString();
 
         // Lấy dữ liệu từ DAO
-        DAO.PhieuNhap.NhaCungCapDAO dao = new DAO.PhieuNhap.NhaCungCapDAO();
-        Entity.PhieuNhap.NhaCungCap ncc = dao.findById(maNCC).orElse(null);
+        DAO.NhanVien.NhanVienDAO dao = new DAO.NhanVien.NhanVienDAO();
+        Entity.NhanVien.NhanVien nv = dao.findById(maNV).orElse(null);
 
-        if (ncc == null) {
+        if (nv == null) {
             javax.swing.JOptionPane.showMessageDialog(this,
-                "Không tìm thấy thông tin nhà cung cấp!",
-                "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
+                    "Không tìm thấy thông tin nhân viên!",
+                    "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         // Mở form chi tiết
         javax.swing.JFrame parent = (javax.swing.JFrame) javax.swing.SwingUtilities.getWindowAncestor(this);
-        GUI.form.NhaCungCap.formThongTinNCC dialog = new GUI.form.NhaCungCap.formThongTinNCC(parent, true);
+        GUI.form.NhanVien.formThongTinNV dialog = new GUI.form.NhanVien.formThongTinNV(parent, true, nv);
 
         // Gán dữ liệu vào form
-        dialog.setTitle("Thông tin nhà cung cấp - " + ncc.getTenNCC());
+        dialog.setTitle("Thông tin tài khoản - " + nv.getTenNV());
         dialog.setLocationRelativeTo(this);
 
-        // Điền dữ liệu vào form
-        dialog.setThongTinNCC(ncc);
-
         dialog.setVisible(true);
+        loadDataTable();
     }//GEN-LAST:event_btnChiTietActionPerformed
 
 

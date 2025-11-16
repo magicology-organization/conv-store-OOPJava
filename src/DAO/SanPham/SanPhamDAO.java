@@ -340,8 +340,21 @@ public class SanPhamDAO {
         return list;
     }
 
-    public List<SanPham> findExpiredBefore(LocalDateTime dt) {
-        String sql = "SELECT maSP, tenSP, anhSP, moTaSP, maDM, maDVT, maXX, soLuong, giaNhap, donGia, HSD FROM SanPham WHERE HSD < ? ORDER BY HSD, tenSP";
+    public List<SanPham> kiemTraSanPhamHetHan(LocalDateTime dt) {
+        String sql = """
+                    SELECT sp.maSP, sp.tenSP, sp.anhSP, sp.moTaSP,
+                           sp.maDM, dm.tenDM,
+                           sp.maDVT, dvt.tenDVT,
+                           sp.maXX, xx.tenXX,
+                           sp.soLuong, sp.giaNhap, sp.donGia, sp.HSD
+                    FROM SanPham sp
+                    JOIN DanhMuc dm ON sp.maDM = dm.maDM
+                    JOIN DonViTinh dvt ON sp.maDVT = dvt.maDVT
+                    JOIN XuatXu xx ON sp.maXX = xx.maXX
+                    WHERE sp.HSD < ?
+                    ORDER BY sp.HSD, sp.tenSP
+                """;
+
         List<SanPham> list = new ArrayList<>();
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             setDateTimeOrNull(ps, 1, dt);

@@ -95,7 +95,7 @@ public class frmSearchKhachHang extends javax.swing.JPanel {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         Panel = new javax.swing.JPanel();
@@ -162,7 +162,7 @@ public class frmSearchKhachHang extends javax.swing.JPanel {
         titleName.setPreferredSize(new java.awt.Dimension(1200, 32));
         pNorthTilte.add(titleName, java.awt.BorderLayout.CENTER);
 
-        pNorth.add(pNorthTilte, java.awt.BorderLayout.PAGE_START);
+        pNorth.add(pNorthTilte, java.awt.BorderLayout.NORTH);
 
         pTimKiem.setMinimumSize(new java.awt.Dimension(829, 300));
         pTimKiem.setLayout(new javax.swing.BoxLayout(pTimKiem, javax.swing.BoxLayout.Y_AXIS));
@@ -274,8 +274,7 @@ public class frmSearchKhachHang extends javax.swing.JPanel {
         pTimKiem_Row4_Col2.setPreferredSize(new java.awt.Dimension(669, 38));
         pTimKiem_Row4_Col2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 7));
 
-        cboGioiTinh.setModel(
-                new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboGioiTinh.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cboGioiTinh.setPreferredSize(new java.awt.Dimension(100, 30));
         pTimKiem_Row4_Col2.add(cboGioiTinh);
 
@@ -316,7 +315,7 @@ public class frmSearchKhachHang extends javax.swing.JPanel {
 
         pNorth.add(pTimKiem, java.awt.BorderLayout.CENTER);
 
-        Panel.add(pNorth, java.awt.BorderLayout.PAGE_START);
+        Panel.add(pNorth, java.awt.BorderLayout.NORTH);
 
         pCenter.setLayout(new java.awt.BorderLayout());
 
@@ -328,18 +327,19 @@ public class frmSearchKhachHang extends javax.swing.JPanel {
         scrollTableCenter1.setPreferredSize(new java.awt.Dimension(1200, 500));
 
         table.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][] {
+            new Object [][] {
 
-                },
-                new String[] {
-                        "STT", "Mã khách hàng", "Tên khách hàng", "Giới tính", "SĐT"
-                }) {
-            boolean[] canEdit = new boolean[] {
-                    false, false, false, false, false
+            },
+            new String [] {
+                "STT", "Mã khách hàng", "Tên khách hàng", "Giới tính", "SĐT"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
+                return canEdit [columnIndex];
             }
         });
         table.setMinimumSize(null);
@@ -391,7 +391,7 @@ public class frmSearchKhachHang extends javax.swing.JPanel {
         });
         pSouth.add(btnChiTiet);
 
-        Panel.add(pSouth, java.awt.BorderLayout.PAGE_END);
+        Panel.add(pSouth, java.awt.BorderLayout.SOUTH);
 
         add(Panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents

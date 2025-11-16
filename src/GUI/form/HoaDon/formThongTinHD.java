@@ -19,6 +19,7 @@ import java.util.List;
  * @author ADMIN
  */
 public class formThongTinHD extends javax.swing.JDialog {
+    DAO.HoaDon.HoaDonDAO hdDao = new DAO.HoaDon.HoaDonDAO();
     DAO.HoaDon.CTHoaDonDAO ctDao = new DAO.HoaDon.CTHoaDonDAO();
     DAO.SanPham.SanPhamDAO spDao = new DAO.SanPham.SanPhamDAO();
     DAO.NhanVien.NhanVienDAO nvDao = new DAO.NhanVien.NhanVienDAO();
@@ -137,8 +138,6 @@ public class formThongTinHD extends javax.swing.JDialog {
     }
 
     private void addTableMouseListener() {
-        DAO.SanPham.SanPhamDAO spDao = new DAO.SanPham.SanPhamDAO();
-
         table.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mousePressed(java.awt.event.MouseEvent e) {
@@ -179,7 +178,7 @@ public class formThongTinHD extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         pNorth = new javax.swing.JPanel();
@@ -265,7 +264,6 @@ public class formThongTinHD extends javax.swing.JDialog {
 
         txtMaHD.setEditable(false);
         txtMaHD.setFont(new java.awt.Font("Roboto Mono", 1, 14)); // NOI18N
-        txtMaHD.setFocusable(false);
         txtMaHD.setPreferredSize(new java.awt.Dimension(200, 40));
         pMaHD.add(txtMaHD);
 
@@ -282,7 +280,6 @@ public class formThongTinHD extends javax.swing.JDialog {
 
         txtTenKH.setEditable(false);
         txtTenKH.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
-        txtTenKH.setFocusable(false);
         txtTenKH.setPreferredSize(new java.awt.Dimension(300, 40));
         pTenKH.add(txtTenKH);
 
@@ -299,7 +296,6 @@ public class formThongTinHD extends javax.swing.JDialog {
 
         txtSDT.setEditable(false);
         txtSDT.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
-        txtSDT.setFocusable(false);
         txtSDT.setPreferredSize(new java.awt.Dimension(200, 40));
         pSDT.add(txtSDT);
 
@@ -322,7 +318,6 @@ public class formThongTinHD extends javax.swing.JDialog {
 
         txtNgayMua.setEditable(false);
         txtNgayMua.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
-        txtNgayMua.setFocusable(false);
         txtNgayMua.setPreferredSize(new java.awt.Dimension(200, 40));
         pNgayMua.add(txtNgayMua);
 
@@ -339,7 +334,6 @@ public class formThongTinHD extends javax.swing.JDialog {
 
         txtTenNV.setEditable(false);
         txtTenNV.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
-        txtTenNV.setFocusable(false);
         txtTenNV.setPreferredSize(new java.awt.Dimension(300, 40));
         pTenNV.add(txtTenNV);
 
@@ -373,19 +367,19 @@ public class formThongTinHD extends javax.swing.JDialog {
         javax.swing.GroupLayout pAnhLayout = new javax.swing.GroupLayout(pAnh);
         pAnh.setLayout(pAnhLayout);
         pAnhLayout.setHorizontalGroup(
-                pAnhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pAnhLayout.createSequentialGroup()
-                                .addContainerGap(32, Short.MAX_VALUE)
-                                .addComponent(anhSP, javax.swing.GroupLayout.PREFERRED_SIZE, 350,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)));
+            pAnhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pAnhLayout.createSequentialGroup()
+                .addContainerGap(32, Short.MAX_VALUE)
+                .addComponent(anhSP, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18))
+        );
         pAnhLayout.setVerticalGroup(
-                pAnhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pAnhLayout.createSequentialGroup()
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(anhSP, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(136, 136, 136)));
+            pAnhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pAnhLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(anhSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(136, 136, 136))
+        );
 
         pCenter.add(pAnh, java.awt.BorderLayout.WEST);
 
@@ -408,26 +402,26 @@ public class formThongTinHD extends javax.swing.JDialog {
         spTableSP.setPreferredSize(new java.awt.Dimension(452, 300));
 
         table.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][] {
+            new Object [][] {
 
-                },
-                new String[] {
-                        "STT", "Mã sản phẩm", "Tên sản phẩm", "Số lượng", "Đơn giá", "Thành tiền"
-                }) {
-            Class[] types = new Class[] {
-                    java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
-                    java.lang.String.class, java.lang.Integer.class
+            },
+            new String [] {
+                "STT", "Mã sản phẩm", "Tên sản phẩm", "Số lượng", "Đơn giá", "Thành tiền"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
             };
-            boolean[] canEdit = new boolean[] {
-                    false, false, false, false, false, false
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
-                return types[columnIndex];
+                return types [columnIndex];
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
+                return canEdit [columnIndex];
             }
         });
         table.setFocusable(false);
@@ -457,11 +451,6 @@ public class formThongTinHD extends javax.swing.JDialog {
         txtKieuThanhToan.setFocusable(false);
         txtKieuThanhToan.setRequestFocusEnabled(false);
         txtKieuThanhToan.setVerifyInputWhenFocusTarget(false);
-        txtKieuThanhToan.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtKieuThanhToanActionPerformed(evt);
-            }
-        });
         pKieuThanhToan.add(txtKieuThanhToan, java.awt.BorderLayout.CENTER);
 
         pCachDong.setBackground(new java.awt.Color(255, 255, 255));
@@ -469,11 +458,13 @@ public class formThongTinHD extends javax.swing.JDialog {
         javax.swing.GroupLayout pCachDongLayout = new javax.swing.GroupLayout(pCachDong);
         pCachDong.setLayout(pCachDongLayout);
         pCachDongLayout.setHorizontalGroup(
-                pCachDongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 100, Short.MAX_VALUE));
+            pCachDongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
         pCachDongLayout.setVerticalGroup(
-                pCachDongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 40, Short.MAX_VALUE));
+            pCachDongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 40, Short.MAX_VALUE)
+        );
 
         pKieuThanhToan.add(pCachDong, java.awt.BorderLayout.LINE_END);
 
@@ -544,9 +535,6 @@ public class formThongTinHD extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtKieuThanhToanActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtKieuThanhToanActionPerformed
-        // TODO add your handling code here:
-    }// GEN-LAST:event_txtKieuThanhToanActionPerformed
 
     private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnHuyActionPerformed
         // TODO add your handling code here:
@@ -562,11 +550,6 @@ public class formThongTinHD extends javax.swing.JDialog {
                         javax.swing.JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
-            // Khởi tạo DAO
-            DAO.HoaDon.HoaDonDAO hdDao = new DAO.HoaDon.HoaDonDAO();
-            DAO.HoaDon.CTHoaDonDAO ctDao = new DAO.HoaDon.CTHoaDonDAO();
-
             // Lấy thông tin hóa đơn đầy đủ
             HoaDon hd = hdDao.thongTinIn(maHD).orElse(null);
             if (hd == null) {

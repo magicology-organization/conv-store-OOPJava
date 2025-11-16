@@ -200,7 +200,7 @@ public class KhachHangDAO {
         }
     }
 
-    public boolean deleteById(String maKH) {
+    public boolean delete(String maKH) {
         String sql = "DELETE FROM KhachHang WHERE maKH = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, maKH);

@@ -25,7 +25,6 @@ public class formThongTinNCC extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         configureTable();
-        disableTextFieldFocus();
         setThongTinNCC(ncc);
     }
 
@@ -53,20 +52,6 @@ public class formThongTinNCC extends javax.swing.JDialog {
         txtSDT.setText(ncc.getSdt());
         txtDiaChi.setText(ncc.getDiaChiNCC());
         loadPhieuNhapTheoNCC(ncc.getMaNCC());
-    }
-
-    private void disableTextFieldFocus() {
-        txtMa.setEditable(false);
-        txtMa.setFocusable(false);
-
-        txtHoTen.setEditable(false);
-        txtHoTen.setFocusable(false);
-
-        txtSDT.setEditable(false);
-        txtSDT.setFocusable(false);
-
-        txtDiaChi.setEditable(false);
-        txtDiaChi.setFocusable(false);
     }
 
     private void loadPhieuNhapTheoNCC(String maNCC) {
