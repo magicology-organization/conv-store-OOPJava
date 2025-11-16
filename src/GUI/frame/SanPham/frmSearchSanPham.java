@@ -5,24 +5,15 @@
 package GUI.frame.SanPham;
 
 import DAO.SanPham.DanhMucDAO;
-import DAO.SanPham.DonViTinhDAO;
 import DAO.SanPham.SanPhamDAO;
 import DAO.SanPham.XuatXuDAO;
 import Entity.SanPham.DanhMuc;
-import Entity.SanPham.DonViTinh;
-import Entity.SanPham.SanPham;
 import Entity.SanPham.XuatXu;
-import GUI.form.SanPham.formThongTinSP;
-
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Optional;
-
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -31,7 +22,6 @@ import javax.swing.table.DefaultTableModel;
  * @author ADMIN
  */
 public class frmSearchSanPham extends javax.swing.JPanel {
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     private final DecimalFormat currencyFormat = new DecimalFormat("#,### VND");
 
     /**
@@ -110,7 +100,7 @@ public class frmSearchSanPham extends javax.swing.JPanel {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         Panel = new javax.swing.JPanel();
@@ -176,7 +166,7 @@ public class frmSearchSanPham extends javax.swing.JPanel {
         titleName.setPreferredSize(new java.awt.Dimension(1200, 32));
         northTilte.add(titleName, java.awt.BorderLayout.CENTER);
 
-        pNorth.add(northTilte, java.awt.BorderLayout.PAGE_START);
+        pNorth.add(northTilte, java.awt.BorderLayout.NORTH);
 
         pTimKiem.setMinimumSize(new java.awt.Dimension(829, 300));
         pTimKiem.setLayout(new javax.swing.BoxLayout(pTimKiem, javax.swing.BoxLayout.Y_AXIS));
@@ -259,8 +249,7 @@ public class frmSearchSanPham extends javax.swing.JPanel {
         pTimKiem_Row2_Col2.setPreferredSize(new java.awt.Dimension(669, 38));
         pTimKiem_Row2_Col2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 7));
 
-        cboDanhMuc.setModel(
-                new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboDanhMuc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cboDanhMuc.setPreferredSize(new java.awt.Dimension(100, 30));
         cboDanhMuc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -293,8 +282,7 @@ public class frmSearchSanPham extends javax.swing.JPanel {
         pTimKiem_Row3_Col2.setPreferredSize(new java.awt.Dimension(669, 38));
         pTimKiem_Row3_Col2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 7));
 
-        cboXuatXu.setModel(
-                new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboXuatXu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cboXuatXu.setPreferredSize(new java.awt.Dimension(100, 30));
         cboXuatXu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -340,7 +328,7 @@ public class frmSearchSanPham extends javax.swing.JPanel {
 
         pNorth.add(pTimKiem, java.awt.BorderLayout.CENTER);
 
-        Panel.add(pNorth, java.awt.BorderLayout.PAGE_START);
+        Panel.add(pNorth, java.awt.BorderLayout.NORTH);
 
         pCenter.setLayout(new java.awt.BorderLayout());
 
@@ -348,19 +336,19 @@ public class frmSearchSanPham extends javax.swing.JPanel {
         scrollTableCenter.setPreferredSize(new java.awt.Dimension(1200, 250));
 
         table.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][] {
+            new Object [][] {
 
-                },
-                new String[] {
-                        "STT", "Mã sản phẩm", "Tên sản phẩm", "Mô tả", "Danh mục", "Xuất xứ", "ĐVT", "Giá nhập",
-                        "Đơn giá", "Tồn kho"
-                }) {
-            boolean[] canEdit = new boolean[] {
-                    false, false, false, false, false, false, false, false, false, false
+            },
+            new String [] {
+                "STT", "Mã sản phẩm", "Tên sản phẩm", "Mô tả", "Danh mục", "Xuất xứ", "ĐVT", "Giá nhập", "Đơn giá", "Tồn kho"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
+                return canEdit [columnIndex];
             }
         });
         table.setMinimumSize(null);
@@ -409,7 +397,7 @@ public class frmSearchSanPham extends javax.swing.JPanel {
         });
         pSouth.add(btnChiTiet);
 
-        Panel.add(pSouth, java.awt.BorderLayout.PAGE_END);
+        Panel.add(pSouth, java.awt.BorderLayout.SOUTH);
 
         add(Panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -487,8 +475,7 @@ public class frmSearchSanPham extends javax.swing.JPanel {
         GUI.form.SanPham.formThongTinSP dialog = new GUI.form.SanPham.formThongTinSP(parent, true, sp);
 
         dialog.setLocationRelativeTo(this);
-        // Điền dữ liệu vào form
-        dialog.setThongTinSP(sp);
+
         dialog.setVisible(true);
     }// GEN-LAST:event_btnChiTietActionPerformed
 

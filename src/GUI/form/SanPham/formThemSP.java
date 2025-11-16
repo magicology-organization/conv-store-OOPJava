@@ -44,6 +44,7 @@ public class formThemSP extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         loadComboBoxData();
+        txtMaSP.requestFocus();
     }
 
     private void loadComboBoxData() {
@@ -181,11 +182,6 @@ public class formThemSP extends javax.swing.JDialog {
 
         txtGiaNhap.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         txtGiaNhap.setPreferredSize(new java.awt.Dimension(250, 30));
-        txtGiaNhap.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtGiaNhapActionPerformed(evt);
-            }
-        });
         pThongTin.add(txtGiaNhap);
 
         lblGiaBan.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -210,7 +206,7 @@ public class formThemSP extends javax.swing.JDialog {
         pThongTin.add(lblHSD);
 
         DateHSD.setBackground(new java.awt.Color(255, 255, 255));
-        DateHSD.setDateFormatString("d, MMM,y\n");
+        DateHSD.setDateFormatString("dd/MM/yyyy");
         DateHSD.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         DateHSD.setMinimumSize(new java.awt.Dimension(140, 30));
         DateHSD.setPreferredSize(new java.awt.Dimension(140, 30));
@@ -421,9 +417,6 @@ public class formThemSP extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtGiaNhapActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtGiaNhapActionPerformed
-        // TODO add your handling code here:
-    }// GEN-LAST:event_txtGiaNhapActionPerformed
 
     private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnHuyActionPerformed
         // TODO add your handling code here:

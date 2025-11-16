@@ -20,7 +20,6 @@ public class formThemNCC extends javax.swing.JDialog {
         initComponents();
         DAO.PhieuNhap.NhaCungCapDAO dao = new DAO.PhieuNhap.NhaCungCapDAO();
         txtMa.setText(dao.taoMaNCC());
-        txtMa.setEditable(false);
         txtHoTen.requestFocus();
     }
     
@@ -97,6 +96,7 @@ public class formThemNCC extends javax.swing.JDialog {
         lblMa.setAlignmentY(20.0F);
         pThongTin.add(lblMa);
 
+        txtMa.setEditable(false);
         txtMa.setPreferredSize(new java.awt.Dimension(350, 22));
         pThongTin.add(txtMa);
 

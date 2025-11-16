@@ -148,13 +148,11 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtMaKH">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[350, 22]"/>
                     </Property>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtMaKHActionPerformed"/>
-                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblTen">
                   <Properties>
@@ -173,9 +171,6 @@
                       <Dimension value="[350, 22]"/>
                     </Property>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtHoTenActionPerformed"/>
-                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblGioiTinh">
                   <Properties>
@@ -186,7 +181,7 @@
                     <Property name="text" type="java.lang.String" value="Gi&#x1edb;i t&#xed;nh:"/>
                   </Properties>
                 </Component>
-                <Container class="javax.swing.JPanel" name="jPanel2">
+                <Container class="javax.swing.JPanel" name="pGioiTinh">
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -199,9 +194,6 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Nam"/>
                       </Properties>
-                      <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rbtnNamActionPerformed"/>
-                      </Events>
                     </Component>
                     <Component class="javax.swing.JRadioButton" name="rbtnNu">
                       <Properties>

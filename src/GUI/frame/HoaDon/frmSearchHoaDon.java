@@ -87,7 +87,7 @@ public class frmSearchHoaDon extends javax.swing.JPanel {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         Panel = new javax.swing.JPanel();
@@ -157,7 +157,7 @@ public class frmSearchHoaDon extends javax.swing.JPanel {
         titleName.setPreferredSize(new java.awt.Dimension(1200, 32));
         northTilte.add(titleName, java.awt.BorderLayout.CENTER);
 
-        pNorth.add(northTilte, java.awt.BorderLayout.PAGE_START);
+        pNorth.add(northTilte, java.awt.BorderLayout.NORTH);
 
         pTimKiem1.setMinimumSize(new java.awt.Dimension(829, 300));
         pTimKiem1.setLayout(new javax.swing.BoxLayout(pTimKiem1, javax.swing.BoxLayout.Y_AXIS));
@@ -321,7 +321,7 @@ public class frmSearchHoaDon extends javax.swing.JPanel {
 
         pNorth.add(pTimKiem1, java.awt.BorderLayout.CENTER);
 
-        Panel.add(pNorth, java.awt.BorderLayout.PAGE_START);
+        Panel.add(pNorth, java.awt.BorderLayout.NORTH);
 
         pCenter.setMinimumSize(new java.awt.Dimension(1200, 300));
         pCenter.setPreferredSize(new java.awt.Dimension(1200, 300));
@@ -347,19 +347,19 @@ public class frmSearchHoaDon extends javax.swing.JPanel {
         scrollTableCenter.setMinimumSize(new java.awt.Dimension(1200, 500));
 
         table.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][] {
+            new Object [][] {
 
-                },
-                new String[] {
-                        "STT", "Mã hóa đơn", "Tên khách hàng", "SĐT", "Tên nhân viên", "Ngày mua", "Kiểu thanh toán",
-                        "Tổng hóa đơn"
-                }) {
-            boolean[] canEdit = new boolean[] {
-                    false, false, false, false, false, false, false, false
+            },
+            new String [] {
+                "STT", "Mã hóa đơn", "Tên khách hàng", "SĐT", "Tên nhân viên", "Ngày mua", "Kiểu thanh toán", "Tổng hóa đơn"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
+                return canEdit [columnIndex];
             }
         });
         table.setMinimumSize(null);

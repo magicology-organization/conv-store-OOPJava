@@ -629,9 +629,6 @@
                               <Dimension value="[50, 30]"/>
                             </Property>
                           </Properties>
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtSoLuongActionPerformed"/>
-                          </Events>
                         </Component>
                         <Component class="javax.swing.JButton" name="btnThem">
                           <Properties>
@@ -1525,6 +1522,9 @@
                                           <Dimension value="[40, 40]"/>
                                         </Property>
                                       </Properties>
+                                      <Events>
+                                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSearchNVActionPerformed"/>
+                                      </Events>
                                     </Component>
                                   </SubComponents>
                                 </Container>
@@ -1746,9 +1746,6 @@
                                           <Dimension value="[200, 30]"/>
                                         </Property>
                                       </Properties>
-                                      <Events>
-                                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTienThuaActionPerformed"/>
-                                      </Events>
                                     </Component>
                                   </SubComponents>
                                 </Container>
@@ -1833,6 +1830,9 @@
                               <Dimension value="[200, 40]"/>
                             </Property>
                           </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnThanhToanActionPerformed"/>
+                          </Events>
                         </Component>
                       </SubComponents>
                     </Container>

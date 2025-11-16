@@ -4,6 +4,13 @@
  */
 package GUI.frame.TaiKhoan;
 
+import DAO.TaiKhoan.TaiKhoanDAO;
+import java.util.List;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author ADMIN
@@ -15,6 +22,46 @@ public class frmSearchTaiKhoan extends javax.swing.JPanel {
      */
     public frmSearchTaiKhoan() {
         initComponents();
+        configureTable();
+        loadDataTable();
+    }
+
+    private void configureTable() {
+        // Ngăn không cho phép người dùng chỉnh sửa bảng
+        table.setDefaultEditor(Object.class, null); // Điều này vô hiệu hóa khả năng chỉnh sửa của bất kỳ ô nào trong
+                                                    // bảng.
+
+        // Căn giữa cho tất cả các cell trong bảng
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        // Căn giữa cho từng cột
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+
+        // Ngăn không cho phép chọn nhiều dòng
+        table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+    }
+
+    private void loadDataTable() {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+
+        TaiKhoanDAO dao = new TaiKhoanDAO();
+        // [0 maTK, 1 tenNV, 2 taiKhoan, 3 chucVu]
+        List<Object[]> list = dao.findAllWithDetails();
+
+        int stt = 1;
+        for (Object[] r : list) {
+            model.addRow(new Object[] {
+                    stt++, // STT
+                    r[0], // Mã tài khoản
+                    r[1], // Tên nhân viên
+                    r[2], // Tài khoản
+                    r[3] // Chức vụ
+            });
+        }
     }
 
     /**
@@ -36,20 +83,30 @@ public class frmSearchTaiKhoan extends javax.swing.JPanel {
         lblMaTK = new javax.swing.JLabel();
         pTimKiem_Row1_Col4 = new javax.swing.JPanel();
         txtMaTK = new java.awt.TextField();
+        pTimKiem_Row7 = new javax.swing.JPanel();
+        pTimKiem_Row1_Col5 = new javax.swing.JPanel();
+        lblTenTK = new javax.swing.JLabel();
+        pTimKiem_Row1_Col6 = new javax.swing.JPanel();
+        txtTenTK = new java.awt.TextField();
         pTimKiem_Row1 = new javax.swing.JPanel();
         pTimKiem_Row1_Col1 = new javax.swing.JPanel();
-        lblTenNV = new javax.swing.JLabel();
+        lblMaNV = new javax.swing.JLabel();
         pTimKiem_Row1_Col2 = new javax.swing.JPanel();
-        txtTenTK = new java.awt.TextField();
+        txtMaNV = new java.awt.TextField();
+        pTimKiem_Row2 = new javax.swing.JPanel();
+        pTimKiem_Row1_Col7 = new javax.swing.JPanel();
+        lblTenNV = new javax.swing.JLabel();
+        pTimKiem_Row1_Col8 = new javax.swing.JPanel();
+        txtTenNV = new java.awt.TextField();
         pTimKiem_Row5 = new javax.swing.JPanel();
         pTimKiem_Row5_Col1 = new javax.swing.JPanel();
         pTimKiem_Row5_Col2 = new javax.swing.JPanel();
         btnTim = new javax.swing.JButton();
         pCenter = new javax.swing.JPanel();
-        scrollTableCenter = new javax.swing.JScrollPane();
-        table = new javax.swing.JTable();
         centerTilte = new javax.swing.JPanel();
         titleName1 = new javax.swing.JLabel();
+        scrollTableCenter = new javax.swing.JScrollPane();
+        table = new javax.swing.JTable();
         pSouth = new javax.swing.JPanel();
         btnChiTiet = new javax.swing.JButton();
 
@@ -61,7 +118,7 @@ public class frmSearchTaiKhoan extends javax.swing.JPanel {
         pNorth.setBackground(new java.awt.Color(204, 255, 204));
         pNorth.setMinimumSize(new java.awt.Dimension(1200, 250));
         pNorth.setName(""); // NOI18N
-        pNorth.setPreferredSize(new java.awt.Dimension(1200, 250));
+        pNorth.setPreferredSize(new java.awt.Dimension(1200, 300));
         pNorth.setLayout(new java.awt.BorderLayout());
 
         northTilte.setBackground(new java.awt.Color(204, 255, 204));
@@ -79,7 +136,7 @@ public class frmSearchTaiKhoan extends javax.swing.JPanel {
         titleName.setPreferredSize(new java.awt.Dimension(1200, 32));
         northTilte.add(titleName, java.awt.BorderLayout.CENTER);
 
-        pNorth.add(northTilte, java.awt.BorderLayout.PAGE_START);
+        pNorth.add(northTilte, java.awt.BorderLayout.NORTH);
 
         pTimKiem.setMinimumSize(new java.awt.Dimension(829, 300));
         pTimKiem.setLayout(new javax.swing.BoxLayout(pTimKiem, javax.swing.BoxLayout.Y_AXIS));
@@ -102,7 +159,7 @@ public class frmSearchTaiKhoan extends javax.swing.JPanel {
 
         pTimKiem_Row1_Col4.setMinimumSize(new java.awt.Dimension(669, 38));
         pTimKiem_Row1_Col4.setPreferredSize(new java.awt.Dimension(669, 38));
-        pTimKiem_Row1_Col4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 18));
+        pTimKiem_Row1_Col4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 10));
 
         txtMaTK.setMaximumSize(new java.awt.Dimension(350, 32));
         txtMaTK.setMinimumSize(new java.awt.Dimension(350, 32));
@@ -113,6 +170,35 @@ public class frmSearchTaiKhoan extends javax.swing.JPanel {
 
         pTimKiem.add(pTimKiem_Row6);
 
+        pTimKiem_Row7.setMinimumSize(new java.awt.Dimension(829, 38));
+        pTimKiem_Row7.setLayout(new java.awt.BorderLayout());
+
+        pTimKiem_Row1_Col5.setMinimumSize(new java.awt.Dimension(300, 38));
+        pTimKiem_Row1_Col5.setPreferredSize(new java.awt.Dimension(500, 38));
+        pTimKiem_Row1_Col5.setLayout(new java.awt.BorderLayout());
+
+        lblTenTK.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblTenTK.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblTenTK.setText("Tên tài khoản:");
+        lblTenTK.setAlignmentX(20.0F);
+        lblTenTK.setAlignmentY(20.0F);
+        pTimKiem_Row1_Col5.add(lblTenTK, java.awt.BorderLayout.CENTER);
+
+        pTimKiem_Row7.add(pTimKiem_Row1_Col5, java.awt.BorderLayout.LINE_START);
+
+        pTimKiem_Row1_Col6.setMinimumSize(new java.awt.Dimension(669, 38));
+        pTimKiem_Row1_Col6.setPreferredSize(new java.awt.Dimension(669, 38));
+        pTimKiem_Row1_Col6.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 10));
+
+        txtTenTK.setMaximumSize(new java.awt.Dimension(350, 32));
+        txtTenTK.setMinimumSize(new java.awt.Dimension(350, 32));
+        txtTenTK.setPreferredSize(new java.awt.Dimension(350, 30));
+        pTimKiem_Row1_Col6.add(txtTenTK);
+
+        pTimKiem_Row7.add(pTimKiem_Row1_Col6, java.awt.BorderLayout.CENTER);
+
+        pTimKiem.add(pTimKiem_Row7);
+
         pTimKiem_Row1.setMinimumSize(new java.awt.Dimension(829, 38));
         pTimKiem_Row1.setLayout(new java.awt.BorderLayout());
 
@@ -120,27 +206,56 @@ public class frmSearchTaiKhoan extends javax.swing.JPanel {
         pTimKiem_Row1_Col1.setPreferredSize(new java.awt.Dimension(500, 38));
         pTimKiem_Row1_Col1.setLayout(new java.awt.BorderLayout());
 
-        lblTenNV.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblTenNV.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblTenNV.setText("Tên nhân viên:");
-        lblTenNV.setAlignmentX(20.0F);
-        lblTenNV.setAlignmentY(20.0F);
-        pTimKiem_Row1_Col1.add(lblTenNV, java.awt.BorderLayout.CENTER);
+        lblMaNV.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblMaNV.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblMaNV.setText("Mã nhân viên:");
+        lblMaNV.setAlignmentX(20.0F);
+        lblMaNV.setAlignmentY(20.0F);
+        pTimKiem_Row1_Col1.add(lblMaNV, java.awt.BorderLayout.CENTER);
 
         pTimKiem_Row1.add(pTimKiem_Row1_Col1, java.awt.BorderLayout.LINE_START);
 
         pTimKiem_Row1_Col2.setMinimumSize(new java.awt.Dimension(669, 38));
         pTimKiem_Row1_Col2.setPreferredSize(new java.awt.Dimension(669, 38));
-        pTimKiem_Row1_Col2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 18));
+        pTimKiem_Row1_Col2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 10));
 
-        txtTenTK.setMaximumSize(new java.awt.Dimension(350, 32));
-        txtTenTK.setMinimumSize(new java.awt.Dimension(350, 32));
-        txtTenTK.setPreferredSize(new java.awt.Dimension(350, 30));
-        pTimKiem_Row1_Col2.add(txtTenTK);
+        txtMaNV.setMaximumSize(new java.awt.Dimension(350, 32));
+        txtMaNV.setMinimumSize(new java.awt.Dimension(350, 32));
+        txtMaNV.setPreferredSize(new java.awt.Dimension(350, 30));
+        pTimKiem_Row1_Col2.add(txtMaNV);
 
         pTimKiem_Row1.add(pTimKiem_Row1_Col2, java.awt.BorderLayout.CENTER);
 
         pTimKiem.add(pTimKiem_Row1);
+
+        pTimKiem_Row2.setMinimumSize(new java.awt.Dimension(829, 38));
+        pTimKiem_Row2.setLayout(new java.awt.BorderLayout());
+
+        pTimKiem_Row1_Col7.setMinimumSize(new java.awt.Dimension(300, 38));
+        pTimKiem_Row1_Col7.setPreferredSize(new java.awt.Dimension(500, 38));
+        pTimKiem_Row1_Col7.setLayout(new java.awt.BorderLayout());
+
+        lblTenNV.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblTenNV.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblTenNV.setText("Tên nhân viên:");
+        lblTenNV.setAlignmentX(20.0F);
+        lblTenNV.setAlignmentY(20.0F);
+        pTimKiem_Row1_Col7.add(lblTenNV, java.awt.BorderLayout.CENTER);
+
+        pTimKiem_Row2.add(pTimKiem_Row1_Col7, java.awt.BorderLayout.LINE_START);
+
+        pTimKiem_Row1_Col8.setMinimumSize(new java.awt.Dimension(669, 38));
+        pTimKiem_Row1_Col8.setPreferredSize(new java.awt.Dimension(669, 38));
+        pTimKiem_Row1_Col8.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 10));
+
+        txtTenNV.setMaximumSize(new java.awt.Dimension(350, 32));
+        txtTenNV.setMinimumSize(new java.awt.Dimension(350, 32));
+        txtTenNV.setPreferredSize(new java.awt.Dimension(350, 30));
+        pTimKiem_Row1_Col8.add(txtTenNV);
+
+        pTimKiem_Row2.add(pTimKiem_Row1_Col8, java.awt.BorderLayout.CENTER);
+
+        pTimKiem.add(pTimKiem_Row2);
 
         pTimKiem_Row5.setMinimumSize(new java.awt.Dimension(829, 38));
         pTimKiem_Row5.setLayout(new java.awt.BorderLayout());
@@ -179,8 +294,25 @@ public class frmSearchTaiKhoan extends javax.swing.JPanel {
 
         pCenter.setLayout(new java.awt.BorderLayout());
 
-        scrollTableCenter.setMinimumSize(new java.awt.Dimension(1200, 250));
-        scrollTableCenter.setPreferredSize(new java.awt.Dimension(1200, 250));
+        centerTilte.setBackground(new java.awt.Color(204, 255, 204));
+        centerTilte.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        centerTilte.setMinimumSize(new java.awt.Dimension(1200, 50));
+        centerTilte.setPreferredSize(new java.awt.Dimension(1200, 50));
+        centerTilte.setLayout(new java.awt.BorderLayout());
+
+        titleName1.setBackground(new java.awt.Color(0, 0, 0));
+        titleName1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        titleName1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        titleName1.setText("Thông tin tài khoản");
+        titleName1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        titleName1.setMinimumSize(new java.awt.Dimension(1200, 32));
+        titleName1.setPreferredSize(new java.awt.Dimension(1200, 32));
+        centerTilte.add(titleName1, java.awt.BorderLayout.CENTER);
+
+        pCenter.add(centerTilte, java.awt.BorderLayout.NORTH);
+
+        scrollTableCenter.setMinimumSize(new java.awt.Dimension(1200, 500));
+        scrollTableCenter.setPreferredSize(new java.awt.Dimension(1200, 500));
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -198,30 +330,13 @@ public class frmSearchTaiKhoan extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        table.setMinimumSize(new java.awt.Dimension(1200, 250));
-        table.setPreferredSize(new java.awt.Dimension(1200, 250));
+        table.setMinimumSize(null);
+        table.setPreferredSize(null);
         table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         table.setShowHorizontalLines(true);
         scrollTableCenter.setViewportView(table);
 
         pCenter.add(scrollTableCenter, java.awt.BorderLayout.CENTER);
-
-        centerTilte.setBackground(new java.awt.Color(204, 255, 204));
-        centerTilte.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        centerTilte.setMinimumSize(new java.awt.Dimension(1200, 50));
-        centerTilte.setPreferredSize(new java.awt.Dimension(1200, 50));
-        centerTilte.setLayout(new java.awt.BorderLayout());
-
-        titleName1.setBackground(new java.awt.Color(0, 0, 0));
-        titleName1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        titleName1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titleName1.setText("Thông tin tài khoản");
-        titleName1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        titleName1.setMinimumSize(new java.awt.Dimension(1200, 32));
-        titleName1.setPreferredSize(new java.awt.Dimension(1200, 32));
-        centerTilte.add(titleName1, java.awt.BorderLayout.CENTER);
-
-        pCenter.add(centerTilte, java.awt.BorderLayout.PAGE_START);
 
         Panel.add(pCenter, java.awt.BorderLayout.CENTER);
 
@@ -244,17 +359,74 @@ public class frmSearchTaiKhoan extends javax.swing.JPanel {
         });
         pSouth.add(btnChiTiet);
 
-        Panel.add(pSouth, java.awt.BorderLayout.PAGE_END);
+        Panel.add(pSouth, java.awt.BorderLayout.SOUTH);
 
         add(Panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnChiTietActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChiTietActionPerformed
         // TODO add your handling code here:
+        int row = table.getSelectedRow();
+        if (row < 0) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Vui lòng chọn một tài khoản để xem chi tiết!",
+                    "Thông báo", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Lấy mã nhà cung cấp từ bảng
+        String maTK = table.getValueAt(row, 1).toString();
+
+        // Lấy dữ liệu từ DAO
+        DAO.TaiKhoan.TaiKhoanDAO dao = new DAO.TaiKhoan.TaiKhoanDAO();
+        Entity.TaiKhoan.TaiKhoan tk = dao.findById(maTK).orElse(null);
+
+        if (tk == null) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Không tìm thấy thông tin tài khoản!",
+                    "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Mở form chi tiết
+        javax.swing.JFrame parent = (javax.swing.JFrame) javax.swing.SwingUtilities.getWindowAncestor(this);
+        GUI.form.TaiKhoan.formThongTinTK dialog = new GUI.form.TaiKhoan.formThongTinTK(parent, true, tk);
+
+        // Gán dữ liệu vào form
+        dialog.setTitle("Thông tin tài khoản - " + tk.getTenTK());
+        dialog.setLocationRelativeTo(this);
+
+        dialog.setVisible(true);
+        loadDataTable();
     }//GEN-LAST:event_btnChiTietActionPerformed
 
     private void btnTimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimActionPerformed
         // TODO add your handling code here:
+        String maTK = txtMaTK.getText().trim();
+        String tenTK = txtTenTK.getText().trim();
+        String maNV = txtMaNV.getText().trim();
+        String tenNV = txtTenNV.getText().trim();
+
+        TaiKhoanDAO dao = new TaiKhoanDAO();
+        List<Object[]> list = dao.search(maTK, tenTK, maNV, tenNV);
+
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+
+        int stt = 1;
+        for (Object[] r : list) {
+            model.addRow(new Object[]{
+                stt++,
+                r[0],   // mã tài khoản
+                r[1],   // tên nhân viên
+                r[2],   // tài khoản
+                r[3]    // chức vụ
+            });
+        }
+
+        if (list.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Không tìm thấy tài khoản phù hợp!");
+        }
     }//GEN-LAST:event_btnTimActionPerformed
 
 
@@ -263,8 +435,10 @@ public class frmSearchTaiKhoan extends javax.swing.JPanel {
     private javax.swing.JButton btnChiTiet;
     private javax.swing.JButton btnTim;
     private javax.swing.JPanel centerTilte;
+    private javax.swing.JLabel lblMaNV;
     private javax.swing.JLabel lblMaTK;
     private javax.swing.JLabel lblTenNV;
+    private javax.swing.JLabel lblTenTK;
     private javax.swing.JPanel northTilte;
     private javax.swing.JPanel pCenter;
     private javax.swing.JPanel pNorth;
@@ -275,15 +449,23 @@ public class frmSearchTaiKhoan extends javax.swing.JPanel {
     private javax.swing.JPanel pTimKiem_Row1_Col2;
     private javax.swing.JPanel pTimKiem_Row1_Col3;
     private javax.swing.JPanel pTimKiem_Row1_Col4;
+    private javax.swing.JPanel pTimKiem_Row1_Col5;
+    private javax.swing.JPanel pTimKiem_Row1_Col6;
+    private javax.swing.JPanel pTimKiem_Row1_Col7;
+    private javax.swing.JPanel pTimKiem_Row1_Col8;
+    private javax.swing.JPanel pTimKiem_Row2;
     private javax.swing.JPanel pTimKiem_Row5;
     private javax.swing.JPanel pTimKiem_Row5_Col1;
     private javax.swing.JPanel pTimKiem_Row5_Col2;
     private javax.swing.JPanel pTimKiem_Row6;
+    private javax.swing.JPanel pTimKiem_Row7;
     private javax.swing.JScrollPane scrollTableCenter;
     private javax.swing.JTable table;
     private javax.swing.JLabel titleName;
     private javax.swing.JLabel titleName1;
+    private java.awt.TextField txtMaNV;
     private java.awt.TextField txtMaTK;
+    private java.awt.TextField txtTenNV;
     private java.awt.TextField txtTenTK;
     // End of variables declaration//GEN-END:variables
 }

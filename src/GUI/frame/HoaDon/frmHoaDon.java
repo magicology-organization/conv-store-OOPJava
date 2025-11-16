@@ -5,6 +5,7 @@
 package GUI.frame.HoaDon;
 
 import DAO.HoaDon.HoaDonDAO;
+import Entity.TaiKhoan.TaiKhoan;
 import GUI.Main;
 import GUI.form.HoaDon.formThemHD;
 import java.text.DecimalFormat;
@@ -22,16 +23,20 @@ import javax.swing.table.DefaultTableModel;
  * @author ADMIN
  */
 public class frmHoaDon extends javax.swing.JPanel {
+    private final TaiKhoan taiKhoan;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     private final DecimalFormat currencyFormat = new DecimalFormat("#,### VND");
 
     /**
      * Creates new form frmHoaDon
+     * @param taiKhoan
      */
-    public frmHoaDon() {
+    public frmHoaDon(TaiKhoan taiKhoan) {
+        this.taiKhoan = taiKhoan;
         initComponents();
         configureTable();
         loadDataTable();
+        
     }
 
     private void configureTable() {
@@ -239,7 +244,7 @@ public class frmHoaDon extends javax.swing.JPanel {
         // TODO add your handling code here:
         try {
             // Tạo đối tượng frmHoaDonThem
-            formThemHD formThem = new formThemHD();
+            formThemHD formThem = new formThemHD(taiKhoan);
             // Lấy đối tượng Main (parent frame)
             Main parentFrame = (Main) SwingUtilities.getWindowAncestor(this);
 

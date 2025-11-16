@@ -4,6 +4,7 @@
  */
 package GUI;
 
+import Entity.NhanVien.NhanVien;
 import Entity.TaiKhoan.TaiKhoan;
 import GUI.frame.HoaDon.frmHoaDon;
 import GUI.frame.HoaDon.frmSearchHoaDon;
@@ -30,6 +31,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -189,7 +192,7 @@ public class Main extends javax.swing.JFrame {
 
         // Sự kiện Hóa đơn
         itemHD1.addActionListener(e -> {
-            frmHoaDon hd1 = new frmHoaDon();
+            frmHoaDon hd1 = new frmHoaDon(taiKhoan);
             // Xóa tất cả các phần cũ
             pCenter.removeAll();
             // Đặt layout cho pCenter
@@ -219,7 +222,7 @@ public class Main extends javax.swing.JFrame {
 
         // Sự kiện phiếu nhập
         itemPN1.addActionListener(e -> {
-            frmPhieuNhap pn1 = new frmPhieuNhap();
+            frmPhieuNhap pn1 = new frmPhieuNhap(taiKhoan);
             // Xóa tất cả các phần cũ
             pCenter.removeAll();
             // Đặt layout cho pCenter
@@ -741,31 +744,43 @@ public class Main extends javax.swing.JFrame {
     }
 
     private void capNhatThongTinNguoiDung() {
-        if (taiKhoan == null)
-            return;
-
-        String maNV = taiKhoan.getMaNV();
-        if (maNV == null || maNV.isBlank()) {
+        if (taiKhoan == null) {
             lblName.setText("Không xác định");
             lblRole.setText("");
             lblAvatar.setIcon(new FlatSVGIcon("./icon/man.svg"));
             return;
         }
 
+        // Lấy đối tượng NhanVien từ TaiKhoan
+        NhanVien nvRef = taiKhoan.getNhanVien();
+        if (nvRef == null || nvRef.getMaNV() == null || nvRef.getMaNV().isBlank()) {
+            lblName.setText("Không xác định");
+            lblRole.setText("");
+            lblAvatar.setIcon(new FlatSVGIcon("./icon/man.svg"));
+            return;
+        }
+
+        // Lấy mã nhân viên
+        String maNV = nvRef.getMaNV();
+
+        // Gọi DAO để lấy thông tin đầy đủ
         DAO.NhanVien.NhanVienDAO nvDao = new DAO.NhanVien.NhanVienDAO();
-        java.util.Optional<Entity.NhanVien.NhanVien> oNv = nvDao.findById(maNV);
+        Optional<Entity.NhanVien.NhanVien> oNv = nvDao.findById(maNV);
 
         if (oNv.isPresent()) {
-            Entity.NhanVien.NhanVien nv = oNv.get();
-            lblName.setText(nv.getTenNV());
-            lblRole.setText(nv.getChucVu());
+            NhanVien nv = oNv.get();
 
+            lblName.setText(nv.getTenNV() != null ? nv.getTenNV() : "Không rõ");
+            lblRole.setText(nv.getChucVu() != null ? nv.getChucVu() : "");
+
+            // Xác định avatar theo giới tính
             String gioiTinh = nv.getGioiTinh();
             if (gioiTinh != null && gioiTinh.equalsIgnoreCase("Nữ")) {
                 lblAvatar.setIcon(new FlatSVGIcon("./icon/woman.svg"));
             } else {
                 lblAvatar.setIcon(new FlatSVGIcon("./icon/man.svg"));
             }
+
         } else {
             lblName.setText("Không tìm thấy nhân viên");
             lblRole.setText("");

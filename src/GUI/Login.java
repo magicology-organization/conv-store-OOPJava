@@ -352,41 +352,51 @@ public class Login extends javax.swing.JFrame {
         String user = txtTK.getText().trim();
         String pass = new String(txtMK.getPassword()).trim();
 
-        // --- Kiểm tra hợp lệ ---
+        // --- Kiểm tra hợp lệ tên tài khoản ---
         if (user.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Tài khoản để trống. Vui lòng nhập tên tài khoản!");
+            JOptionPane.showMessageDialog(this, "Tên tài khoản để trống. Vui lòng nhập tên tài khoản!");
             txtTK.requestFocus();
             return;
         }
 
+        String regexTenTK = "^[a-zA-Z][a-zA-Z0-9_.]{2,49}$"; // 3–50 ký tự
+        if (!user.matches(regexTenTK)) {
+            JOptionPane.showMessageDialog(this,
+                    "Tên tài khoản không hợp lệ!\n"
+                            + "• Bắt đầu bằng chữ\n"
+                            + "• Dài 3–50 ký tự\n"
+                            + "• Chỉ chứa chữ, số, dấu _ hoặc .");
+            txtTK.requestFocus();
+            return;
+        }
+
+        // --- Kiểm tra mật khẩu ---
         if (pass.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Mật khẩu để trống. Vui lòng nhập mật khẩu!");
             txtMK.requestFocus();
             return;
         }
 
-        // Sửa điều kiện logic: phải là "< 8 || > 16"
-        if (pass.length() < 8 || pass.length() > 16) {
-            JOptionPane.showMessageDialog(this, "Mật khẩu phải từ 8-16 ký tự!");
+        String regexMK = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&]).{6,50}$"; // 6–50 ký tự
+        if (!pass.matches(regexMK)) {
+            JOptionPane.showMessageDialog(this,
+                    "Mật khẩu không hợp lệ!\n"
+                            + "• Có ít nhất 1 chữ hoa\n"
+                            + "• Có ít nhất 1 chữ thường\n"
+                            + "• Có ít nhất 1 số\n"
+                            + "• Có ít nhất 1 ký tự đặc biệt (@$!%*?&)\n"
+                            + "• Độ dài từ 6 đến 50 ký tự");
             txtMK.requestFocus();
-            return;
-        }
-
-        // Username chỉ chữ, số hoặc gạch dưới
-        if (!user.matches("^[a-zA-Z0-9_]{3,}$")) {
-            JOptionPane.showMessageDialog(this, "Tên tài khoản không hợp lệ. Chỉ chứa chữ, số, hoặc dấu gạch dưới!");
-            txtTK.requestFocus();
             return;
         }
 
         // --- Đăng nhập ---
         TaiKhoanDAO dao = new TaiKhoanDAO();
-        java.util.Optional<Entity.TaiKhoan.TaiKhoan> oTk = dao.checkDangNhap(user, pass);
+        java.util.Optional<Entity.TaiKhoan.TaiKhoan> oTk = dao.checkLogin(user, pass);
 
         if (oTk.isPresent()) {
             Entity.TaiKhoan.TaiKhoan tk = oTk.get();
-
-            // Truyền TaiKhoan vào Main (constructor Main(TaiKhoan))
+            // Truyền TaiKhoan vào Main
             new Main(tk).setVisible(true);
             this.dispose(); // đóng form Login
         } else {

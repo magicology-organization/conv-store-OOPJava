@@ -4,6 +4,13 @@
  */
 package GUI.frame.NhanVien;
 
+import DAO.NhanVien.NhanVienDAO;
+import java.util.List;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author ADMIN
@@ -15,6 +22,55 @@ public class frmSearchNhanVien extends javax.swing.JPanel {
      */
     public frmSearchNhanVien() {
         initComponents();
+        configureTable();
+        loadDataTable();
+        loadComboChucVu();
+    }
+    private void configureTable() {
+        // Ngăn không cho phép người dùng chỉnh sửa bảng
+        table.setDefaultEditor(Object.class, null);                                                   
+
+        // Căn giữa cho tất cả các cell trong bảng
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        // Căn giữa cho từng cột
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+
+        // Ngăn không cho phép chọn nhiều dòng
+        table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+    }
+    private void loadComboChucVu() {
+        cboChucVu.removeAllItems(); 
+
+        cboChucVu.addItem("Tất cả");     // index 0
+        cboChucVu.addItem("Quản lý");    // index 1
+        cboChucVu.addItem("Nhân viên");  // index 2
+
+        cboChucVu.setSelectedIndex(0);  // mặc định chọn "Tất cả"
+    }
+
+    private void loadDataTable() {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+
+        NhanVienDAO dao = new NhanVienDAO();
+        List<Object[]> list = dao.findAllWithDetails(); // [maNV, tenNV, chucVu, SDT, "Nam/Nữ", "Đang làm/Nghỉ việc"]
+
+        int stt = 1;
+        for (Object[] r : list) {
+            model.addRow(new Object[]{
+                stt++,    // STT
+                r[0],     // Mã nhân viên
+                r[1],     // Tên nhân viên
+                r[2],     // Chức vụ
+                r[3],     // SĐT
+                r[4],     // Giới tính (đã là "Nam"/"Nữ")
+                r[5]      // Trạng thái (đã là "Đang làm"/"Nghỉ việc")
+            });
+        }
     }
 
     /**
@@ -50,7 +106,7 @@ public class frmSearchNhanVien extends javax.swing.JPanel {
         pTimKiem_Row4_Col1 = new javax.swing.JPanel();
         lblChucVu = new javax.swing.JLabel();
         pTimKiem_Row4_Col2 = new javax.swing.JPanel();
-        cboChucvu = new javax.swing.JComboBox<>();
+        cboChucVu = new javax.swing.JComboBox<>();
         pTimKiem_Row5 = new javax.swing.JPanel();
         pTimKiem_Row5_Col1 = new javax.swing.JPanel();
         pTimKiem_Row5_Col2 = new javax.swing.JPanel();
@@ -89,7 +145,7 @@ public class frmSearchNhanVien extends javax.swing.JPanel {
         titleName.setPreferredSize(new java.awt.Dimension(1200, 32));
         northTilte.add(titleName, java.awt.BorderLayout.CENTER);
 
-        pNorth.add(northTilte, java.awt.BorderLayout.PAGE_START);
+        pNorth.add(northTilte, java.awt.BorderLayout.NORTH);
 
         pTimKiem.setMinimumSize(new java.awt.Dimension(829, 300));
         pTimKiem.setLayout(new javax.swing.BoxLayout(pTimKiem, javax.swing.BoxLayout.Y_AXIS));
@@ -201,9 +257,9 @@ public class frmSearchNhanVien extends javax.swing.JPanel {
         pTimKiem_Row4_Col2.setPreferredSize(new java.awt.Dimension(669, 38));
         pTimKiem_Row4_Col2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 7));
 
-        cboChucvu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cboChucvu.setPreferredSize(new java.awt.Dimension(100, 30));
-        pTimKiem_Row4_Col2.add(cboChucvu);
+        cboChucVu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboChucVu.setPreferredSize(new java.awt.Dimension(100, 30));
+        pTimKiem_Row4_Col2.add(cboChucVu);
 
         pTimKiem_Row4.add(pTimKiem_Row4_Col2, java.awt.BorderLayout.CENTER);
 
@@ -242,7 +298,7 @@ public class frmSearchNhanVien extends javax.swing.JPanel {
 
         pNorth.add(pTimKiem, java.awt.BorderLayout.CENTER);
 
-        Panel.add(pNorth, java.awt.BorderLayout.PAGE_START);
+        Panel.add(pNorth, java.awt.BorderLayout.NORTH);
 
         pCenter.setLayout(new java.awt.BorderLayout());
 
@@ -254,7 +310,7 @@ public class frmSearchNhanVien extends javax.swing.JPanel {
 
             },
             new String [] {
-                "STT", "Mã nhân viên", "Tên nhân viên", "Chức vụ", "SĐT", "Giới tính", "Trang thái"
+                "STT", "Mã nhân viên", "Tên nhân viên", "Chức vụ", "SĐT", "Giới tính", "Trạng thái"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -311,17 +367,92 @@ public class frmSearchNhanVien extends javax.swing.JPanel {
         });
         pSouth.add(btnChiTiet);
 
-        Panel.add(pSouth, java.awt.BorderLayout.PAGE_END);
+        Panel.add(pSouth, java.awt.BorderLayout.SOUTH);
 
         add(Panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnChiTietActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChiTietActionPerformed
         // TODO add your handling code here:
+        int row = table.getSelectedRow();
+        if (row < 0) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Vui lòng chọn một nhân viên để xem chi tiết!",
+                    "Thông báo", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Lấy mã nhà cung cấp từ bảng
+        String maNV = table.getValueAt(row, 1).toString();
+
+        // Lấy dữ liệu từ DAO
+        DAO.NhanVien.NhanVienDAO dao = new DAO.NhanVien.NhanVienDAO();
+        Entity.NhanVien.NhanVien nv = dao.findById(maNV).orElse(null);
+
+        if (nv == null) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Không tìm thấy thông tin nhân viên!",
+                    "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Mở form chi tiết
+        javax.swing.JFrame parent = (javax.swing.JFrame) javax.swing.SwingUtilities.getWindowAncestor(this);
+        GUI.form.NhanVien.formThongTinNV dialog = new GUI.form.NhanVien.formThongTinNV(parent, true, nv);
+
+        // Gán dữ liệu vào form
+        dialog.setTitle("Thông tin tài khoản - " + nv.getTenNV());
+        dialog.setLocationRelativeTo(this);
+
+        dialog.setVisible(true);
+        loadDataTable();
     }//GEN-LAST:event_btnChiTietActionPerformed
 
     private void btnTimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimActionPerformed
         // TODO add your handling code here:
+        String maNV = txtMaNV.getText().trim().toLowerCase();
+        String tenNV = txtTenNV.getText().trim().toLowerCase();
+        String sdt = txtSDT.getText().trim().toLowerCase();
+        String chucVu = cboChucVu.getSelectedItem().toString().trim().toLowerCase();
+
+        // Lấy model
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);  // xoá dữ liệu cũ
+
+        NhanVienDAO dao = new NhanVienDAO();
+        List<Object[]> list = dao.search(maNV, tenNV, sdt, chucVu);  // danh sách nhân viên
+
+        // Lọc theo nhiều điều kiện
+        list = list.stream()
+                .filter(r ->
+                        (maNV.isEmpty() || r[0].toString().toLowerCase().contains(maNV)) &&
+                        (tenNV.isEmpty() || r[1].toString().toLowerCase().contains(tenNV)) &&
+                        (sdt.isEmpty() || r[3].toString().toLowerCase().contains(sdt)) &&
+                        (cboChucVu.getSelectedIndex() == 0 ||    // 0 = "Tất cả"
+                                r[2].toString().toLowerCase().equals(chucVu))
+                )
+                .toList();
+
+        // Đổ dữ liệu vào bảng
+        int stt = 1;
+        for (Object[] r : list) {
+            model.addRow(new Object[]{
+                    stt++,
+                    r[0],   // Mã NV
+                    r[1],   // Tên NV
+                    r[2],   // Chức vụ
+                    r[3],   // SDT
+                    r[4],   // Giới tính "Nam"/"Nữ"
+                    r[5]    // Trạng thái "Đang làm"/"Nghỉ việc"
+            });
+        }
+
+        // Thông báo không có kết quả
+        if (list.isEmpty()) {
+            JOptionPane.showMessageDialog(this, 
+                    "Không tìm thấy nhân viên phù hợp với điều kiện tìm kiếm!");
+        }
+
     }//GEN-LAST:event_btnTimActionPerformed
 
 
@@ -329,7 +460,7 @@ public class frmSearchNhanVien extends javax.swing.JPanel {
     private javax.swing.JPanel Panel;
     private javax.swing.JButton btnChiTiet;
     private javax.swing.JButton btnTim;
-    private javax.swing.JComboBox<String> cboChucvu;
+    private javax.swing.JComboBox<String> cboChucVu;
     private javax.swing.JPanel centerTilte;
     private javax.swing.JLabel lblChucVu;
     private javax.swing.JLabel lblMaNV;

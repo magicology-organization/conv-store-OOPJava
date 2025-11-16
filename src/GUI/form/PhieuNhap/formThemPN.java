@@ -4,9 +4,9 @@
  */
 package GUI.form.PhieuNhap;
 
+import Entity.TaiKhoan.TaiKhoan;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Image;
-
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -15,11 +15,14 @@ import javax.swing.JOptionPane;
  * @author ADMIN
  */
 public class formThemPN extends javax.swing.JPanel {
+    private final TaiKhoan taiKhoan;
     private final java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm");
     private final java.text.DecimalFormat currencyFormat = new java.text.DecimalFormat("#,### VND");
     private final java.time.format.DateTimeFormatter hsdFmt = java.time.format.DateTimeFormatter
             .ofPattern("dd/MM/yyyy");
     private String currentMaNV = null;
+    private final DAO.PhieuNhap.PhieuNhapDAO pndao = new DAO.PhieuNhap.PhieuNhapDAO();
+    private final DAO.PhieuNhap.NhaCungCapDAO nccdao = new DAO.PhieuNhap.NhaCungCapDAO();
 
     private static final class NCCItem {
         final String maNCC;
@@ -38,21 +41,22 @@ public class formThemPN extends javax.swing.JPanel {
 
     /**
      * Creates new form formThemHD
+     * 
+     * @param taiKhoan
      */
-    public formThemPN() {
+    public formThemPN(TaiKhoan taiKhoan) {
+        this.taiKhoan = taiKhoan;
         initComponents();
         configureTables();
         initCombosAndDefaults();
         initEvents();
-        // Tải danh sách sản phẩm lần đầu (nếu muốn)
         loadSanPham(null);
-        try {
-            DAO.PhieuNhap.PhieuNhapDAO dao = new DAO.PhieuNhap.PhieuNhapDAO();
-            txtMaPN.setText(dao.taoMaPhieuNhap()); 
-        } catch (Exception e) {
-            e.printStackTrace();
-            javax.swing.JOptionPane.showMessageDialog(this, "Không thể tạo mã phiếu nhập tự động!");
+        txtMaPN.setText(pndao.taoMaPhieuNhap());
+        if (taiKhoan != null && taiKhoan.getNhanVien() != null) {
+            String maNV = taiKhoan.getNhanVien().getMaNV();
+            txtTenNV.setText(maNV);
         }
+
     }
 
     // UI setup
@@ -96,6 +100,59 @@ public class formThemPN extends javax.swing.JPanel {
         loadDanhMuc();
     }
 
+    // Event wiring
+    private void initEvents() {
+        // Enter trong ô mã NV -> tra nhân viên
+        txtTenNV.addActionListener(e -> timNV());
+
+        // Bảng Sản phẩm: click dòng nào → chọn dòng đó, clear bên Chi tiết
+        tableSP.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent e) {
+                int r = tableSP.rowAtPoint(e.getPoint());
+                if (r >= 0) {
+                    tableSP.setRowSelectionInterval(r, r);
+                    tableSP.requestFocusInWindow();
+                    tableChiTiet.clearSelection(); // luôn clear bảng còn lại
+                    chonSanPham(); // nếu cần auto đổ dữ liệu ngay khi click
+                }
+            }
+        });
+        // Bảng Chi tiết: click 1 lần → chọn dòng, clear bảng SP
+        tableChiTiet.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent e) {
+                int r = tableChiTiet.rowAtPoint(e.getPoint());
+                if (r >= 0) {
+                    tableChiTiet.setRowSelectionInterval(r, r);
+                    tableSP.clearSelection();
+
+                    // Ép bảng nhận focus để FlatLaf vẽ highlight
+                    tableChiTiet.requestFocusInWindow();
+
+                    // Gọi lại repaint sau khi Swing xử lý nội bộ
+                    javax.swing.SwingUtilities.invokeLater(() -> {
+                        tableChiTiet.repaint();
+                        tableChiTiet.getParent().repaint();
+                        chonSanPham();
+                    });
+                }
+            }
+        });
+        // Nút lọc theo danh mục
+        cboDanhMuc.addActionListener(e -> {
+            String selected = (String) cboDanhMuc.getSelectedItem();
+            if (selected == null)
+                return;
+
+            if (selected.equalsIgnoreCase("Tất cả")) {
+                loadSanPham(null);
+            } else {
+                loadSanPhamDanhMuc(selected);
+            }
+        });
+    }
+
     private void loadSanPhamDanhMuc(String tenDM) {
         javax.swing.table.DefaultTableModel m = (javax.swing.table.DefaultTableModel) tableSP.getModel();
         m.setRowCount(0);
@@ -132,147 +189,6 @@ public class formThemPN extends javax.swing.JPanel {
         }
     }
 
-    // Event wiring
-    private void initEvents() {
-        // Enter trong ô mã NV -> tra nhân viên
-        txtTenNV.addActionListener(e -> lookupNhanVienByMa());
-        // Nút tìm NV
-        btnSearchNV.addActionListener(e -> lookupNhanVienByMa());
-
-        // Enter trong ô mã SP -> tra sản phẩm
-        txtMaSP.addActionListener(e -> lookupProductByCode());
-
-        // Nút "Tìm" trên khu vực SP -> filter bảng SP theo keyword
-        btnTimKiem.addActionListener(e -> loadSanPham(txtTimKiem.getText().trim()));
-        txtTimKiem.addActionListener(e -> loadSanPham(txtTimKiem.getText().trim()));
-
-        // Nút "Thêm" ở khu vực số lượng -> thêm dòng chi tiết
-        btnThem.setText("Thêm"); // đã set sẵn
-        btnThem.addActionListener(e -> themCTPhieu());
-
-        // Bảng Sản phẩm: click dòng nào → chọn dòng đó, clear bên Chi tiết
-        tableSP.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mousePressed(java.awt.event.MouseEvent e) {
-                int r = tableSP.rowAtPoint(e.getPoint());
-                if (r >= 0) {
-                    tableSP.setRowSelectionInterval(r, r);
-                    tableSP.requestFocusInWindow();
-                    tableChiTiet.clearSelection(); // luôn clear bảng còn lại
-                    chonSanPham(); // nếu cần auto đổ dữ liệu ngay khi click
-                }
-            }
-        });
-        // Bảng Chi tiết: click 1 lần → chọn dòng, clear bảng SP
-        tableChiTiet.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mousePressed(java.awt.event.MouseEvent e) {
-                int r = tableChiTiet.rowAtPoint(e.getPoint());
-                if (r >= 0) {
-                    tableChiTiet.setRowSelectionInterval(r, r);
-                    tableSP.clearSelection();
-
-                    // Ép bảng nhận focus để FlatLaf vẽ highlight
-                    tableChiTiet.requestFocusInWindow();
-
-                    // Gọi lại repaint sau khi Swing xử lý nội bộ
-                    javax.swing.SwingUtilities.invokeLater(() -> {
-                        tableChiTiet.repaint();
-                        tableChiTiet.getParent().repaint();
-                        chonSanPham();
-                    });
-                }
-            }
-        });
-
-        // Tạo phiếu
-        btnTaoPhieu.setText("Lập phiếu");
-        btnTaoPhieu.addActionListener(e -> taoPhieu());
-        // Nút lọc theo danh mục
-        cboDanhMuc.addActionListener(e -> {
-            String selected = (String) cboDanhMuc.getSelectedItem();
-            if (selected == null)
-                return;
-
-            if (selected.equalsIgnoreCase("Tất cả")) {
-                loadSanPham(null);
-            } else {
-                loadSanPhamDanhMuc(selected);
-            }
-        });
-    }
-
-    private java.math.BigDecimal parseMoney(String s) {
-        if (s == null)
-            return java.math.BigDecimal.ZERO;
-        s = s.replaceAll("[^0-9.]", "");
-        if (s.isBlank())
-            return java.math.BigDecimal.ZERO;
-        try {
-            return new java.math.BigDecimal(s);
-        } catch (Exception ex) {
-            return java.math.BigDecimal.ZERO;
-        }
-    }
-
-    private int parseInt(String s) {
-        try {
-            return Integer.parseInt(s.trim());
-        } catch (Exception ex) {
-            return 0;
-        }
-    }
-
-    // Tra cứu nhân viên
-    private void lookupNhanVienByMa() {
-        String maNV = txtTenNV.getText().trim();
-        if (maNV.isEmpty()) {
-            currentMaNV = null;
-            return;
-        }
-
-        try {
-            DAO.NhanVien.NhanVienDAO dao = new DAO.NhanVien.NhanVienDAO();
-            java.util.Optional<Entity.NhanVien.NhanVien> onv = dao.findById(maNV);
-
-            if (onv.isPresent()) {
-                Entity.NhanVien.NhanVien nv = onv.get();
-                txtTenNV.setText(nv.getTenNV());
-                currentMaNV = nv.getMaNV(); // ✅ lưu mã ẩn
-            } else {
-                javax.swing.JOptionPane.showMessageDialog(this, "Không tìm thấy nhân viên có mã: " + maNV);
-                txtTenNV.setText("");
-                currentMaNV = null;
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi tra cứu nhân viên!");
-            currentMaNV = null;
-        }
-    }
-
-    private void lookupProductByCode() {
-        String code = txtMaSP.getText().trim();
-        if (code.isEmpty())
-            return;
-        try {
-            DAO.SanPham.SanPhamDAO spDao = new DAO.SanPham.SanPhamDAO();
-            java.util.Optional<Entity.SanPham.SanPham> osp = spDao.findById(code);
-            if (osp.isPresent()) {
-                Entity.SanPham.SanPham sp = osp.get();
-                txtTenSP.setText(sp.getTenSP());
-                txtDonGia.setText(sp.getDonGia() == null ? "" : sp.getDonGia().toPlainString());
-                txtSoLuong.requestFocus();
-                txtSoLuong.selectAll();
-            } else {
-                javax.swing.JOptionPane.showMessageDialog(this, "Không tìm thấy sản phẩm: " + code);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            javax.swing.JOptionPane.showMessageDialog(this, "Lỗi tra cứu sản phẩm!");
-        }
-    }
-
     private void loadDanhMuc() {
         try {
             DAO.SanPham.DanhMucDAO dmDao = new DAO.SanPham.DanhMucDAO();
@@ -293,8 +209,7 @@ public class formThemPN extends javax.swing.JPanel {
 
     private void loadNhaCungCap() {
         try {
-            DAO.PhieuNhap.NhaCungCapDAO dao = new DAO.PhieuNhap.NhaCungCapDAO();
-            java.util.List<Entity.PhieuNhap.NhaCungCap> list = dao.findAll();
+            java.util.List<Entity.PhieuNhap.NhaCungCap> list = nccdao.findAll();
 
             javax.swing.DefaultComboBoxModel model = new javax.swing.DefaultComboBoxModel();
             for (var ncc : list) {
@@ -311,12 +226,6 @@ public class formThemPN extends javax.swing.JPanel {
         }
     }
 
-    // lấy mã NCC đang chọn
-    private String getSelectedMaNCC() {
-        Object o = cboNhaCungCap.getSelectedItem();
-        return (o instanceof NCCItem) ? ((NCCItem) o).maNCC : null;
-    }
-
     private void loadSanPham(String keyword) {
         javax.swing.table.DefaultTableModel m = (javax.swing.table.DefaultTableModel) tableSP.getModel();
         m.setRowCount(0);
@@ -327,12 +236,18 @@ public class formThemPN extends javax.swing.JPanel {
                     ? spDao.findAllWithDetails()
                     : spDao.findAllWithDetailsByName(keyword);
 
+            if (list.isEmpty()) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Không tìm thấy sản phẩm phù hợp với: " + keyword);
+                return; // Không load gì vào bảng
+            }
+
             int stt = 1;
             for (Object[] r : list) {
+                // r[9] = Timestamp HSD (có thể null)
                 String hsdStr = "";
                 Object hsdObj = r[9];
-                if (hsdObj instanceof java.sql.Timestamp) {
-                    java.time.LocalDateTime ldt = ((java.sql.Timestamp) hsdObj).toLocalDateTime();
+                if (hsdObj instanceof java.sql.Timestamp ts) {
+                    java.time.LocalDateTime ldt = ts.toLocalDateTime();
                     hsdStr = ldt.format(hsdFmt);
                 }
 
@@ -343,7 +258,7 @@ public class formThemPN extends javax.swing.JPanel {
                         r[2], // Thành phần/Mô tả
                         r[6], // Giá nhập
                         r[7], // Giá bán
-                        hsdStr, // HSD <-- đã bổ sung
+                        hsdStr, // HSD
                         r[5], // ĐVT
                         r[4], // Xuất xứ
                         r[8] // Tồn kho
@@ -432,58 +347,40 @@ public class formThemPN extends javax.swing.JPanel {
         pThongTin.repaint();
     }
 
-    private void themCTPhieu() {
-        String maSP = txtMaSP.getText().trim();
-        String tenSP = txtTenSP.getText().trim();
-        int soLuong = parseInt(txtSoLuong.getText());
-        java.math.BigDecimal donGia = parseMoney(txtDonGia.getText());
-
-        // Kiểm tra đầu vào
-        if (maSP.isEmpty() || tenSP.isEmpty() || soLuong <= 0 || donGia.signum() <= 0) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập Mã SP, Tên SP, Số lượng và Đơn giá hợp lệ!");
+    private void timNV() {
+        String maNV = txtTenNV.getText().trim();
+        if (maNV.isEmpty()) {
+            currentMaNV = null;
             return;
         }
 
-        javax.swing.table.DefaultTableModel m = (javax.swing.table.DefaultTableModel) tableChiTiet.getModel();
-        boolean daTonTai = false;
+        try {
+            DAO.NhanVien.NhanVienDAO dao = new DAO.NhanVien.NhanVienDAO();
+            java.util.Optional<Entity.NhanVien.NhanVien> onv = dao.findById(maNV);
 
-        // Duyệt toàn bộ bảng để xem SP đã có chưa
-        for (int i = 0; i < m.getRowCount(); i++) {
-            String maHienTai = String.valueOf(m.getValueAt(i, 1));
-            if (maSP.equalsIgnoreCase(maHienTai)) {
-                // Nếu sản phẩm trùng → cộng thêm số lượng
-                int soLuongCu = parseInt(String.valueOf(m.getValueAt(i, 3)));
-                int soLuongMoi = soLuongCu + soLuong;
-                m.setValueAt(soLuongMoi, i, 3);
-
-                // Tính lại thành tiền = đơn giá × số lượng mới
-                java.math.BigDecimal thanhTien = donGia.multiply(java.math.BigDecimal.valueOf(soLuongMoi));
-                m.setValueAt(currencyFormat.format(thanhTien), i, 5);
-
-                daTonTai = true;
-                break;
+            if (onv.isPresent()) {
+                Entity.NhanVien.NhanVien nv = onv.get();
+                // chỉ hiển thị nếu nhân viên đang làm
+                if ("Đang làm".equalsIgnoreCase(nv.getTrangThai())) {
+                    txtTenNV.setText(nv.getTenNV());
+                    currentMaNV = nv.getMaNV(); // lưu mã ẩn
+                } else {
+                    javax.swing.JOptionPane.showMessageDialog(this,
+                            "Nhân viên này đã nghỉ việc: " + maNV);
+                    txtTenNV.setText("");
+                    currentMaNV = null;
+                }
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this,
+                        "Không tìm thấy nhân viên có mã: " + maNV);
+                txtTenNV.setText("");
+                currentMaNV = null;
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi tra cứu nhân viên!");
+            currentMaNV = null;
         }
-
-        // Nếu chưa có SP này trong bảng → thêm mới
-        if (!daTonTai) {
-            int stt = m.getRowCount() + 1;
-            java.math.BigDecimal thanhTien = donGia.multiply(java.math.BigDecimal.valueOf(soLuong));
-            m.addRow(new Object[] {
-                    stt, // 0: STT
-                    maSP, // 1: Mã SP
-                    tenSP, // 2: Tên SP
-                    soLuong, // 3: Số lượng
-                    currencyFormat.format(donGia), // 4: Đơn giá
-                    currencyFormat.format(thanhTien) // 5: Thành tiền
-            });
-        }
-
-        // Cập nhật tổng tiền
-        tinhTong();
-
-        // Xóa input để nhập SP khác
-        xoaRong();
     }
 
     private void xoaRong() {
@@ -512,101 +409,6 @@ public class formThemPN extends javax.swing.JPanel {
         txtTong.setText(currencyFormat.format(tong));
     }
 
-    private void taoPhieu() {
-        String maPN = txtMaPN.getText().trim();
-        if (maPN.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Chưa có Mã phiếu nhập!");
-            return;
-        }
-
-        // Kiểm tra regex cho mã phiếu nhập
-        if (!maPN.matches("^PN-\\d{3,10}$")) {
-            JOptionPane.showMessageDialog(this, "Mã phiếu nhập không hợp lệ! Ví dụ hợp lệ: PN-001, PN-12345");
-            return;
-        }
-
-        if (tableChiTiet.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(this, "Chưa có sản phẩm!");
-            return;
-        }
-
-        // Kiểm tra nhân viên
-        if (currentMaNV == null || currentMaNV.isBlank()) {
-            JOptionPane.showMessageDialog(this,
-                    "Chưa xác định nhân viên hợp lệ! Hãy nhấn nút Tìm NV trước khi lập phiếu.");
-            return;
-        }
-        String maNV = currentMaNV;
-
-        // Lấy mã NCC từ combobox
-        String maNCC = getSelectedMaNCC();
-        if (maNCC == null || maNCC.isBlank()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn nhà cung cấp!");
-            return;
-        }
-
-        Entity.NhanVien.NhanVien nv = new Entity.NhanVien.NhanVien();
-        nv.setMaNV(maNV);
-
-        Entity.PhieuNhap.NhaCungCap ncc = new Entity.PhieuNhap.NhaCungCap();
-        ncc.setMaNCC(maNCC);
-
-        Entity.PhieuNhap.PhieuNhap pn = new Entity.PhieuNhap.PhieuNhap();
-        pn.setMaPN(maPN);
-        pn.setNhanVien(nv);
-        pn.setNCC(ncc);
-        pn.setThoiGian(java.time.LocalDateTime.now());
-
-        DAO.PhieuNhap.PhieuNhapDAO pnDao = new DAO.PhieuNhap.PhieuNhapDAO();
-        if (!pnDao.insert(pn)) {
-            JOptionPane.showMessageDialog(this, "Lưu phiếu nhập thất bại (trùng mã?)");
-            return;
-        }
-
-        javax.swing.table.DefaultTableModel m = (javax.swing.table.DefaultTableModel) tableChiTiet.getModel();
-        DAO.PhieuNhap.CTPhieuNhapDAO ctDao = new DAO.PhieuNhap.CTPhieuNhapDAO();
-        DAO.SanPham.SanPhamDAO spDao = new DAO.SanPham.SanPhamDAO();
-
-        for (int i = 0; i < m.getRowCount(); i++) {
-            String maSP = String.valueOf(m.getValueAt(i, 1));
-            int soLuong = parseInt(String.valueOf(m.getValueAt(i, 3)));
-            java.math.BigDecimal donGia = parseMoney(String.valueOf(m.getValueAt(i, 4)));
-
-            Entity.PhieuNhap.CTPhieuNhap ct = new Entity.PhieuNhap.CTPhieuNhap();
-
-            Entity.PhieuNhap.PhieuNhap pnRef = new Entity.PhieuNhap.PhieuNhap(maPN);
-            Entity.SanPham.SanPham sp = new Entity.SanPham.SanPham(maSP);
-
-            ct.setPhieuNhap(pnRef);
-            ct.setSanPham(sp);
-            ct.setSoLuong(soLuong);
-            ct.setDonGia(donGia);
-
-            if (!ctDao.insert(ct)) {
-                JOptionPane.showMessageDialog(this, "Lưu chi tiết thất bại tại SP: " + maSP);
-                return;
-            }
-
-            boolean ok = spDao.capNhatTonKhoSauNhap(maSP, soLuong);
-            if (!ok) {
-                JOptionPane.showMessageDialog(this,
-                        "Không thể cập nhật tồn kho (tăng) cho sản phẩm: " + maSP);
-            }
-        }
-
-        JOptionPane.showMessageDialog(this, "Đã lập phiếu nhập thành công!");
-        inPhieuNhapPDF(maPN);
-
-        try {
-            GUI.Main mainFrame = (GUI.Main) javax.swing.SwingUtilities.getWindowAncestor(this);
-            GUI.frame.PhieuNhap.frmPhieuNhap frm = new GUI.frame.PhieuNhap.frmPhieuNhap();
-            mainFrame.replaceMainPanel(frm);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Không thể quay lại danh sách phiếu nhập!");
-        }
-    }
-
     private void inPhieuNhapPDF(String maPN) {
         try {
             DAO.PhieuNhap.PhieuNhapDAO pnDao = new DAO.PhieuNhap.PhieuNhapDAO();
@@ -633,12 +435,39 @@ public class formThemPN extends javax.swing.JPanel {
         }
     }
 
+    private String getSelectedMaNCC() {
+        Object o = cboNhaCungCap.getSelectedItem();
+        return (o instanceof NCCItem) ? ((NCCItem) o).maNCC : null;
+    }
+
+    private java.math.BigDecimal parseMoney(String s) {
+        if (s == null)
+            return java.math.BigDecimal.ZERO;
+        s = s.replaceAll("[^0-9.]", "");
+        if (s.isBlank())
+            return java.math.BigDecimal.ZERO;
+        try {
+            return new java.math.BigDecimal(s);
+        } catch (Exception ex) {
+            return java.math.BigDecimal.ZERO;
+        }
+    }
+
+    private int parseInt(String s) {
+        try {
+            return Integer.parseInt(s.trim());
+        } catch (Exception ex) {
+            return 0;
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
@@ -938,11 +767,6 @@ public class formThemPN extends javax.swing.JPanel {
         txtSoLuong.setText("1");
         txtSoLuong.setMinimumSize(new java.awt.Dimension(50, 30));
         txtSoLuong.setPreferredSize(new java.awt.Dimension(50, 30));
-        txtSoLuong.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtSoLuongActionPerformed(evt);
-            }
-        });
         pThemSP.add(txtSoLuong);
 
         btnThem.setBackground(new java.awt.Color(0, 204, 51));
@@ -1168,11 +992,6 @@ public class formThemPN extends javax.swing.JPanel {
         txtMaPN.setFocusable(false);
         txtMaPN.setMinimumSize(new java.awt.Dimension(200, 25));
         txtMaPN.setPreferredSize(new java.awt.Dimension(200, 30));
-        txtMaPN.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtMaPNActionPerformed(evt);
-            }
-        });
         pMa.add(txtMaPN);
 
         pThongTinDien.add(pMa);
@@ -1256,6 +1075,11 @@ public class formThemPN extends javax.swing.JPanel {
         btnSearchNV.setMaximumSize(new java.awt.Dimension(40, 40));
         btnSearchNV.setMinimumSize(new java.awt.Dimension(40, 40));
         btnSearchNV.setPreferredSize(new java.awt.Dimension(40, 40));
+        btnSearchNV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchNVActionPerformed(evt);
+            }
+        });
         pNhanVien.add(btnSearchNV);
 
         pThongTinDien.add(pNhanVien);
@@ -1324,6 +1148,11 @@ public class formThemPN extends javax.swing.JPanel {
         btnTaoPhieu.setFocusPainted(false);
         btnTaoPhieu.setFocusable(false);
         btnTaoPhieu.setPreferredSize(new java.awt.Dimension(200, 40));
+        btnTaoPhieu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTaoPhieuActionPerformed(evt);
+            }
+        });
         pButton.add(btnTaoPhieu);
 
         pThongTinPhieu.add(pButton, java.awt.BorderLayout.SOUTH);
@@ -1336,6 +1165,168 @@ public class formThemPN extends javax.swing.JPanel {
 
         add(Panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSearchNVActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnSearchNVActionPerformed
+        // TODO add your handling code here:
+        timNV();
+    }// GEN-LAST:event_btnSearchNVActionPerformed
+
+    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnThemActionPerformed
+        // TODO add your handling code here:
+        String maSP = txtMaSP.getText().trim();
+        String tenSP = txtTenSP.getText().trim();
+        int soLuong = parseInt(txtSoLuong.getText());
+        java.math.BigDecimal donGia = parseMoney(txtDonGia.getText());
+
+        // Kiểm tra đầu vào
+        if (maSP.isEmpty() || tenSP.isEmpty() || soLuong <= 0 || donGia.signum() <= 0) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập Mã SP, Tên SP, Số lượng và Đơn giá hợp lệ!");
+            return;
+        }
+
+        javax.swing.table.DefaultTableModel m = (javax.swing.table.DefaultTableModel) tableChiTiet.getModel();
+        boolean daTonTai = false;
+
+        // Duyệt toàn bộ bảng để xem SP đã có chưa
+        for (int i = 0; i < m.getRowCount(); i++) {
+            String maHienTai = String.valueOf(m.getValueAt(i, 1));
+            if (maSP.equalsIgnoreCase(maHienTai)) {
+                // Nếu sản phẩm trùng → cộng thêm số lượng
+                int soLuongCu = parseInt(String.valueOf(m.getValueAt(i, 3)));
+                int soLuongMoi = soLuongCu + soLuong;
+                m.setValueAt(soLuongMoi, i, 3);
+
+                // Tính lại thành tiền = đơn giá × số lượng mới
+                java.math.BigDecimal thanhTien = donGia.multiply(java.math.BigDecimal.valueOf(soLuongMoi));
+                m.setValueAt(currencyFormat.format(thanhTien), i, 5);
+
+                daTonTai = true;
+                break;
+            }
+        }
+
+        // Nếu chưa có SP này trong bảng → thêm mới
+        if (!daTonTai) {
+            int stt = m.getRowCount() + 1;
+            java.math.BigDecimal thanhTien = donGia.multiply(java.math.BigDecimal.valueOf(soLuong));
+            m.addRow(new Object[] {
+                    stt, // 0: STT
+                    maSP, // 1: Mã SP
+                    tenSP, // 2: Tên SP
+                    soLuong, // 3: Số lượng
+                    currencyFormat.format(donGia), // 4: Đơn giá
+                    currencyFormat.format(thanhTien) // 5: Thành tiền
+            });
+        }
+
+        // Cập nhật tổng tiền
+        tinhTong();
+
+        // Xóa input để nhập SP khác
+        xoaRong();
+    }// GEN-LAST:event_btnThemActionPerformed
+
+    private void btnTaoPhieuActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnTaoPhieuActionPerformed
+        // TODO add your handling code here:
+        String maPN = txtMaPN.getText().trim();
+        if (maPN.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Chưa có Mã phiếu nhập!");
+            return;
+        }
+
+        // Kiểm tra regex cho mã phiếu nhập
+        if (!maPN.matches("^PN-\\d{3,10}$")) {
+            JOptionPane.showMessageDialog(this, "Mã phiếu nhập không hợp lệ! Ví dụ hợp lệ: PN-001, PN-12345");
+            return;
+        }
+
+        if (tableChiTiet.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "Chưa có sản phẩm!");
+            return;
+        }
+
+        // Kiểm tra nhân viên
+        if (currentMaNV == null || currentMaNV.isBlank()) {
+            JOptionPane.showMessageDialog(this,
+                    "Chưa xác định nhân viên hợp lệ! Hãy nhấn nút Tìm NV trước khi lập phiếu.");
+            return;
+        }
+        String maNV = currentMaNV;
+
+        // Lấy mã NCC từ combobox
+        String maNCC = getSelectedMaNCC();
+        if (maNCC == null || maNCC.isBlank()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn nhà cung cấp!");
+            return;
+        }
+
+        Entity.NhanVien.NhanVien nv = new Entity.NhanVien.NhanVien();
+        nv.setMaNV(maNV);
+
+        Entity.PhieuNhap.NhaCungCap ncc = new Entity.PhieuNhap.NhaCungCap();
+        ncc.setMaNCC(maNCC);
+
+        Entity.PhieuNhap.PhieuNhap pn = new Entity.PhieuNhap.PhieuNhap();
+        pn.setMaPN(maPN);
+        pn.setNhanVien(nv);
+        pn.setNCC(ncc);
+        pn.setThoiGian(java.time.LocalDateTime.now());
+
+        DAO.PhieuNhap.PhieuNhapDAO pnDao = new DAO.PhieuNhap.PhieuNhapDAO();
+        if (!pnDao.insert(pn)) {
+            JOptionPane.showMessageDialog(this, "Lưu phiếu nhập thất bại (trùng mã?)");
+            return;
+        }
+
+        javax.swing.table.DefaultTableModel m = (javax.swing.table.DefaultTableModel) tableChiTiet.getModel();
+        DAO.PhieuNhap.CTPhieuNhapDAO ctDao = new DAO.PhieuNhap.CTPhieuNhapDAO();
+        DAO.SanPham.SanPhamDAO spDao = new DAO.SanPham.SanPhamDAO();
+
+        for (int i = 0; i < m.getRowCount(); i++) {
+            String maSP = String.valueOf(m.getValueAt(i, 1));
+            int soLuong = parseInt(String.valueOf(m.getValueAt(i, 3)));
+            java.math.BigDecimal donGia = parseMoney(String.valueOf(m.getValueAt(i, 4)));
+
+            Entity.PhieuNhap.CTPhieuNhap ct = new Entity.PhieuNhap.CTPhieuNhap();
+
+            Entity.PhieuNhap.PhieuNhap pnRef = new Entity.PhieuNhap.PhieuNhap(maPN);
+            Entity.SanPham.SanPham sp = new Entity.SanPham.SanPham(maSP);
+
+            ct.setPhieuNhap(pnRef);
+            ct.setSanPham(sp);
+            ct.setSoLuong(soLuong);
+            ct.setDonGia(donGia);
+
+            if (!ctDao.insert(ct)) {
+                JOptionPane.showMessageDialog(this, "Lưu chi tiết thất bại tại SP: " + maSP);
+                return;
+            }
+
+            boolean ok = spDao.capNhatTonKhoSauNhap(maSP, soLuong);
+            if (!ok) {
+                JOptionPane.showMessageDialog(this,
+                        "Không thể cập nhật tồn kho (tăng) cho sản phẩm: " + maSP);
+            }
+        }
+
+        JOptionPane.showMessageDialog(this, "Đã lập phiếu nhập thành công!");
+        inPhieuNhapPDF(maPN);
+
+        try {
+            GUI.Main mainFrame = (GUI.Main) javax.swing.SwingUtilities.getWindowAncestor(this);
+            GUI.frame.PhieuNhap.frmPhieuNhap frm = new GUI.frame.PhieuNhap.frmPhieuNhap(taiKhoan);
+            mainFrame.replaceMainPanel(frm);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Không thể quay lại danh sách phiếu nhập!");
+        }
+    }// GEN-LAST:event_btnTaoPhieuActionPerformed
+
+    private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnTimKiemActionPerformed
+        // TODO add your handling code here:
+        String keyword = txtTimKiem.getText().trim();
+        loadSanPham(keyword);
+    }// GEN-LAST:event_btnTimKiemActionPerformed
 
     private void btnAddNCCActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnAddNCCActionPerformed
         // TODO add your handling code here:
@@ -1371,8 +1362,8 @@ public class formThemPN extends javax.swing.JPanel {
 
         // Sau khi đóng formThemSP → làm mới lại bảng sản phẩm
         javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tableSP.getModel();
-        model.setRowCount(0); // Xóa dữ liệu cũ
-        loadSanPham(null); // Gọi lại hàm tải danh sách sản phẩm
+        model.setRowCount(0);
+        loadSanPham(null);
     }// GEN-LAST:event_btnThemSPActionPerformed
 
     private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnHuyActionPerformed
@@ -1385,7 +1376,8 @@ public class formThemPN extends javax.swing.JPanel {
 
         try {
             GUI.Main parentFrame = (GUI.Main) javax.swing.SwingUtilities.getWindowAncestor(this);
-            GUI.frame.PhieuNhap.frmPhieuNhap frm = new GUI.frame.PhieuNhap.frmPhieuNhap(); // QUAY VỀ frmPhieuNhap
+            GUI.frame.PhieuNhap.frmPhieuNhap frm = new GUI.frame.PhieuNhap.frmPhieuNhap(taiKhoan); // QUAY VỀ
+                                                                                                   // frmPhieuNhap
             parentFrame.replaceMainPanel(frm);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -1394,30 +1386,6 @@ public class formThemPN extends javax.swing.JPanel {
                     "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }// GEN-LAST:event_btnHuyActionPerformed
-
-    private void txtMaPNActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtMaPNActionPerformed
-        // TODO add your handling code here:
-        try {
-            DAO.PhieuNhap.PhieuNhapDAO dao = new DAO.PhieuNhap.PhieuNhapDAO();
-            String maMoi = dao.taoMaPhieuNhap();
-            txtMaPN.setText(maMoi);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi tạo mã phiếu nhập!");
-        }
-    }// GEN-LAST:event_txtMaPNActionPerformed
-
-    private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnTimKiemActionPerformed
-        // TODO add your handling code here:
-    }// GEN-LAST:event_btnTimKiemActionPerformed
-
-    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnThemActionPerformed
-        // TODO add your handling code here:
-    }// GEN-LAST:event_btnThemActionPerformed
-
-    private void txtSoLuongActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtSoLuongActionPerformed
-        // TODO add your handling code here:
-    }// GEN-LAST:event_txtSoLuongActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnXoaActionPerformed
         // TODO add your handling code here:

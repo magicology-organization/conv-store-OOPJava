@@ -153,6 +153,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtMa">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[350, 22]"/>
                     </Property>

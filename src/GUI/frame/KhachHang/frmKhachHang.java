@@ -6,7 +6,6 @@ package GUI.frame.KhachHang;
 
 import DAO.KhachHang.KhachHangDAO;
 import Entity.KhachHang.KhachHang;
-import GUI.form.KhachHang.formSuaKH;
 import GUI.form.KhachHang.formThemKH;
 import java.util.List;
 import javax.swing.JFrame;
@@ -288,7 +287,7 @@ public class frmKhachHang extends javax.swing.JPanel {
 
         try {
             KhachHangDAO khDAO = new KhachHangDAO();
-            boolean success = khDAO.deleteById(maKH); // phương thức trả về boolean
+            boolean success = khDAO.delete(maKH); // phương thức trả về boolean
 
             if (success) {
                 JOptionPane.showMessageDialog(this, "Đã xoá khách hàng thành công!");
@@ -309,7 +308,7 @@ public class frmKhachHang extends javax.swing.JPanel {
         int row = table.getSelectedRow();
         if (row < 0) {
             javax.swing.JOptionPane.showMessageDialog(this,
-                    "Vui lòng chọn một khách hàng để xem chi tiết!",
+                    "Vui lòng chọn một khách hàng để sửa!",
                     "Thông báo", javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
         }

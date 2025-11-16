@@ -232,9 +232,6 @@
                       <Dimension value="[250, 30]"/>
                     </Property>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtGiaNhapActionPerformed"/>
-                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblGiaBan">
                   <Properties>
@@ -288,7 +285,7 @@
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
                     </Property>
-                    <Property name="dateFormatString" type="java.lang.String" value="d, MMM,y&#xa;"/>
+                    <Property name="dateFormatString" type="java.lang.String" value="dd/MM/yyyy"/>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Segoe UI" size="14" style="1"/>
                     </Property>

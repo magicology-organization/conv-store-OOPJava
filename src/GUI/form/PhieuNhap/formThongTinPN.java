@@ -128,8 +128,6 @@ public class formThongTinPN extends javax.swing.JDialog {
     }
 
     private void addTableMouseListener() {
-        DAO.SanPham.SanPhamDAO spDao = new DAO.SanPham.SanPhamDAO();
-
         table.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mousePressed(java.awt.event.MouseEvent e) {
@@ -164,7 +162,7 @@ public class formThongTinPN extends javax.swing.JDialog {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         pNorth = new javax.swing.JPanel();
@@ -246,7 +244,6 @@ public class formThongTinPN extends javax.swing.JDialog {
 
         txtMaPN.setEditable(false);
         txtMaPN.setFont(new java.awt.Font("Roboto Mono", 1, 14)); // NOI18N
-        txtMaPN.setFocusable(false);
         txtMaPN.setPreferredSize(new java.awt.Dimension(200, 40));
         pMaPN.add(txtMaPN);
 
@@ -263,7 +260,6 @@ public class formThongTinPN extends javax.swing.JDialog {
 
         txtTenNCC.setEditable(false);
         txtTenNCC.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
-        txtTenNCC.setFocusable(false);
         txtTenNCC.setPreferredSize(new java.awt.Dimension(300, 40));
         pTenNCC.add(txtTenNCC);
 
@@ -280,7 +276,6 @@ public class formThongTinPN extends javax.swing.JDialog {
 
         txtSDTNCC.setEditable(false);
         txtSDTNCC.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
-        txtSDTNCC.setFocusable(false);
         txtSDTNCC.setPreferredSize(new java.awt.Dimension(200, 40));
         pSDTNCC.add(txtSDTNCC);
 
@@ -303,7 +298,6 @@ public class formThongTinPN extends javax.swing.JDialog {
 
         txtNgayNhap.setEditable(false);
         txtNgayNhap.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
-        txtNgayNhap.setFocusable(false);
         txtNgayNhap.setPreferredSize(new java.awt.Dimension(200, 40));
         pNgayNhap.add(txtNgayNhap);
 
@@ -320,7 +314,6 @@ public class formThongTinPN extends javax.swing.JDialog {
 
         txtTenNV.setEditable(false);
         txtTenNV.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
-        txtTenNV.setFocusable(false);
         txtTenNV.setPreferredSize(new java.awt.Dimension(300, 40));
         pTenNV.add(txtTenNV);
 
@@ -353,19 +346,19 @@ public class formThongTinPN extends javax.swing.JDialog {
         javax.swing.GroupLayout pAnhLayout = new javax.swing.GroupLayout(pAnh);
         pAnh.setLayout(pAnhLayout);
         pAnhLayout.setHorizontalGroup(
-                pAnhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pAnhLayout.createSequentialGroup()
-                                .addContainerGap(32, Short.MAX_VALUE)
-                                .addComponent(anhSP, javax.swing.GroupLayout.PREFERRED_SIZE, 350,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)));
+            pAnhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pAnhLayout.createSequentialGroup()
+                .addContainerGap(32, Short.MAX_VALUE)
+                .addComponent(anhSP, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18))
+        );
         pAnhLayout.setVerticalGroup(
-                pAnhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pAnhLayout.createSequentialGroup()
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(anhSP, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(136, 136, 136)));
+            pAnhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pAnhLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(anhSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(136, 136, 136))
+        );
 
         pCenter.add(pAnh, java.awt.BorderLayout.WEST);
 
@@ -388,26 +381,26 @@ public class formThongTinPN extends javax.swing.JDialog {
         spTableSP.setPreferredSize(new java.awt.Dimension(452, 300));
 
         table.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][] {
+            new Object [][] {
 
-                },
-                new String[] {
-                        "STT", "Mã sản phẩm", "Tên sản phẩm", "Số lượng", "Giá nhập", "Thành tiền"
-                }) {
-            Class[] types = new Class[] {
-                    java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
-                    java.lang.String.class, java.lang.Integer.class
+            },
+            new String [] {
+                "STT", "Mã sản phẩm", "Tên sản phẩm", "Số lượng", "Giá nhập", "Thành tiền"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
             };
-            boolean[] canEdit = new boolean[] {
-                    false, false, false, false, false, false
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
-                return types[columnIndex];
+                return types [columnIndex];
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
+                return canEdit [columnIndex];
             }
         });
         table.setFocusable(false);

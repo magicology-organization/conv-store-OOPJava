@@ -4,11 +4,8 @@
  */
 package GUI.frame.SanPham;
 
-import DAO.HoaDon.HoaDonDAO;
 import DAO.SanPham.SanPhamDAO;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -20,7 +17,6 @@ import javax.swing.table.DefaultTableModel;
  * @author ADMIN
  */
 public class frmSanPham extends javax.swing.JPanel {
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     private final DecimalFormat currencyFormat = new DecimalFormat("#,### VND");
 
     /**
@@ -83,7 +79,7 @@ public class frmSanPham extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         Panel = new javax.swing.JPanel();
@@ -159,19 +155,19 @@ public class frmSanPham extends javax.swing.JPanel {
         scrollTableCenter.setPreferredSize(new java.awt.Dimension(1200, 500));
 
         table.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][] {
+            new Object [][] {
 
-                },
-                new String[] {
-                        "STT", "Mã sản phẩm", "Tên sản phẩm", "Mô tả", "Danh mục", "Xuất xứ", "ĐVT", "Giá nhập",
-                        "Đơn giá", "Tồn kho"
-                }) {
-            boolean[] canEdit = new boolean[] {
-                    false, false, false, false, false, false, false, false, false, false
+            },
+            new String [] {
+                "STT", "Mã sản phẩm", "Tên sản phẩm", "Mô tả", "Danh mục", "Xuất xứ", "ĐVT", "Giá nhập", "Đơn giá", "Tồn kho"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
+                return canEdit [columnIndex];
             }
         });
         table.setMinimumSize(null);
@@ -259,7 +255,7 @@ public class frmSanPham extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
 
-        SanPhamDAO dao = new SanPhamDAO(); // ✅ dùng DAO sản phẩm
+        SanPhamDAO dao = new SanPhamDAO(); 
         List<Object[]> list = dao.findAllWithDetails();
 
         // Nếu có từ khóa thì lọc theo mã hoặc tên sản phẩm
@@ -323,8 +319,7 @@ public class frmSanPham extends javax.swing.JPanel {
         GUI.form.SanPham.formThongTinSP dialog = new GUI.form.SanPham.formThongTinSP(parent, true, sp);
 
         dialog.setLocationRelativeTo(this);
-        // Điền dữ liệu vào form
-        dialog.setThongTinSP(sp);
+
         dialog.setVisible(true);
     }// GEN-LAST:event_btnChiTietActionPerformed
 
@@ -383,7 +378,7 @@ public class frmSanPham extends javax.swing.JPanel {
         int row = table.getSelectedRow();
         if (row < 0) {
             javax.swing.JOptionPane.showMessageDialog(this,
-                    "Vui lòng chọn một sản phẩm để xem chi tiết!",
+                    "Vui lòng chọn một sản phẩm để sửa!",
                     "Thông báo", javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -407,8 +402,7 @@ public class frmSanPham extends javax.swing.JPanel {
         GUI.form.SanPham.formSuaSP dialog = new GUI.form.SanPham.formSuaSP(parent, true, sp);
 
         dialog.setLocationRelativeTo(this);
-        // Điền dữ liệu vào form
-        dialog.setThongTinSP(sp);
+
         dialog.setVisible(true);
         loadDataTable();
     }// GEN-LAST:event_btnSuaActionPerformed
