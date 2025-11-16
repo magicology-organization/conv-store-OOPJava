@@ -22,6 +22,7 @@ import javax.swing.table.DefaultTableModel;
  * @author ADMIN
  */
 public class frmSearchSanPham extends javax.swing.JPanel {
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     private final DecimalFormat currencyFormat = new DecimalFormat("#,### VND");
 
     /**
@@ -61,18 +62,21 @@ public class frmSearchSanPham extends javax.swing.JPanel {
         for (Object[] row : list) {
             String giaNhap = currencyFormat.format(row[6]); // giá nhập
             String giaBan = currencyFormat.format(row[7]); // đơn giá
+            java.sql.Timestamp ts = (java.sql.Timestamp) row[9];
+            String hsd = dateFormat.format(ts);
 
             model.addRow(new Object[] {
                     stt++, // STT
                     row[0], // Mã sản phẩm
                     row[1], // Tên sản phẩm
                     row[2], // Mô tả
+                    hsd, // Hạn sử dụng
                     row[3], // Danh mục
                     row[4], // Xuất xứ
                     row[5], // Đơn vị tính
-                    giaNhap, // Giá nhập đã format
-                    giaBan, // Giá bán đã format
-                    row[8] // Tồn kho
+                    giaNhap, // Giá nhập
+                    giaBan, // Giá bán
+                    row[8], // Tồn kho
             });
         }
     }
@@ -100,7 +104,8 @@ public class frmSearchSanPham extends javax.swing.JPanel {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         Panel = new javax.swing.JPanel();
@@ -249,7 +254,8 @@ public class frmSearchSanPham extends javax.swing.JPanel {
         pTimKiem_Row2_Col2.setPreferredSize(new java.awt.Dimension(669, 38));
         pTimKiem_Row2_Col2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 7));
 
-        cboDanhMuc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboDanhMuc.setModel(
+                new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cboDanhMuc.setPreferredSize(new java.awt.Dimension(100, 30));
         cboDanhMuc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -282,7 +288,8 @@ public class frmSearchSanPham extends javax.swing.JPanel {
         pTimKiem_Row3_Col2.setPreferredSize(new java.awt.Dimension(669, 38));
         pTimKiem_Row3_Col2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 7));
 
-        cboXuatXu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboXuatXu.setModel(
+                new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cboXuatXu.setPreferredSize(new java.awt.Dimension(100, 30));
         cboXuatXu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -336,23 +343,21 @@ public class frmSearchSanPham extends javax.swing.JPanel {
         scrollTableCenter.setPreferredSize(new java.awt.Dimension(1200, 250));
 
         table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+                new Object[][] {
 
-            },
-            new String [] {
-                "STT", "Mã sản phẩm", "Tên sản phẩm", "Mô tả", "Danh mục", "Xuất xứ", "ĐVT", "Giá nhập", "Đơn giá", "Tồn kho"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false
+                },
+                new String[] {
+                        "STT", "Mã sản phẩm", "Tên sản phẩm", "Mô tả", "Hạn sử dụng", "Danh mục", "Xuất xứ", "ĐVT",
+                        "Giá nhập", "Đơn giá", "Tồn kho"
+                }) {
+            boolean[] canEdit = new boolean[] {
+                    false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return canEdit[columnIndex];
             }
         });
-        table.setMinimumSize(null);
-        table.setPreferredSize(null);
         table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         table.setShowHorizontalLines(true);
         scrollTableCenter.setViewportView(table);

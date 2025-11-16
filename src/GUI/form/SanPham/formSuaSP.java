@@ -237,7 +237,7 @@ public final class formSuaSP extends javax.swing.JDialog {
         pThongTin.add(lblHSD);
 
         DateHSD.setBackground(new java.awt.Color(255, 255, 255));
-        DateHSD.setDateFormatString("yyyy");
+        DateHSD.setDateFormatString("dd/MM/yyyy");
         DateHSD.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         DateHSD.setMinimumSize(new java.awt.Dimension(140, 30));
         DateHSD.setPreferredSize(new java.awt.Dimension(140, 30));
